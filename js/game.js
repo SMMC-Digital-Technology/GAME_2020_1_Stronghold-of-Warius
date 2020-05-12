@@ -8,10 +8,5 @@ game.state.add('level2', level2State);
 game.state.add('gameover', gameoverState);
 
 // save some values for the whole game
-game.global = {
-   score: 0,
-   lives: 3,
-   maxLives: 3
-};
 
 game.state.start('boot');
