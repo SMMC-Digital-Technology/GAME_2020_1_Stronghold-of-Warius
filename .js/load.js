@@ -3,12 +3,17 @@ var loadState = {
     loadingLabel = game.add.text(80, 150, 'loading...', {font: '30px Courier', fill: '#ffffff'});
 
     /* Some values might need to be adjusted */
-    game.load.image('bg', 'assets/background.png');
+    game.load.image('sewerbg', 'assets/sewerBackground.png');
     game.load.image('ground', 'assets/ground.png');
-    game.load.spritesheet('city', 'assets/cities.png', 64, 64);
-    game.load.spritesheet('meteor', 'assets/asteroids.png', 48, 48);
     game.load.image('tower', 'assets/tower.png');
-    game.load.spritesheet('missile', 'assets/missile.png', 32, 32);
+    game.load.spritesheet('blueSlime', 'assets/slime_blue.png', 8, 8);
+    game.load.spritesheet('greenSlime', 'assets/slime_green.png', 8, 8);
+    game.load.spritesheet('redSlime', 'assets/slime_red.png', 8, 8);
+    game.load.spritesheet('jendolfson', 'assets/jendolfson.png', 16, 16);
+    game.load.spritesheet('mageBolt', 'assets/Mage bolt.png', 8, 8);
+    game.load.spritesheet('fireball', 'assets/Fireball.png', 10, 10);
+    game.load.spritesheet('bat', 'assets/bat.png', 10, 10);
+    game.load.spritesheet('', 'assets/.png', , );
     game.load.image('button', 'assets/button.png');
     game.load.image('explosion', 'assets/explosion.png')
 
