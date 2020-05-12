@@ -5,6 +5,8 @@ game.state.add('load', loadState);
 game.state.add('menu', menuState);
 game.state.add('level1', level1State);
 game.state.add('level2', level2State);
+game.state.add('level3', level3State);
+game.state.add('level4', level4State);
 game.state.add('gameover', gameoverState);
 
 // save some values for the whole game
