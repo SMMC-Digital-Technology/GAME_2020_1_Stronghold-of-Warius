@@ -1,6 +1,6 @@
 var menuState = {
   create: function() {
-    game.image.add(0, 0, 'menubg');
+    game.add.image(0, 0, 'menubg');
     button = game.add.button(game.world.centerX, game.world.centerY, 'button');
     button.onInputUp.add(this.startGame);
     var text = game.add.text(button.x, button.y, 'Start Game');
