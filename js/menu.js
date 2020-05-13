@@ -9,4 +9,5 @@ var menuState = {
 
   startGane: function() {
     game.state.start("level1")
-  }
+  },
+};
