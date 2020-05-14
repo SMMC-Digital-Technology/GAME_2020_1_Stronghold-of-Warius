@@ -23,6 +23,7 @@ var loadState = {
       game.load.spritesheet("slimer", "assets/slime_red.png", 16, 16);
       game.load.spritesheet("Bslime", "assets/bigSlime.png", 16, 16);
       game.load.image("spikes", "assets/spikes.png");
+      game.load.image("sewerP", "assets/sewerPlatform.png");
    },
 
    create: function() {
