@@ -8,7 +8,9 @@ game.state.add('level2', level2State);
 game.state.add('level3', level3State);
 game.state.add('level4', level4State);
 game.state.add('gameover', gameoverState);
-
 // save some values for the whole game
-
+game.global = {
+  health: 10,
+  healthM: 10,
+}
 game.state.start('boot');

@@ -1,6 +1,7 @@
 var menuState = {
   create: function() {
     game.add.image(0, 0, 'menubg');
+    //creating 4 buttons each taking to a different level
     button = game.add.button(game.world.centerX, 250, 'button');
     button.anchor.setTo(0.5, 0.5);
     button.onInputUp.add(this.start1);

@@ -15,6 +15,11 @@ var level1State = {
      cursors = game.input.keyboard.createCursorKeys();
      // focuses the player in the camera view and forces the camera to follow      // the player, except if the view would go outside the game world
      game.camera.follow(player);
+
+     //health bar
+     healthBar = game.add.image(300, 300, "healthbar");
+     healthBar.anchor.setTo(1, 0);
+     healthBar.width = game.global.health / game.global.healthM * 200;
    },
 
    update: function() {
