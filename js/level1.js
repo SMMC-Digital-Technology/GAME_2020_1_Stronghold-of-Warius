@@ -4,6 +4,10 @@ var level1State = {
      // set the size of the world
      game.world.setBounds(0, 0, 4000, 600);
      game.add.image(0, 0, "sewerbg");
+     game.add.image(800, 0, "sewerbg");
+     game.add.image(1600, 0, "sewerbg");
+     game.add.image(2400, 0, "sewerbg");
+     game.add.image(3200, 0, "sewerbg");
 
      player = game.add.sprite(game.world.randomX, game.world.randomY, "jendolfson");
      game.physics.arcade.enable(player);
