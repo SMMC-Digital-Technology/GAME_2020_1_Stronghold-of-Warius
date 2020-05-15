@@ -27,12 +27,7 @@ var level1State = {
    update: function() {
    this.moveAvatar();
 
-     //slime 1 movement
-     var distance = player.x - slime1.x;
-     if (distance < 0 && distance > -100 && slime1.x > 500) {
-     slime1.body.velocity.x = -50;
-     slime1.animations.play("left");
-     }
+
 
  },
 
