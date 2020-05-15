@@ -16,7 +16,8 @@ var level1State = {
      //animate the player
       player.animations.add('right', [0, 1, 2, 3], 10, true);
       player.animations.add('left', [4, 5, 6, 7], 10, true);
-      player.animations.add('rightSwing', [5, 6, 7, 8], 10, true);
+      player.animations.add('rightS', [8, 9, 10, 11], 10, true);
+      player.animations.add('leftS', [12, 13, 14, 15], 10, true);
      // create keys
      cursors = game.input.keyboard.createCursorKeys();
      zKey = game.input.keyboard.addKey(Phaser.Keyboard.Z);
@@ -30,6 +31,16 @@ var level1State = {
    },
 
    update: function() {
+
+
+   zKey.onDown.add(function() {
+     if (cursors.left.isDown) {
+       player.animations.play('leftS')
+     } else {
+       player.animations.play('rightS')
+     }
+   })
+
    this.movePlayer();
  },
 
@@ -52,8 +63,15 @@ var level1State = {
       player.animations.play('right')
    } else {
       player.body.velocity.x = 0;
-      player.animations.stop();
       player.frame = 0;
    }
-}
+ },
+
+  swing: function() {
+    if (cursors.left.isDown) {
+      player.animations.play('leftSwing');
+    } else {
+      player.animations.play('rightSwing');
+    }
+  }
 };
