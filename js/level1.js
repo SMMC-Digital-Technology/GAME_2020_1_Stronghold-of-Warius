@@ -15,10 +15,25 @@ var level1State = {
      cursors = game.input.keyboard.createCursorKeys();
      // focuses the player in the camera view and forces the camera to follow      // the player, except if the view would go outside the game world
      game.camera.follow(player);
+
+     //spawn slime 1
+     slime1 = game.add.sprite(400, 500, "slimeg");
+     game.physics.arcade.enable(slime1);
+     slime1.collideWorldBounds = true;
+     slime1.animations.add('left', [0, 1, 2], 0, true);
+
    },
 
    update: function() {
    this.moveAvatar();
+
+     //slime 1 movement
+     var distance = player.x - slime1.x;
+     if (distance < 0 && distance > -100 && slime1.x > 500) {
+     slime1.body.velocity.x = -50;
+     slime1.animations.play("left");
+     }
+
  },
 
   // moves the avatar with the cursors
@@ -39,5 +54,6 @@ var level1State = {
    } else {
       player.body.velocity.x = 0;
    }
+
 }
 };
