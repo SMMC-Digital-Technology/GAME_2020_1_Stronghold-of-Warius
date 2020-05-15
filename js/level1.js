@@ -27,12 +27,18 @@ var level1State = {
      // the player, except if the view would go outside the game world
      game.camera.follow(player);
 
+     //spawn slime 1
+     slime1 = game.add.sprite(400, 500, "slimeg");
+     game.physics.arcade.enable(slime1);
+     slime1.collideWorldBounds = true;
+     slime1.animations.add('left', [0, 1, 2], 0, true);
+
      //health bar
      healthBar = game.add.image(250, 25, "healthbar");
      healthBar.anchor.setTo(1, 0);
      healthBar.width = game.global.health / game.global.healthM * 200;
      healthBar.fixedToCamera = true;
-
+     //mana bar
      manaBar = game.add.image(400, 200, "manabar");
      manaBar.anchor.setTo(1, 0);
      manaBar.width = game.global.mana / game.global.manaM * 200;
