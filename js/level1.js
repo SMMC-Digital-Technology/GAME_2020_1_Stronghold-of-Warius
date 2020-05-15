@@ -65,5 +65,6 @@ var level1State = {
       player.animations.stop();
       player.frame = 0;
    }
+
 }
 };
