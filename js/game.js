@@ -12,5 +12,7 @@ game.state.add('gameover', gameoverState);
 game.global = {
   health: 10,
   healthM: 10,
+  mana: 10,
+  manaM: 10,
 }
 game.state.start('boot');
