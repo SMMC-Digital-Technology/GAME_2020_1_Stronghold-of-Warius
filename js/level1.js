@@ -39,7 +39,7 @@ var level1State = {
      healthBar.width = game.global.health / game.global.healthM * 200;
      healthBar.fixedToCamera = true;
      //mana bar
-     manaBar = game.add.image(400, 200, "manabar");
+     manaBar = game.add.image(250, 50, "manabar");
      manaBar.anchor.setTo(1, 0);
      manaBar.width = game.global.mana / game.global.manaM * 200;
      manaBar.fixedToCamera = true;
