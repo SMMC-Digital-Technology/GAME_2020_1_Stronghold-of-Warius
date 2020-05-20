@@ -28,10 +28,11 @@ var level1State = {
      game.camera.follow(player);
 
      //spawn slime 1
-     slime1 = game.add.sprite(400, 500, "slimeg");
+     slime1 = game.add.sprite(100, 550, "slimeg");
      game.physics.arcade.enable(slime1);
      slime1.collideWorldBounds = true;
      slime1.animations.add('left', [0, 1, 2], 0, true);
+     slime1.animations.add('right', [3, 4, 5], 3, true);
 
      //health bar
      healthBar = game.add.image(325, 25, "healthbar");
