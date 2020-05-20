@@ -24,6 +24,7 @@ var loadState = {
       game.load.spritesheet("Bslime", "assets/bigSlime.png", 16, 16);
       game.load.image("spikes", "assets/spikes.png");
       game.load.image("sewerP", "assets/sewerPlatform.png");
+      game.load.image("spellselect", "assets/Spell Select.png");
    },
 
    create: function() {
