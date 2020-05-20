@@ -34,14 +34,14 @@ var level1State = {
      slime1.animations.add('left', [0, 1, 2], 0, true);
 
      //health bar
-     healthBar = game.add.image(250, 25, "healthbar");
+     healthBar = game.add.image(325, 25, "healthbar");
      healthBar.anchor.setTo(1, 0);
-     healthBar.width = game.global.health / game.global.healthM * 200;
+     healthBar.width = game.global.health / game.global.healthM * 300;
      healthBar.fixedToCamera = true;
      //mana bar
-     manaBar = game.add.image(400, 200, "manabar");
+     manaBar = game.add.image(325, 50, "manabar");
      manaBar.anchor.setTo(1, 0);
-     manaBar.width = game.global.mana / game.global.manaM * 200;
+     manaBar.width = game.global.mana / game.global.manaM * 300;
      manaBar.fixedToCamera = true;
    },
 
