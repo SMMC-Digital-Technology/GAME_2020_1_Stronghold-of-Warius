@@ -44,7 +44,8 @@ var level1State = {
      manaBar.width = game.global.mana / game.global.manaM * 300;
      manaBar.fixedToCamera = true;
 
-     spellselect = game.add.image(500, 150, "spellselect");
+     spellselect = game.add.image(650, 25, "spellselect");
+     spellselect.fixedToCamera = true;
    },
 
    update: function() {
