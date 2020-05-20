@@ -31,7 +31,8 @@ var level1State = {
      slime1 = game.add.sprite(400, 500, "slimeg");
      game.physics.arcade.enable(slime1);
      slime1.collideWorldBounds = true;
-     slime1.animations.add('slime wobble', [0, 1, 2], 0, true);
+     slime1.animations.add('left', [0, 1, 2], 0, true);
+     slime1.animations.add('right', [3, 4, 5], 3, true);
 
      //health bar
      healthBar = game.add.image(250, 25, "healthbar");
