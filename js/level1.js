@@ -32,11 +32,8 @@ var level1State = {
      game.physics.arcade.enable(slime1);
      slime1.collideWorldBounds = true;
      slime1.animations.add('left', [0, 1, 2], 0, true);
-<<<<<<< HEAD
      slime1.animations.add('right', [3, 4, 5], 3, true);
-=======
->>>>>>> parent of b512aea... Update level1.js
-
+     
      //health bar
      healthBar = game.add.image(325, 25, "healthbar");
      healthBar.anchor.setTo(1, 0);
