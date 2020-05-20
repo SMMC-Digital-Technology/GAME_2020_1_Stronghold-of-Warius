@@ -29,6 +29,7 @@ var level1State = {
 
      //spawn slime 1
      slime1 = game.add.sprite(100, 550, "slimeg");
+     slime1.scale.setTo();
      game.physics.arcade.enable(slime1);
      slime1.collideWorldBounds = true;
      slime1.animations.add('left', [0, 1, 2], 0, true);
@@ -51,6 +52,18 @@ var level1State = {
 
    update: function() {
    this.movePlayer();
+
+   var distance = player.x - slime1.x;
+   if (distance < 0 && distance > -100 && slime1.x > 400) {
+     slime1.body.velocity.x = -70;
+     slime1.animations.play("left");
+} else if (distance > 0 && distance < 100 && slime1.x < 600) {
+    slime1.body.velocity.x = 70;
+    slime1.animations.play("right");
+} else {
+  slime1.body.velocity.x = 0;
+}
+
   },
 
   // moves the player with the cursors
