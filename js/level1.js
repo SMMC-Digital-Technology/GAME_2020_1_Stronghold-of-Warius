@@ -14,9 +14,9 @@ var level1State = {
      player.body.gravity.y = 9000;
      player.body.collideWorldBounds = true;
      //animate the player
-      player.animations.add('right', [0, 1, 2, 3], 10, true);
-      player.animations.add('left', [4, 5, 6, 7], 10, true);
-      player.animations.add('rightSwing', [5, 6, 7, 8], 10, true);
+     player.animations.add('right', [0, 1, 2, 3], 10, true);
+     player.animations.add('left', [4, 5, 6, 7], 10, true);
+     player.animations.add('rightSwing', [5, 6, 7, 8], 10, true);
      // create keys
      cursors = game.input.keyboard.createCursorKeys();
      zKey = game.input.keyboard.addKey(Phaser.Keyboard.Z);
@@ -43,6 +43,8 @@ var level1State = {
      manaBar.anchor.setTo(1, 0);
      manaBar.width = game.global.mana / game.global.manaM * 300;
      manaBar.fixedToCamera = true;
+
+     spellselect = game.add.image(500, 150, "spellselect");
    },
 
    update: function() {
