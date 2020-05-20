@@ -32,34 +32,25 @@ var level1State = {
      game.physics.arcade.enable(slime1);
      slime1.collideWorldBounds = true;
      slime1.animations.add('left', [0, 1, 2], 0, true);
+<<<<<<< HEAD
      slime1.animations.add('right', [3, 4, 5], 3, true);
+=======
+>>>>>>> parent of b512aea... Update level1.js
 
      //health bar
-     healthBar = game.add.image(250, 25, "healthbar");
+     healthBar = game.add.image(325, 25, "healthbar");
      healthBar.anchor.setTo(1, 0);
-     healthBar.width = game.global.health / game.global.healthM * 200;
+     healthBar.width = game.global.health / game.global.healthM * 300;
      healthBar.fixedToCamera = true;
      //mana bar
-     manaBar = game.add.image(400, 200, "manabar");
+     manaBar = game.add.image(325, 50, "manabar");
      manaBar.anchor.setTo(1, 0);
-     manaBar.width = game.global.mana / game.global.manaM * 200;
+     manaBar.width = game.global.mana / game.global.manaM * 300;
      manaBar.fixedToCamera = true;
    },
 
    update: function() {
    this.movePlayer();
-
-   var distance = player.x - slime1.x;
-     if (distance < 0 && distance > -400 && slime1.x > 10) {
-       slime1.body.velocity.x = -120;
-       slime1.animations.play("left");
-     } else if (distance > 0 && distance < 400 && slime1.x < game.world.width) {
-       slime1.body.velocity.x = 120;
-       slime1.animations.play("right");
-     } else {
-       slime1.body.velocity.x = 0;
-     }
-
   },
 
   // moves the player with the cursors
