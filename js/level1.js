@@ -54,10 +54,10 @@ var level1State = {
     this.movePlayer();
 
     var distance = player.x - slime1.x;
-    if (distance < 0 && distance > -100 && slime1.x > 0) {
+    if (distance < 0 && distance > -300 && slime1.x > 0) {
       slime1.body.velocity.x = -70;
       slime1.animations.play("left");
-    } else if (distance > 0 && distance < 100 && slime1.x < 600) {
+    } else if (distance > 0 && distance < 300 && slime1.x < 600) {
       slime1.body.velocity.x = 70;
       slime1.animations.play("right");
     } else {
