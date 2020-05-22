@@ -14,10 +14,10 @@ var level1State = {
      player.body.gravity.y = 9000;
      player.body.collideWorldBounds = true;
      //animate the player
-      player.animations.add('right', [0, 1, 2, 3], 10, true);
-      player.animations.add('left', [4, 5, 6, 7], 10, true);
-      player.animations.add('rightS', [8, 9, 10, 11], 10, true);
-      player.animations.add('leftS', [12, 13, 14, 15], 10, true);
+     player.animations.add('right', [0, 1, 2, 3], 10, true);
+     player.animations.add('left', [4, 5, 6, 7], 10, true);
+     player.animations.add('rightSwing', [8, 9, 10, 11], 10, true);
+     player.animations.add('leftSwing', [12, 13, 14, 15], 10, true);
      // create keys
      cursors = game.input.keyboard.createCursorKeys();
      zKey = game.input.keyboard.addKey(Phaser.Keyboard.Z);
@@ -48,23 +48,25 @@ var level1State = {
 
    update: function() {
 
+   this.movePlayer();
 
    zKey.onDown.add(function() {
-     if (cursors.left.isDown) {
-       player.animations.play('leftS')
-     } else {
-       player.animations.play('rightS')
-     }
-   })
+      if (cursors.left.isDown) {
+        player.y = 200
+        player.animations.play('leftSwing');
+      } else {
+        player.animations.play('rightSwing');
+        player.y = 400
+      }
+    })
 
-   this.movePlayer();
   },
 
   // moves the player with the cursors
   movePlayer: function() {
    // up-down
-   if (cursors.up.isDown && player.body.touching.down) {
-      player.body.velocity.y = -1000;
+   if (player.body.blocked.down && cursors.up.isDown) {
+      player.body.velocity.y = -6000;
    } else if (cursors.down.isDown) {
       player.body.velocity.y = 500;
    } else {
@@ -82,12 +84,4 @@ var level1State = {
       player.frame = 0;
    }
  },
-
-  swing: function() {
-    if (cursors.left.isDown) {
-      player.animations.play('leftSwing');
-    } else {
-      player.animations.play('rightSwing');
-    }
-  }
-};
+}
