@@ -73,9 +73,10 @@ var level1State = {
     } else {
       slime1.body.velocity.x = 0;
     }
-    
+  },
+
   // moves the player with the cursors
-  movePlayer: function() {
+    movePlayer: function() {
    // up-down
    if (player.body.blocked.down && cursors.up.isDown) {
       player.body.velocity.y = -6000;
