@@ -53,13 +53,11 @@ var level1State = {
   update: function() {
     this.movePlayer();
 
-    zKey.onDown.add(function() {
+    zKey.onDown.add(function(player) {
        if (cursors.left.isDown) {
-         player.y = 200
-         player.animations.play('leftSwing');
+         player.animations.play("leftSwing");
        } else {
-         player.animations.play('rightSwing');
-         player.y = 400
+         player.animations.play("rightSwing");
        }
      })
 
