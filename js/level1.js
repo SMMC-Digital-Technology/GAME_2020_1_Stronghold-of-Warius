@@ -59,25 +59,32 @@ var level1State = {
 
     this.movePlayer();
 
+    zKey.onDown.add(function() {
+       if (cursors.left.isDown) {
+         player.animations.play("leftSwing");
+       } else {
+         player.animations.play("rightSwing");
+       }
+     })
+
     var distance = player.x - slime1.x;
-    if (distance < 0 && distance > -100 && slime1.x > 0) {
+    if (distance < 0 && distance > -300 && slime1.x > 0) {
       slime1.body.velocity.x = -70;
       slime1.animations.play("left");
-    } else if (distance > 0 && distance < 100 && slime1.x < 600) {
+    } else if (distance > 0 && distance < 300 && slime1.x < 600) {
       slime1.body.velocity.x = 70;
       slime1.animations.play("right");
     } else {
       slime1.body.velocity.x = 0;
     }
-
   },
 
   // moves the player with the cursors
-  movePlayer: function() {
-    // up-down
-    if (cursors.up.isDown && player.body.touching.down) {
-      player.body.velocity.y = -1000;
-    } else if (cursors.down.isDown) {
+    movePlayer: function() {
+   // up-down
+   if (player.body.blocked.down && cursors.up.isDown) {
+      player.body.velocity.y = -6000;
+   } else if (cursors.down.isDown) {
       player.body.velocity.y = 500;
     } else {
       player.body.velocity.y = 0;
