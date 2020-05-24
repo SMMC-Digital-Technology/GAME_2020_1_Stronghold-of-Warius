@@ -11,14 +11,15 @@ var level1State = {
     //create player
     player = game.add.sprite(50, 550, "jendolfson");
     game.physics.arcade.enable(player);
-    player.body.gravity.y = 9000;
+    player.body.gravity.y = 300;
     player.body.collideWorldBounds = true;
     player.body.setSize(40, 64, 0.5, 0.5);
     //animate the player
     player.animations.add('right', [0, 1, 2, 3], 10, false);
     player.animations.add('left', [4, 5, 6, 7], 10, false);
     player.animations.add('rightSwing', [8, 9, 10, 11, 0], 10, false);
-    player.animations.add('hit', [29, 0], 8, false);
+    player.animations.add('hitL', [30, 0], 8, false);
+    player.animations.add('hitR', [31, 4], 8, false);
 
     //spawn slime 1
     slime1 = game.add.sprite(400, 200, "slimeg");
@@ -72,7 +73,7 @@ var level1State = {
     if (distance < 0 && distance > -300 && slime1.x > 0) {
       slime1.body.velocity.x = -70;
       slime1.animations.play("left");
-    } else if (distance > 0 && distance < 300 && slime1.x < 600) {
+    } else if (distance > 0 && distance < 300 && slime1.x < game.world.width) {
       slime1.body.velocity.x = 70;
       slime1.animations.play("right");
     } else {
@@ -83,12 +84,10 @@ var level1State = {
   // moves the player with the cursors
     movePlayer: function() {
    // up-down
-   if (player.body.blocked.down && cursors.up.isDown) {
-      player.body.velocity.y = -6000;
+   if (cursors.up.isDown && player.body.blocked.down) {
+      player.body.velocity.y = -250;
    } else if (cursors.down.isDown) {
       player.body.velocity.y = 500;
-    } else {
-      player.body.velocity.y = 0;
     }
     // left-right
     if (cursors.left.isDown) {
@@ -102,22 +101,24 @@ var level1State = {
     }
 
   },
-  removehealth: function(lives) {
+  removehealth: function(lives) { //remove health
     game.global.health -= lives;
     if (game.global.health <= 0) {
       game.state.start("gameover");
     } else {
       healthBar.width = game.global.health / game.global.healthM * 300;
-      player.animations.stop();
-      player.animations.play("hit");
     }
   },
 
-  hitslime: function(){
+  hitslime: function(){ //if touching slime take damage
     if (player.body.touching.right) {
       player.x -= 30;
+      player.animations.stop();
+      player.animations.play("hitL");
     } else if (player.body.touching.left) {
       player.x += 30;
+      player.animations.stop();
+      player.animations.play("hitR");
     } else {
       player.body.velocity.y = -350;
     }
