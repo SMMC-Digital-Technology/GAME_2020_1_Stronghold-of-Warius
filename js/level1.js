@@ -18,6 +18,7 @@ var level1State = {
     player.animations.add('right', [0, 1, 2, 3], 10, false);
     player.animations.add('left', [4, 5, 6, 7], 10, false);
     player.animations.add('rightSwing', [8, 9, 10, 11, 0], 10, false);
+    player.animations.add('leftSwing', [12, 13, 14, 15, 4], 10, false);
     player.animations.add('hitL', [30, 0], 8, false);
     player.animations.add('hitR', [31, 4], 8, false);
 
@@ -50,7 +51,8 @@ var level1State = {
     manaBar.width = game.global.mana / game.global.manaM * 300;
     manaBar.fixedToCamera = true;
     //create spell select
-    spellselect = game.add.image(650, 25, "spellselect");
+    spellselect = game.add.sprite(500, 25, "spellselect");
+    spellselect.frame = 3;
     spellselect.fixedToCamera = true;
   },
 
@@ -59,15 +61,21 @@ var level1State = {
     game.physics.arcade.overlap(player, slime1, this.hitslime);
 
     this.movePlayer();
+    //z to swing stick(attack)
+    var facing = "right";
+    if (cursors.right.isDown) {
+      facing = "right"
+    } else if (cursors.left.isDown) {
+      facing = "left"
+    }
 
-    zKey.onDown.add(function() {
-       if (cursors.left.isDown) {
-         player.animations.play("leftSwing");
-       } else {
-         player.animations.stop(null, true);
-         player.animations.play("rightSwing");
-       }
-     })
+    if (zKey.isDown && facing == "left") {
+      player.animations.play("leftSwing");
+      facing = "left";
+    } else if (zKey.isDown && facing == "right") {
+      player.animations.play("rightSwing");
+      facing = "right";
+    }
 
     var distance = player.x - slime1.x;
     if (distance < 0 && distance > -300 && slime1.x > 0) {
@@ -82,20 +90,22 @@ var level1State = {
   },
 
   // moves the player with the cursors
-    movePlayer: function() {
-   // up-down
-   if (cursors.up.isDown && player.body.blocked.down) {
+  movePlayer: function() {
+    // up-down
+    if (cursors.up.isDown && player.body.blocked.down) {
       player.body.velocity.y = -250;
-   } else if (cursors.down.isDown) {
+    } else if (cursors.down.isDown) {
       player.body.velocity.y = 500;
     }
     // left-right
     if (cursors.left.isDown) {
       player.body.velocity.x = -400;
       player.animations.play('left')
+      facing = "left"
     } else if (cursors.right.isDown) {
       player.body.velocity.x = 400;
       player.animations.play('right')
+      facing = "right"
     } else {
       player.body.velocity.x = 0;
     }
@@ -110,7 +120,7 @@ var level1State = {
     }
   },
 
-  hitslime: function(){ //if touching slime take damage
+  hitslime: function() { //if touching slime take damage
     if (player.body.touching.right) {
       player.x -= 30;
       player.animations.stop();
