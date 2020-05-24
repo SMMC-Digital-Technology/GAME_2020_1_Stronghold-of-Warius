@@ -11,7 +11,7 @@ var level1State = {
     //create player
     player = game.add.sprite(50, 550, "jendolfson");
     game.physics.arcade.enable(player);
-    player.body.gravity.y = 300;
+    player.body.gravity.y = 2000;
     player.body.collideWorldBounds = true;
     player.body.setSize(40, 64, 0.5, 0.5);
     //animate the player
@@ -35,7 +35,10 @@ var level1State = {
     zKey = game.input.keyboard.addKey(Phaser.Keyboard.Z);
     xKey = game.input.keyboard.addKey(Phaser.Keyboard.X);
     cKey = game.input.keyboard.addKey(Phaser.Keyboard.C);
-
+    //declare facing variable
+    var direction = {
+      facing: "right"
+    };
     // focuses the player in the camera view and forces the camera to follow
     // the player, except if the view would go outside the game world
     game.camera.follow(player);
@@ -56,25 +59,16 @@ var level1State = {
     spellselect.fixedToCamera = true;
   },
 
-  update: function() {
+  update: function(direction) {
     //physics checks
     game.physics.arcade.overlap(player, slime1, this.hitslime);
 
-    this.movePlayer();
+    this.movePlayer(direction);
     //z to swing stick(attack)
-    var facing = "right";
-    if (cursors.right.isDown) {
-      facing = "right"
-    } else if (cursors.left.isDown) {
-      facing = "left"
-    }
-
-    if (zKey.isDown && facing == "left") {
+    if (zKey.isDown && direction.facing == "left") {
       player.animations.play("leftSwing");
-      facing = "left";
-    } else if (zKey.isDown && facing == "right") {
+    } else if (zKey.isDown && direction.facing == "right") {
       player.animations.play("rightSwing");
-      facing = "right";
     }
 
     var distance = player.x - slime1.x;
@@ -90,10 +84,10 @@ var level1State = {
   },
 
   // moves the player with the cursors
-  movePlayer: function() {
+  movePlayer: function(direction) {
     // up-down
     if (cursors.up.isDown && player.body.blocked.down) {
-      player.body.velocity.y = -250;
+      player.body.velocity.y = -950;
     } else if (cursors.down.isDown) {
       player.body.velocity.y = 500;
     }
@@ -101,11 +95,11 @@ var level1State = {
     if (cursors.left.isDown) {
       player.body.velocity.x = -400;
       player.animations.play('left')
-      facing = "left"
+      direction.facing = "left"
     } else if (cursors.right.isDown) {
       player.body.velocity.x = 400;
       player.animations.play('right')
-      facing = "right"
+      direction.facing = "right"
     } else {
       player.body.velocity.x = 0;
     }
