@@ -111,7 +111,7 @@ var level1State = {
     }
 
   },
-  removehealth: function(lives, invincible.nohit) { //remove health
+  removehealth: function(lives, invincible) { //remove health
     game.global.health -= lives;
     if (game.global.health <= 0) {
       game.state.start("gameover");
