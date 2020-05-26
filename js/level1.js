@@ -21,11 +21,12 @@ var level1State = {
     player.animations.add('leftSwing', [12, 13, 14, 15, 4], 10, false);
     player.animations.add('hitL', [30, 0], 8, false);
     player.animations.add('hitR', [31, 4], 8, false);
+    player.invincible = false;
 
     //spawn slime 1
     slime1 = game.add.sprite(400, 200, "slimeg");
     game.physics.arcade.enable(slime1);
-    slime1.body.gravity.y = 9000;
+    slime1.body.gravity.y = 2000;
     slime1.body.collideWorldBounds = true;
     slime1.body.setSize(20, 32, 0.5, 0.5);
     slime1.animations.add('left', [0, 1, 2], 3, true);
@@ -35,13 +36,9 @@ var level1State = {
     zKey = game.input.keyboard.addKey(Phaser.Keyboard.Z);
     xKey = game.input.keyboard.addKey(Phaser.Keyboard.X);
     cKey = game.input.keyboard.addKey(Phaser.Keyboard.C);
-    //declare facing variable
+    //declare direction variable
     var direction = {
       facing: "right"
-    };
-
-    var invincible = {
-      nohit: "false"
     };
     // focuses the player in the camera view and forces the camera to follow
     // the player, except if the view would go outside the game world
@@ -63,17 +60,23 @@ var level1State = {
     spellselect.fixedToCamera = true;
   },
 
-  update: function(direction, invincible) {
+  update: function(direction) {
     //physics checks
     game.physics.arcade.overlap(player, slime1, this.hitslime);
+    game.physics.arcade.overlap(player, slime1, this.slimewhack);
 
     this.movePlayer(direction);
     //z to swing stick(attack)
     if (zKey.isDown && direction.facing == "left") {
       player.animations.play("leftSwing");
+      player.invincible = true;
+      game.time.events.add(800, () => {
+        player.invincible = false});
     } else if (zKey.isDown && direction.facing == "right") {
       player.animations.play("rightSwing");
-      player.body.setSize(60, 64, 0.5, 0.5);
+      player.invincible = true;
+      game.time.events.add(800, () => {
+        player.invincible = false});
     }
 
     var distance = player.x - slime1.x;
@@ -110,27 +113,37 @@ var level1State = {
     }
 
   },
-  removehealth: function(lives, invincible) { //remove health
-    game.global.health -= lives;
+  removehealth: function(lives) { //remove health
+    if (!player.invincible) {
+      game.global.health -= lives;
+    }
     if (game.global.health <= 0) {
       game.state.start("gameover");
-    } else if (invincible.nohit == "false"){
+    } else if (!player.incincible){
       healthBar.width = game.global.health / game.global.healthM * 300;
     }
   },
-
+  
   hitslime: function() { //if touching slime take damage
-    if (player.body.touching.right) {
+    if (player.body.touching.right && !player.invincible) {
       player.x -= 30;
       player.animations.stop();
       player.animations.play("hitL");
-    } else if (player.body.touching.left) {
+    } else if (player.body.touching.left && !player.invincible) {
       player.x += 30;
       player.animations.stop();
       player.animations.play("hitR");
-    } else {
-      player.body.velocity.y = -350;
     }
     level1State.removehealth(1)
+  },
+  //slime gets flung back and takes damage
+  slimewhack: function() {
+    if (slime1.body.touching.right && player.invincible == true) {
+      slime1.x -= 70;
+      slime1.body.velocity.y = -200
+    } else if (slime1.body.touching.left && player.invincible == true) {
+      slime1.x += 70;
+      slime1.body.velocity.y = -200
+    }
   }
 };
