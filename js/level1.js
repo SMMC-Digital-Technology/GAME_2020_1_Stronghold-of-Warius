@@ -21,6 +21,8 @@ var level1State = {
     player.animations.add('leftSwing', [12, 13, 14, 15, 4], 10, false);
     player.animations.add('hitL', [30, 0], 8, false);
     player.animations.add('hitR', [31, 4], 8, false);
+    player.animations.add('leftBolt', [14, 4], 8, false);
+    player.animations.add('rightBolt', [10, 3], 8, false);
     player.invincible = false;
 
     //spawn slime 1
@@ -58,6 +60,16 @@ var level1State = {
     spellselect = game.add.sprite(500, 25, "spellselect");
     spellselect.frame = 3;
     spellselect.fixedToCamera = true;
+
+    //create mage bolt
+    weapon = game.add.weapon(50, 'magebolt');
+    weapon.bulletKillType = Phaser.Weapon.KILL_WORLD_BOUNDS; //destroyed when off-screen
+    weapon.bulletSpeed = 600; //pixels per second
+    weapon.fireRate = 250; //delay in milliseconds
+    weapon.trackSprite(player, 40, 40, true);
+
+    fireButton = this.input.keyboard.addKey(Phaser.KeyCode.X);
+
   },
 
   update: function(direction) {
@@ -66,6 +78,19 @@ var level1State = {
     game.physics.arcade.overlap(player, slime1, this.slimewhack);
 
     this.movePlayer(direction);
+
+    //x to shoot magebolt
+    if (xKey.isDown && direction.facing == "left") {
+      player.animations.play("leftBolt");
+    } else if (xKey.isDown && direction.facing == "right") {
+      player.animations.play("rightBolt");
+    }
+
+    if (fireButton.isDown)
+    {
+        weapon.fire();
+    }
+
     //z to swing stick(attack)
     if (zKey.isDown && direction.facing == "left") {
       player.animations.play("leftSwing");
@@ -123,7 +148,7 @@ var level1State = {
       healthBar.width = game.global.health / game.global.healthM * 300;
     }
   },
-  
+
   hitslime: function() { //if touching slime take damage
     if (player.body.touching.right && !player.invincible) {
       player.x -= 30;
