@@ -71,7 +71,6 @@ var level1State = {
     //z to swing stick(attack)
     if (zKey.isDown && direction.facing == "left") {
       player.animations.play("leftSwing");
-      invincible.nohit = "true"
     } else if (zKey.isDown && direction.facing == "right") {
       player.animations.play("rightSwing");
       player.body.setSize(60, 64, 0.5, 0.5);
