@@ -39,6 +39,10 @@ var level1State = {
     var direction = {
       facing: "right"
     };
+
+    var invincible = {
+      nohit: "false"
+    };
     // focuses the player in the camera view and forces the camera to follow
     // the player, except if the view would go outside the game world
     game.camera.follow(player);
@@ -59,7 +63,7 @@ var level1State = {
     spellselect.fixedToCamera = true;
   },
 
-  update: function(direction) {
+  update: function(direction, invincible) {
     //physics checks
     game.physics.arcade.overlap(player, slime1, this.hitslime);
 
@@ -67,8 +71,10 @@ var level1State = {
     //z to swing stick(attack)
     if (zKey.isDown && direction.facing == "left") {
       player.animations.play("leftSwing");
+      invincible.nohit = "true"
     } else if (zKey.isDown && direction.facing == "right") {
       player.animations.play("rightSwing");
+      player.body.setSize(60, 64, 0.5, 0.5);
     }
 
     var distance = player.x - slime1.x;
@@ -87,7 +93,7 @@ var level1State = {
   movePlayer: function(direction) {
     // up-down
     if (cursors.up.isDown && player.body.blocked.down) {
-      player.body.velocity.y = -950;
+      player.body.velocity.y = -850;
     } else if (cursors.down.isDown) {
       player.body.velocity.y = 500;
     }
@@ -105,11 +111,11 @@ var level1State = {
     }
 
   },
-  removehealth: function(lives) { //remove health
+  removehealth: function(lives, invincible.nohit) { //remove health
     game.global.health -= lives;
     if (game.global.health <= 0) {
       game.state.start("gameover");
-    } else {
+    } else if (invincible.nohit == "false"){
       healthBar.width = game.global.health / game.global.healthM * 300;
     }
   },
