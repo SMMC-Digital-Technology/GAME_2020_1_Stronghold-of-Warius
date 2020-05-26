@@ -65,11 +65,12 @@ var level1State = {
     spellselect.fixedToCamera = true;
 
     //create mage bolt
-    bolt = game.add.weapon(10, 'magebolt');
-    bolt.bulletKillType = Phaser.weapon.KILL_WORLD_BOUNDS; //destroyed when off-screen
-    bolt.bulletSpeed = 520; //pixels per second
-    bolt.fireRate = 830; //delay in milliseconds
-    bolt.trackSprite(jendolfson, true);
+    weapon = game.add.weapon(10, 'magebolt');
+    weapon.bulletKillType = Phaser.weapon.KILL_WORLD_BOUNDS; //destroyed when off-screen
+    weapon.bulletKillType = Phaser.weapon.KILL_DISTANCE; //destroyed after a given distance
+    weapon.bulletSpeed = 520; //pixels per second
+    weapon.fireRate = 830; //delay in milliseconds
+    weapon.trackSprite(jendolfson);
   },
 
   update: function(direction, invincible) {
