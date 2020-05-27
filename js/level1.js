@@ -25,12 +25,14 @@ var level1State = {
     player.animations.add('rightBolt', [10, 3], 8, false);
     player.invincible = false;
 
+
     //spawn slime 1
     slime1 = game.add.sprite(400, 200, "slimeg");
     game.physics.arcade.enable(slime1);
     slime1.body.gravity.y = 2000;
     slime1.body.collideWorldBounds = true;
     slime1.body.setSize(20, 32, 0.5, 0.5);
+    slime1.health = 1;
     slime1.animations.add('left', [0, 1, 2], 3, true);
     slime1.animations.add('right', [3, 4, 5], 3, true);
     // create keys
@@ -62,7 +64,7 @@ var level1State = {
     spellselect.fixedToCamera = true;
 
     //create mage bolt
-    weapon = game.add.weapon(3, 'magebolt');
+    weapon = game.add.weapon(10, 'magebolt');
     weapon.bulletKillType = Phaser.Weapon.KILL_WORLD_BOUNDS; //destroyed when off-screen
     weapon.bulletKillType = Phaser.Weapon.KILL_DISTANCE; //destroyed after a given distance
     weapon.bulletKillDistance = 500;
@@ -169,12 +171,16 @@ var level1State = {
   },
   //slime gets flung back and takes damage
   slimewhack: function() {
-    if (slime1.body.touching.right && player.invincible == true) {
+    if (slime1.health == 0) {
+      slime1.kill();
+    } else if (slime1.body.touching.right && player.invincible == true) {
       slime1.x -= 70;
       slime1.body.velocity.y = -200
+      slime1.health -= 1;
     } else if (slime1.body.touching.left && player.invincible == true) {
       slime1.x += 70;
       slime1.body.velocity.y = -200
+      slime1.health -= 1;
     }
   }
 };
