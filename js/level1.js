@@ -62,9 +62,10 @@ var level1State = {
     spellselect.fixedToCamera = true;
 
     //create mage bolt
-    weapon = game.add.weapon(50, 'magebolt');
-    weapon.addBulletAnimation("wiggleR", [0, 1, 2], 8, true);
+    weapon = game.add.weapon(3, 'magebolt');
     weapon.bulletKillType = Phaser.Weapon.KILL_WORLD_BOUNDS; //destroyed when off-screen
+    weapon.bulletKillType = Phaser.Weapon.KILL_DISTANCE; //destroyed after a given distance
+    weapon.bulletKillDistance = 500;
     weapon.bulletSpeed = 500; //pixels per second
     weapon.fireRate = 250; //delay in milliseconds
     weapon.trackSprite(player, 40, 40, true);
@@ -82,9 +83,11 @@ var level1State = {
 
     //x to shoot magebolt
     if (xKey.isDown && direction.facing == "left") {
+      weapon.addBulletAnimation("wiggleL", [3, 4, 5], 8, true);
       weapon.bulletSpeed = -500;
       player.animations.play("leftBolt");
     } else if (xKey.isDown && direction.facing == "right") {
+      weapon.addBulletAnimation("wiggleR", [0, 1, 2], 8, true);
       player.animations.play("rightBolt");
       weapon.bulletSpeed = 500;
     }
