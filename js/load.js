@@ -14,6 +14,7 @@ var loadState = {
       game.load.spritesheet("fireball", "assets/Fireball.png", 10, 10);
       game.load.image("healthbar", "assets/Health bar.png");
       game.load.spritesheet("jendolfson", "assets/jendolfson.png", 64, 64);
+      game.load.spritesheet("gobo", "assets/goblin.png", 48, 48);
       game.load.spritesheet("darkMage", "assets/darkMage.png", 80, 80);
       game.load.spritesheet("magebolt", "assets/Mage bolt.png", 8, 8);
       game.load.image("manabar", "assets/Mana bar.png");
