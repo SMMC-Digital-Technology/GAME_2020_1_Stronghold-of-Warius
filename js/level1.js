@@ -80,6 +80,7 @@ var level1State = {
     //physics checks
     game.physics.arcade.overlap(player, slime1, this.hitslime);
     game.physics.arcade.overlap(player, slime1, this.slimewhack);
+    game.physics.arcade.overlap(weapon.bullets, slime1, this.slimeshot);
 
     this.movePlayer(direction);
 
@@ -182,5 +183,18 @@ var level1State = {
       slime1.body.velocity.y = -200
       slime1.health -= 1;
     }
+  },
+
+  slimeshot: function(slime1, other) {
+    if (slime1.health == 0) {
+      slime1.kill();
+    }
+    other.kill();
+    slime1.health -= 1;
+  },
+
+  removemana: function(mana) {
+    game.global.mana -= mana;
+    manaBar.width = game.global.mana / game.global.manaM * 300;
   }
 };
