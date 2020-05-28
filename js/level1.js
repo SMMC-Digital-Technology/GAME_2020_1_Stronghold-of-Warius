@@ -14,9 +14,11 @@ var level1State = {
     player.body.gravity.y = 9000;
     player.body.collideWorldBounds = true;
     //animate the player
-    player.animations.add('right', [0, 1, 2, 3], 10, true);
-    player.animations.add('left', [4, 5, 6, 7], 10, true);
-    player.animations.add('rightSwing', [5, 6, 7, 8], 10, true);
+    player.animations.add("right", [0, 1, 2, 3], 10, true);
+    player.animations.add("left", [4, 5, 6, 7], 10, true);
+    player.animations.add("rightSwing", [8, 9, 10, 11], 10, true);
+    player.animations.add("leftSwing", [12, 13, 14, 15], 10, true);
+    player.animations.add("heal", [18, 19, 20], 10, true);
 
     //spawn slime 1
     slime1 = game.add.sprite(100, 200, "slimeg");
@@ -55,9 +57,9 @@ var level1State = {
 
     zKey.onDown.add(function() {
        if (cursors.left.isDown) {
-         player.animations.play("leftSwing");
+         player.animations.play("heal");
        } else {
-         player.animations.play("rightSwing");
+         player.animations.play("heal");
        }
      })
 
@@ -77,7 +79,7 @@ var level1State = {
     movePlayer: function() {
    // up-down
    if (player.body.blocked.down && cursors.up.isDown) {
-      player.body.velocity.y = -6000;
+      player.body.velocity.y = -3000;
    } else if (cursors.down.isDown) {
       player.body.velocity.y = 500;
     } else {
@@ -86,10 +88,10 @@ var level1State = {
     // left-right
     if (cursors.left.isDown) {
       player.body.velocity.x = -400;
-      player.animations.play('left')
+      player.animations.play("heal")
     } else if (cursors.right.isDown) {
       player.body.velocity.x = 400;
-      player.animations.play('right')
+      player.animations.play("heal")
     } else {
       player.body.velocity.x = 0;
       player.frame = 0;
