@@ -71,6 +71,9 @@ var level1State = {
     weapon.bulletSpeed = 500; //pixels per second
     weapon.fireRate = 250; //delay in milliseconds
     weapon.trackSprite(player, 40, 40, true);
+    weapon.onFire.add(function() {
+      level1State.removemana(1)
+    });
 
     fireButton = this.input.keyboard.addKey(Phaser.KeyCode.X);
 
@@ -95,10 +98,11 @@ var level1State = {
       weapon.bulletSpeed = 500;
     }
 
-    if (fireButton.isDown)
+    if (fireButton.isDown && game.global.mana > 0)
     {
         weapon.fire();
     }
+
 
     //z to swing stick(attack)
     if (zKey.isDown && direction.facing == "left") {
@@ -194,6 +198,7 @@ var level1State = {
   },
 
   removemana: function(mana) {
+    if (game.global.mana > 0)
     game.global.mana -= mana;
     manaBar.width = game.global.mana / game.global.manaM * 300;
   }
