@@ -19,10 +19,10 @@ var level1State = {
     player.animations.add('left', [4, 5, 6, 7], 10, false);
     player.animations.add('rightSwing', [8, 9, 10, 11, 0], 10, false);
     player.animations.add('leftSwing', [12, 13, 14, 15, 4], 10, false);
-    player.animations.add('hitL', [30, 0], 8, false);
-    player.animations.add('hitR', [31, 4], 8, false);
-    player.animations.add('leftBolt', [14, 4], 8, false);
-    player.animations.add('rightBolt', [10, 3], 8, false);
+    player.animations.add('hitL', [32, 0], 8, false);
+    player.animations.add('hitR', [33, 4], 8, false);
+    player.animations.add('leftBolt', [18, 19, 4], 8, false);
+    player.animations.add('rightBolt', [16, 17, 0], 8, false);
     player.invincible = false;
 
     //group to collect platforms
@@ -100,7 +100,7 @@ var level1State = {
     spellselect.frame = 3;
     spellselect.fixedToCamera = true;
 
-    //create mage bolt
+    //create mage bolt, if fired take one mana
     weapon = game.add.weapon(10, 'magebolt');
     weapon.bulletKillType = Phaser.Weapon.KILL_WORLD_BOUNDS; //destroyed when off-screen
     weapon.bulletKillType = Phaser.Weapon.KILL_DISTANCE; //destroyed after a given distance
@@ -122,6 +122,7 @@ var level1State = {
     game.physics.arcade.overlap(player, slime1, this.slimewhack);
     game.physics.arcade.overlap(weapon.bullets, slime1, this.slimeshot);
     game.physics.arcade.overlap(player, spikes, this.touchspike);
+    game.physics.arcade.overlap(player, mbottle, this.gainmana)
     //no floating through platforms
     hitPlatform = game.physics.arcade.collide(player, platforms);
 
@@ -153,12 +154,12 @@ var level1State = {
     if (zKey.isDown && direction.facing == "left") {
       player.animations.play("leftSwing");
       player.invincible = true;
-      game.time.events.add(800, () => {
+      game.time.events.add(600, () => {
         player.invincible = false});
     } else if (zKey.isDown && direction.facing == "right") {
       player.animations.play("rightSwing");
       player.invincible = true;
-      game.time.events.add(800, () => {
+      game.time.events.add(600, () => {
         player.invincible = false});
     }
 
@@ -280,6 +281,12 @@ var level1State = {
   removemana: function(mana) {
     if (game.global.mana > 0)
     game.global.mana -= mana;
+    manaBar.width = game.global.mana / game.global.manaM * 300;
+  },
+
+  gainmana: function(player, other) {
+    other.kill();
+    game.global.mana = game.global.manaM
     manaBar.width = game.global.mana / game.global.manaM * 300;
   }
 };
