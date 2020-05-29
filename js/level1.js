@@ -64,7 +64,7 @@ var level1State = {
     slime1.animations.add('right', [3, 4, 5], 3, true);
 
     //spawn bat
-    bat1 = game.add.sprite(800, 1000, "bat");
+    bat1 = game.add.sprite(1500, 100, "bat");
     game.physics.arcade.enable(bat1);
     bat1.body.collideWorldBounds = true;
     bat1.body.setSize(20, 32, 0.5, 0.5);
@@ -124,9 +124,12 @@ var level1State = {
   update: function(direction) {
     //physics checks
     game.physics.arcade.overlap(player, slime1, this.hitslime);
-    game.physics.arcade.overlap(player, slime1, this.slimewhack);
-    game.physics.arcade.overlap(weapon.bullets, slime1, this.slimeshot);
+    game.physics.arcade.overlap(player, bat1, this.hitslime);
     game.physics.arcade.overlap(player, spikes, this.touchspike);
+    game.physics.arcade.overlap(player, slime1, this.slimewhack);
+    game.physics.arcade.overlap(player, bat1, this.batwhack);
+    game.physics.arcade.overlap(weapon.bullets, slime1, this.slimeshot);
+    game.physics.arcade.overlap(weapon.bullets, bat1, this.batshot);
     game.physics.arcade.overlap(player, mbottle, this.gainmana)
     //no floating through platforms
     hitPlatform = game.physics.arcade.collide(player, platforms);
@@ -181,19 +184,19 @@ var level1State = {
 
 
   var distance = player.x - bat1.x;
-  if (distance < 0 && distance > -800 && bat1.x > 0) {
+  if (distance < 0 && distance > -600 && bat1.x > 0) {
     bat1.body.velocity.x = -100;
     bat1.animations.play("flyL");
-  } else if (distance > 0 && distance < 800 && bat1.x) {
+  } else if (distance > 0 && distance < 600 && bat1.x) {
     bat1.body.velocity.x = 100;
     bat1.animations.play("flyR");
   } else {
     bat1.body.velocity.x = 0;
   }
   var distance = player.y - bat1.y;
-  if (distance < 0 && distance > -800 && bat1.x > 0) {
+  if (distance < 0 && distance > -600 && bat1.x > 0) {
     bat1.body.velocity.y = -100;
-  } else if (distance > 0 && distance < 800 && bat1.y) {
+  } else if (distance > 0 && distance < 600 && bat1.y) {
     bat1.body.velocity.y = 100;
   } else {
     bat1.body.velocity.y = 0;
@@ -275,6 +278,15 @@ var level1State = {
     }
   },
 
+  //bat gets flung back and takes damage
+  batwhack: function() {
+    if (bat1.body.touching.right && player.invincible == true) {
+      bat1.kill();
+    } else if (bat1.body.touching.left && player.invincible == true) {
+      bat1.kill();
+    }
+  },
+
   slimeshot: function(slime1, other) {
     if (slime1.health == 0) {
       slime1.kill();
@@ -282,6 +294,10 @@ var level1State = {
     other.kill();
     slime1.health -= 1;
   },
+
+  batshot: function(bat, other) {
+      bat1.kill();
+    },
 
   removemana: function(mana) {
     if (game.global.mana > 0)
