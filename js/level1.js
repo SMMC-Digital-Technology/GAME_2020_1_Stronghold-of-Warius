@@ -62,6 +62,16 @@ var level1State = {
     slime1.health = 1;
     slime1.animations.add('left', [0, 1, 2], 3, true);
     slime1.animations.add('right', [3, 4, 5], 3, true);
+
+    //spawn bat
+    bat1 = game.add.sprite(800, 1000, "bat");
+    game.physics.arcade.enable(bat1);
+    bat1.body.collideWorldBounds = true;
+    bat1.body.setSize(20, 32, 0.5, 0.5);
+    bat1.animations.add('flyR', [0, 1, 2, 3], 8, true);
+    bat1.animations.add('flyL', [4, 5, 6, 7], 8, true);
+    bat1.frame = 8
+
     // create keys
     cursors = game.input.keyboard.createCursorKeys();
     zKey = game.input.keyboard.addKey(Phaser.Keyboard.Z);
@@ -162,7 +172,27 @@ var level1State = {
     } else {
       slime1.body.velocity.x = 0;
     }
-  },
+
+
+  var distance = player.x - bat1.x;
+  if (distance < 0 && distance > -800 && bat1.x > 0) {
+    bat1.body.velocity.x = -100;
+    bat1.animations.play("flyL");
+  } else if (distance > 0 && distance < 800 && bat1.x) {
+    bat1.body.velocity.x = 100;
+    bat1.animations.play("flyR");
+  } else {
+    bat1.body.velocity.x = 0;
+  }
+  var distance = player.y - bat1.y;
+  if (distance < 0 && distance > -800 && bat1.x > 0) {
+    bat1.body.velocity.y = -100;
+  } else if (distance > 0 && distance < 800 && bat1.y) {
+    bat1.body.velocity.y = 100;
+  } else {
+    bat1.body.velocity.y = 0;
+  }
+},
 
   // moves the player with the cursors
   movePlayer: function(direction) {

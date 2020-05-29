@@ -9,7 +9,7 @@ var loadState = {
       });
 
       // load all assets
-      game.load.spritesheet("bat", "assets/bat.png", 10, 10);
+      game.load.spritesheet("bat", "assets/bat.png", 20, 20);
       game.load.image("button", "assets/Button.png");
       game.load.spritesheet("fireball", "assets/Fireball.png", 10, 10);
       game.load.image("healthbar", "assets/Health bar.png");
