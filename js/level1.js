@@ -25,6 +25,33 @@ var level1State = {
     player.animations.add('rightBolt', [10, 3], 8, false);
     player.invincible = false;
 
+    //group to collect platforms
+    platforms = game.add.group();
+    //enable physics on group
+    platforms.enableBody = true;
+    platforms.create(1250, 450, "sewerP");
+    platforms.create(1340, 450, "sewerP");
+    platforms.create(1430, 450, "sewerP");
+    //immovable platforms
+    platforms.setAll("body.immovable", true)
+
+
+    //group to collect spikes
+    spikes = game.add.group();
+    //immovable spikes
+    spikes.setAll("body.immovable", true)
+    //enable physics on group
+    spikes.enableBody = true;
+    //make the spikes
+    spikes.create(1200, 590, "spikes");
+    spikes.create(1240, 590, "spikes");
+    spikes.create(1280, 590, "spikes");
+    spikes.create(1320, 590, "spikes");
+    spikes.create(1360, 590, "spikes");
+    spikes.create(1400, 590, "spikes");
+    spikes.create(1440, 590, "spikes");
+    spikes.create(1480, 590, "spikes");
+    spikes.create(1520, 590, "spikes");
 
     //spawn slime 1
     slime1 = game.add.sprite(400, 200, "slimeg");
@@ -84,8 +111,16 @@ var level1State = {
     game.physics.arcade.overlap(player, slime1, this.hitslime);
     game.physics.arcade.overlap(player, slime1, this.slimewhack);
     game.physics.arcade.overlap(weapon.bullets, slime1, this.slimeshot);
+    game.physics.arcade.overlap(player, spikes, this.touchspike);
+    //no floating through platforms
+    hitPlatform = game.physics.arcade.collide(player, platforms);
 
     this.movePlayer(direction);
+
+    //make it possible to jump off platforms
+    if (cursors.up.isDown && player.body.touching.down && hitPlatform) {
+      player.body.velocity.y = -850;
+    }
 
     //x to shoot magebolt
     if (xKey.isDown && direction.facing == "left") {
@@ -174,6 +209,21 @@ var level1State = {
     }
     level1State.removehealth(1)
   },
+
+  touchspike: function() { //if touching spikes take damage
+    if (player.body.touching.right && !player.invincible) {
+      player.x -= 30;
+      player.animations.stop();
+      player.animations.play("hitL");
+    } else if (player.body.touching.left && !player.invincible) {
+      player.x += 30;
+      player.animations.stop();
+      player.animations.play("hitR");
+    }
+    player.body.velocity.y = -600;
+    level1State.removehealth(1)
+  },
+
   //slime gets flung back and takes damage
   slimewhack: function() {
     if (slime1.health == 0) {
