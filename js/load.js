@@ -12,6 +12,8 @@ var loadState = {
       game.load.spritesheet("bat", "assets/bat.png", 20, 20);
       game.load.image("button", "assets/Button.png");
       game.load.spritesheet("fireball", "assets/Fireball.png", 10, 10);
+      game.load.spritesheet("darkBolt", "assets/darkbolt.png", 20, 20);
+      game.load.spritesheet("darkBolt", "assets/rumble.png", 100, 25);
       game.load.image("healthbar", "assets/Health bar.png");
       game.load.spritesheet("jendolfson", "assets/jendolfson.png", 64, 64);
       game.load.spritesheet("gobo", "assets/goblin.png", 48, 48);
