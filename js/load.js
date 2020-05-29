@@ -28,6 +28,8 @@ var loadState = {
       game.load.image("spikes", "assets/spikes.png");
       game.load.image("sewerP", "assets/sewerPlatform.png");
       game.load.spritesheet("spellselect", "assets/Spell Select.png", 48, 48);
+      game.load.image("mbottle", "assets/mana bottle.png");
+      game.load.image("door", "assets/Door.png");
    },
 
    create: function() {

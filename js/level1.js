@@ -62,6 +62,10 @@ var level1State = {
     slime1.health = 1;
     slime1.animations.add('left', [0, 1, 2], 3, true);
     slime1.animations.add('right', [3, 4, 5], 3, true);
+
+    mbottle = game.add.group();
+    mbottle.enableBody = true;
+    mbottle.create(400, 500, "mbottle");
     // create keys
     cursors = game.input.keyboard.createCursorKeys();
     zKey = game.input.keyboard.addKey(Phaser.Keyboard.Z);
@@ -112,6 +116,7 @@ var level1State = {
     game.physics.arcade.overlap(player, slime1, this.slimewhack);
     game.physics.arcade.overlap(weapon.bullets, slime1, this.slimeshot);
     game.physics.arcade.overlap(player, spikes, this.touchspike);
+    game.physics.arcade.overlap(player, mbottle, this.gainmana)
     //no floating through platforms
     hitPlatform = game.physics.arcade.collide(player, platforms);
 
@@ -250,6 +255,12 @@ var level1State = {
   removemana: function(mana) {
     if (game.global.mana > 0)
     game.global.mana -= mana;
+    manaBar.width = game.global.mana / game.global.manaM * 300;
+  },
+
+  gainmana: function(player, other) {
+    other.kill();
+    game.global.mana = game.global.manaM
     manaBar.width = game.global.mana / game.global.manaM * 300;
   }
 };
