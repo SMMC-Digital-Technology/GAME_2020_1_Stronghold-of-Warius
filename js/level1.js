@@ -72,6 +72,11 @@ var level1State = {
     bat1.animations.add('flyL', [4, 5, 6, 7], 8, true);
     bat1.frame = 8
 
+    //mana bottles
+    mbottle = game.add.group();
+    mbottle.enableBody = true;
+    mbottle.create(400, 500, "mbottle");
+
     // create keys
     cursors = game.input.keyboard.createCursorKeys();
     zKey = game.input.keyboard.addKey(Phaser.Keyboard.Z);
