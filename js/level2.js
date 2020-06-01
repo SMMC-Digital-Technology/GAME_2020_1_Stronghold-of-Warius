@@ -23,6 +23,8 @@ var level2State = {
     player.animations.add('hitR', [31, 4], 8, false);
     player.animations.add('leftBolt', [14, 4], 8, false);
     player.animations.add('rightBolt', [10, 3], 8, false);
+    player.animations.add('leftHeal', [34, 35, 36, 4], 8, false);
+    player.animations.add('rightHeal', [20, 21, 22, 0], 8, false);
     player.invincible = false;
 
 
@@ -46,6 +48,9 @@ var level2State = {
     };
     //Set selected spell to 1
     game.global.spellSelected = 1
+
+    //set delay variable to 0
+    game.global.timeCheck = 0;
 
     // focuses the player in the camera view and forces the camera to follow
     // the player, except if the view would go outside the game world
@@ -81,7 +86,6 @@ var level2State = {
     fireButton = this.input.keyboard.addKey(Phaser.KeyCode.X);
 
 
-
   },
 
   update: function(direction) {
@@ -93,25 +97,34 @@ var level2State = {
     this.movePlayer(direction);
 
     //c to change spell
-    if (cKey.isDown) {
+    if (cKey.isDown && game.time.now - game.global.timeCheck > 250) {
       this.changeSpell();
-      var texte = game.add.text(100, 100, game.global.spellSelected, {fill: "#ffffff"});
-      texte.anchor.setTo(0.5, 0.5);
+      game.global.timeCheck = game.time.now;
     }
 
     //x to shoot magebolt
-    if (game.global.spellSelected = 1 && xKey.isDown && direction.facing == "left") {
+    if (game.global.spellSelected == 1 && xKey.isDown && direction.facing == "left") {
       weapon.addBulletAnimation("wiggleL", [3, 4, 5], 8, true);
       weapon.bulletSpeed = -500;
       player.animations.play("leftBolt");
-    } else if (game.global.spellSelected = 1 && xKey.isDown && direction.facing == "right") {
+    } else if (game.global.spellSelected == 1 && xKey.isDown && direction.facing == "right") {
       weapon.addBulletAnimation("wiggleR", [0, 1, 2], 8, true);
       player.animations.play("rightBolt");
       weapon.bulletSpeed = 500;
     }
-    if (fireButton.isDown && game.global.mana > 0)
+    if (game.global.spellSelected == 1 && fireButton.isDown && game.global.mana > 0)
     {
         weapon.fire();
+    }
+
+    if (game.global.spellSelected == 2 && xKey.isDown && direction.facing == "left" && game.global.mana >= 10) {
+      level1State.removemana(10)
+      level1State.gainhealth()
+      player.animations.play("leftHeal");
+    } else if (game.global.spellSelected == 2 && xKey.isDown && direction.facing == "right" && game.global.mana >= 10) {
+      level1State.removemana(10)
+      level1State.gainhealth()
+      player.animations.play("rightHeal");
     }
 
 
@@ -216,18 +229,18 @@ var level2State = {
   },
 
   changeSpell: function() {
-    if (game.global.spellSelected < 4) {
-      game.global.spellSelected += 1
-    } else if (game.global.spellSelected = 4) {
+    if (game.global.spellSelected == 1) {
+      game.global.spellSelected = 2
+    } else if (game.global.spellSelected == 2) {
       game.global.spellSelected = 1
     }
-    if (game.global.spellSelected = 1) {
+    if (game.global.spellSelected == 1) {
       spellselect.frame = 3
-    } else if (game.global.spellSelected = 2) {
+    } else if (game.global.spellSelected == 2) {
       spellselect.frame = 0
-    } else if (game.global.spellSelected = 3) {
+    } else if (game.global.spellSelected == 3) {
       spellselect.frame = 1
-    } else if (game.global.spellSelected = 4) {
+    } else if (game.global.spellSelected == 4) {
       spellselect.frame = 2
     }
   }
