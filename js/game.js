@@ -14,5 +14,6 @@ game.global = {
   healthM: 10,
   mana: 10,
   manaM: 10,
+  spellSelected: 1,
 }
 game.state.start('boot');

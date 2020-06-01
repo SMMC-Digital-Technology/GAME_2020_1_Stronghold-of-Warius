@@ -97,12 +97,10 @@ var level1State = {
       player.animations.play("rightBolt");
       weapon.bulletSpeed = 500;
     }
-
     if (fireButton.isDown && game.global.mana > 0)
     {
         weapon.fire();
     }
-
 
     //z to swing stick(attack)
     if (zKey.isDown && direction.facing == "left") {
@@ -116,7 +114,7 @@ var level1State = {
       game.time.events.add(800, () => {
         player.invincible = false});
     }
-
+    //slime AI
     var distance = player.x - slime1.x;
     if (distance < 0 && distance > -300 && slime1.x > 0) {
       slime1.body.velocity.x = -70;
@@ -157,7 +155,7 @@ var level1State = {
     }
     if (game.global.health <= 0) {
       game.state.start("gameover");
-    } else if (!player.incincible){
+    } else if (!player.invincible){
       healthBar.width = game.global.health / game.global.healthM * 300;
     }
   },
