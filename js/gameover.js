@@ -8,9 +8,9 @@ var gameoverState = {
          boundsAlignH: "center",
          boundsAlignV: "middle"
       });
-      text.setTextBounds(0, 0, game.world.width, game.world.height);
+      text.setTextBounds(0, 0, 800, 600);
       // button
-      button = game.add.button(game.world.centerX, game.world.height - 100, 'button');
+      button = game.add.button(400, 500, 'button');
       button.anchor.setTo(0.5, 0.5);
       button.onInputUp.add(() => {
          game.state.start("menu")
