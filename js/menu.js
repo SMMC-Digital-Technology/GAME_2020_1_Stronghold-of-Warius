@@ -1,5 +1,9 @@
 var menuState = {
   create: function() {
+
+    game.global.mana = game.global.manaM;
+    game.global.health = game.global.healthM;
+    
     game.add.image(0, 0, 'menubg');
     //creating 4 buttons each taking to a different level
     button = game.add.button(game.world.centerX, 250, 'button');
