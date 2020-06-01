@@ -9,9 +9,11 @@ var loadState = {
       });
 
       // load all assets
-      game.load.spritesheet("bat", "assets/bat.png", 10, 10);
+      game.load.spritesheet("bat", "assets/bat.png", 20, 20);
       game.load.image("button", "assets/Button.png");
       game.load.spritesheet("fireball", "assets/Fireball.png", 10, 10);
+      game.load.spritesheet("darkBolt", "assets/darkbolt.png", 20, 20);
+      game.load.spritesheet("darkBolt", "assets/rumble.png", 100, 25);
       game.load.image("healthbar", "assets/Health bar.png");
       game.load.spritesheet("jendolfson", "assets/jendolfson.png", 64, 64);
       game.load.spritesheet("gobo", "assets/goblin.png", 48, 48);
@@ -24,10 +26,12 @@ var loadState = {
       game.load.spritesheet("slimeb", "assets/slime_blue.png", 16, 16);
       game.load.spritesheet("slimeg", "assets/slime_green.png", 32, 32);
       game.load.spritesheet("slimer", "assets/slime_red.png", 16, 16);
-      game.load.spritesheet("Bslime", "assets/bigSlime.png", 16, 16);
+      game.load.spritesheet("Bslime", "assets/bigSlime.png", 64, 64);
       game.load.image("spikes", "assets/spikes.png");
       game.load.image("sewerP", "assets/sewerPlatform.png");
       game.load.spritesheet("spellselect", "assets/Spell Select.png", 48, 48);
+      game.load.image("mbottle", "assets/mana bottle.png");
+      game.load.image("door", "assets/Door.png");
    },
 
    create: function() {
