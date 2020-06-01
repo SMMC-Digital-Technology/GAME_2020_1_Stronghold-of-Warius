@@ -24,6 +24,7 @@ var loadState = {
       game.load.image("manabar", "assets/Mana bar.png");
       game.load.image("menubg", "assets/Menu background.png");
       game.load.image("sewerbg", "assets/sewerBackground.png");
+      game.load.image("castlebg", "assets/castleBackground.png");
       game.load.spritesheet("slimeb", "assets/slime_blue.png", 16, 16);
       game.load.spritesheet("slimeg", "assets/slime_green.png", 32, 32);
       game.load.spritesheet("slimer", "assets/slime_red.png", 16, 16);
