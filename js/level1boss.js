@@ -22,10 +22,21 @@ var level1bossState = {
     player.animations.add('rightBolt', [16, 17, 0], 8, false);
     player.invincible = false;
 
+    boss = game.add.sprite(700, 200, "darkMage");
+    game.physics.arcade.enable(boss);
+    boss.body.gravity.y = 2000;
+    boss.body.collideWorldBounds = true;
+    boss.health = 9;
+    boss.body.setSize(60, 80);
+    boss.animations.add("left", [1, 2, 3, 4, 5, 0], 12, false);
+    boss.animations.add("right", [13, 14, 15, 16, 17, 12], 12, false);
+
     //group to collect platforms
     platforms = game.add.group();
     //enable physics on group
     platforms.enableBody = true;
+    platforms.create(310, 425, "sewerP");
+    platforms.create(400, 425, "sewerP");
     //immovable platforms
     platforms.setAll("body.immovable", true)
 
@@ -41,7 +52,6 @@ var level1bossState = {
     //mana bottles
     mbottle = game.add.group();
     mbottle.enableBody = true;
-    mbottle.create(400, 500, "mbottle");
 
     // create keys
     cursors = game.input.keyboard.createCursorKeys();
@@ -91,6 +101,9 @@ var level1bossState = {
     //physics checks
     game.physics.arcade.overlap(player, spikes, this.touchspike);
     game.physics.arcade.overlap(player, mbottle, this.gainmana)
+    game.physics.arcade.overlap(player, boss, this.hitboss);
+    game.physics.arcade.overlap(player, boss, this.bosswhack);
+    game.physics.arcade.overlap(weapon.bullets, boss, this.bossshot);
     //no floating through platforms
     hitPlatform = game.physics.arcade.collide(player, platforms);
 
@@ -130,6 +143,17 @@ var level1bossState = {
       game.time.events.add(600, () => {
         player.invincible = false});
     }
+
+    var distance = player.x - boss.x;
+    if (distance < 0 && distance > -300 && boss.x > 0) {
+      boss.body.velocity.x = -110;
+      boss.animations.play("left");
+    } else if (distance > 0 && distance < 300 && boss.x < game.world.width) {
+      boss.body.velocity.x = 110;
+      boss.animations.play("right");
+    } else {
+      boss.body.velocity.x = 0;
+    }
   },
 
   // moves the player with the cursors
@@ -166,7 +190,7 @@ var level1bossState = {
     }
   },
 
-  hitslime: function() { //if touching slime take damage
+  hitboss: function() { //if touching boss take damage
     if (player.body.touching.right && !player.invincible) {
       player.x -= 30;
       player.animations.stop();
@@ -176,7 +200,29 @@ var level1bossState = {
       player.animations.stop();
       player.animations.play("hitR");
     }
-    level1State.removehealth(1)
+    level1bossState.removehealth(1)
+  },
+
+  bosswhack: function() {
+    if (boss.health == 0) {
+      boss.kill();
+    } else if (boss.body.touching.right && player.invincible == true) {
+      boss.x -= 200;
+      boss.body.velocity.y = -200
+      boss.health -= 1;
+    } else if (boss.body.touching.left && player.invincible == true) {
+      boss.x += 200;
+      boss.body.velocity.y = -200
+      boss.health -= 1;
+    }
+  },
+
+  bossshot: function(boss, other) {
+    if (boss.health == 0) {
+      boss.kill();
+    }
+    other.kill();
+    boss.health -= 1;
   },
 
   touchspike: function() { //if touching spikes take damage
@@ -190,7 +236,7 @@ var level1bossState = {
       player.animations.play("hitR");
     }
     player.body.velocity.y = -600;
-    level1State.removehealth(1)
+    level1bossState.removehealth(1)
   },
 
   removemana: function(mana) {
