@@ -39,6 +39,10 @@ var level1State = {
     //immovable platforms
     platforms.setAll("body.immovable", true)
 
+    //add door to get to the level1bossState
+    door = game.add.group();
+    door.enableBody = true;
+    door.create(4700, 538, "door");
 
     //group to collect spikes
     spikes = game.add.group();
@@ -80,6 +84,24 @@ var level1State = {
     slime1.health = 1;
     slime1.animations.add('left', [0, 1, 2], 5, true);
     slime1.animations.add('right', [3, 4, 5], 5, true);
+    //spawn slime2
+    slime2 = game.add.sprite(1410, 200, "slimeg");
+    game.physics.arcade.enable(slime2);
+    slime2.body.gravity.y = 2000;
+    slime2.body.collideWorldBounds = true;
+    slime2.body.setSize(20, 32, 0.5, 0.5);
+    slime2.health = 1;
+    slime2.animations.add('left', [0, 1, 2], 5, true);
+    slime2.animations.add('right', [3, 4, 5], 5, true);
+    //spawn slime3
+    slime3 = game.add.sprite(3500, 500, "slimeg");
+    game.physics.arcade.enable(slime3);
+    slime3.body.gravity.y = 2000;
+    slime3.body.collideWorldBounds = true;
+    slime3.body.setSize(20, 32, 0.5, 0.5);
+    slime3.health = 1;
+    slime3.animations.add('left', [0, 1, 2], 5, true);
+    slime3.animations.add('right', [3, 4, 5], 5, true);
 
     //spawn big slime
     slimeB1 = game.add.sprite(2790, 500, "Bslime");
@@ -99,6 +121,22 @@ var level1State = {
     bat1.animations.add('flyR', [0, 1, 2, 3], 8, true);
     bat1.animations.add('flyL', [4, 5, 6, 7], 8, true);
     bat1.frame = 8
+
+    bat2 = game.add.sprite(3400, 400, "bat");
+    game.physics.arcade.enable(bat2);
+    bat2.body.collideWorldBounds = true;
+    bat2.body.setSize(20, 32, 0.5, 0.5);
+    bat2.animations.add('flyR', [0, 1, 2, 3], 8, true);
+    bat2.animations.add('flyL', [4, 5, 6, 7], 8, true);
+    bat2.frame = 8
+
+    bat3 = game.add.sprite(3900, 400, "bat");
+    game.physics.arcade.enable(bat3);
+    bat3.body.collideWorldBounds = true;
+    bat3.body.setSize(20, 32, 0.5, 0.5);
+    bat3.animations.add('flyR', [0, 1, 2, 3], 8, true);
+    bat3.animations.add('flyL', [4, 5, 6, 7], 8, true);
+    bat3.frame = 8
 
     //mana bottles
     mbottle = game.add.group();
@@ -152,16 +190,30 @@ var level1State = {
   update: function(direction) {
     //physics checks
     game.physics.arcade.overlap(player, slime1, this.hitslime);
+    game.physics.arcade.overlap(player, slime2, this.hitslime);
+    game.physics.arcade.overlap(player, slime3, this.hitslime);
     game.physics.arcade.overlap(player, bat1, this.hitslime);
-    game.physics.arcade.overlap(player, slimeB1, this.hitslime)
+    game.physics.arcade.overlap(player, bat2, this.hitslime);
+    game.physics.arcade.overlap(player, bat3, this.hitslime);
+    game.physics.arcade.overlap(player, slimeB1, this.hitslime);
     game.physics.arcade.overlap(player, spikes, this.touchspike);
     game.physics.arcade.overlap(player, slime1, this.slimewhack);
+    game.physics.arcade.overlap(player, slime2, this.slime2whack)
+    game.physics.arcade.overlap(player, slime3, this.slime3whack);
     game.physics.arcade.overlap(player, slimeB1, this.slimeBwhack);
     game.physics.arcade.overlap(player, bat1, this.batwhack);
+    game.physics.arcade.overlap(player, bat2, this.bat2whack);
+    game.physics.arcade.overlap(player, bat3, this.bat3whack);
     game.physics.arcade.overlap(weapon.bullets, slime1, this.slimeshot);
+    game.physics.arcade.overlap(weapon.bullets, slime2, this.slime2shot);
+    game.physics.arcade.overlap(weapon.bullets, slime3, this.slime3shot);
     game.physics.arcade.overlap(weapon.bullets, slimeB1, this.slimeBshot);
     game.physics.arcade.overlap(weapon.bullets, bat1, this.batshot);
+    game.physics.arcade.overlap(weapon.bullets, bat2, this.bat2shot);
+    game.physics.arcade.overlap(weapon.bullets, bat3, this.bat3shot);
     game.physics.arcade.overlap(player, mbottle, this.gainmana)
+    game.physics.arcade.collide(slime2, platforms);
+    game.physics.arcade.overlap(player, door, this.boss);
     //no floating through platforms
     hitPlatform = game.physics.arcade.collide(player, platforms);
 
@@ -214,6 +266,28 @@ var level1State = {
       slime1.body.velocity.x = 0;
     }
 
+    var distance = player.x - slime2.x;
+    if (distance < 0 && distance > -300 && slime2.x > 0) {
+      slime2.body.velocity.x = -110;
+      slime2.animations.play("left");
+    } else if (distance > 0 && distance < 300 && slime2.x < game.world.width) {
+      slime2.body.velocity.x = 110;
+      slime2.animations.play("right");
+    } else {
+      slime2.body.velocity.x = 0;
+    }
+
+    var distance = player.x - slime3.x;
+    if (distance < 0 && distance > -300 && slime3.x > 0) {
+      slime3.body.velocity.x = -110;
+      slime3.animations.play("left");
+    } else if (distance > 0 && distance < 300 && slime3.x < game.world.width) {
+      slime3.body.velocity.x = 110;
+      slime3.animations.play("right");
+    } else {
+      slime3.body.velocity.x = 0;
+    }
+
     var distance = player.x - slimeB1.x;
     if (distance < 0 && distance > -300 && slimeB1.x > 0) {
       slimeB1.body.velocity.x = -50;
@@ -244,7 +318,48 @@ var level1State = {
     } else {
       bat1.body.velocity.y = 0;
     }
+
+    var distance = player.x - bat2.x;
+    if (distance < 0 && distance > -600 && bat2.x > 0) {
+      bat2.body.velocity.x = -100;
+      bat2.animations.play("flyL");
+    } else if (distance > 0 && distance < 600 && bat2.x) {
+      bat2.body.velocity.x = 100;
+      bat2.animations.play("flyR");
+    } else {
+      bat2.body.velocity.x = 0;
+    }
+
+    var distance = player.y - bat2.y;
+    if (distance < 0 && distance > -600 && bat2.x > 0) {
+      bat2.body.velocity.y = -100;
+    } else if (distance > 0 && distance < 600 && bat2.y) {
+      bat2.body.velocity.y = 100;
+    } else {
+      bat2.body.velocity.y = 0;
+    }
+
+    var distance = player.x - bat3.x;
+    if (distance < 0 && distance > -600 && bat3.x > 0) {
+      bat3.body.velocity.x = -100;
+      bat3.animations.play("flyL");
+    } else if (distance > 0 && distance < 600 && bat3.x) {
+      bat3.body.velocity.x = 100;
+      bat3.animations.play("flyR");
+    } else {
+      bat3.body.velocity.x = 0;
+    }
+
+    var distance = player.y - bat3.y;
+    if (distance < 0 && distance > -600 && bat3.x > 0) {
+      bat3.body.velocity.y = -100;
+    } else if (distance > 0 && distance < 600 && bat3.y) {
+      bat3.body.velocity.y = 100;
+    } else {
+      bat3.body.velocity.y = 0;
+    }
   },
+
 
   // moves the player with the cursors
   movePlayer: function(direction) {
@@ -323,6 +438,36 @@ var level1State = {
     }
   },
 
+  //slime gets flung back and takes damage
+  slime2whack: function() {
+    if (slime2.health == 0) {
+      slime2.kill();
+    } else if (slime2.body.touching.right && player.invincible == true) {
+      slime2.x -= 70;
+      slime2.body.velocity.y = -200
+      slime2.health -= 1;
+    } else if (slime2.body.touching.left && player.invincible == true) {
+      slime2.x += 70;
+      slime2.body.velocity.y = -200
+      slime2.health -= 1;
+    }
+  },
+
+  //slime gets flung back and takes damage
+  slime3whack: function() {
+    if (slime3.health == 0) {
+      slime3.kill();
+    } else if (slime3.body.touching.right && player.invincible == true) {
+      slime3.x -= 70;
+      slime3.body.velocity.y = -200
+      slime3.health -= 1;
+    } else if (slime3.body.touching.left && player.invincible == true) {
+      slime3.x += 70;
+      slime3.body.velocity.y = -200
+      slime3.health -= 1;
+    }
+  },
+
   slimeBwhack: function() {
     if (slimeB1.health == 0) {
       slimeB1.kill();
@@ -335,12 +480,30 @@ var level1State = {
     }
   },
 
-  //bat gets flung back and takes damage
+  //bat takes damage
   batwhack: function() {
     if (bat1.body.touching.right && player.invincible == true) {
       bat1.kill();
     } else if (bat1.body.touching.left && player.invincible == true) {
       bat1.kill();
+    }
+  },
+
+  //bat2 takes damage
+  bat2whack: function() {
+    if (bat2.body.touching.right && player.invincible == true) {
+      bat2.kill();
+    } else if (bat2.body.touching.left && player.invincible == true) {
+      bat2.kill();
+    }
+  },
+
+  //bat3 takes damage
+  bat3whack: function() {
+    if (bat3.body.touching.right && player.invincible == true) {
+      bat3.kill();
+    } else if (bat3.body.touching.left && player.invincible == true) {
+      bat3.kill();
     }
   },
 
@@ -352,8 +515,32 @@ var level1State = {
     slime1.health -= 1;
   },
 
+  slime2shot: function(slime2, other) {
+    if (slime2.health == 0) {
+      slime2.kill();
+    }
+    other.kill();
+    slime2.health -= 1;
+  },
+
+  slime3shot: function(slime3, other) {
+    if (slime3.health == 0) {
+      slime3.kill();
+    }
+    other.kill();
+    slime3.health -= 1;
+  },
+
   batshot: function(bat, other) {
     bat1.kill();
+  },
+
+  bat2shot: function(bat, other) {
+    bat2.kill();
+  },
+
+  bat3shot: function(bat, other) {
+    bat3.kill();
   },
 
   slimeBshot: function(slimeB1, other) {
@@ -374,5 +561,9 @@ var level1State = {
     other.kill();
     game.global.mana = game.global.manaM
     manaBar.width = game.global.mana / game.global.manaM * 300;
+  },
+
+  boss: function() {
+    game.state.start("level1boss");
   }
 };
