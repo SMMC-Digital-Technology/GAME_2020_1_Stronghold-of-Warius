@@ -95,6 +95,13 @@ var level1bossState = {
 
     fireButton = this.input.keyboard.addKey(Phaser.KeyCode.X);
 
+    bossW = game.add.weapon(10, "darkbolt");
+    bossW.bulletKillType = Phaser.Weapon.KILL_WORLD_BOUNDS; //destroyed when off-screen
+    bossW.bulletKillType = Phaser.Weapon.KILL_DISTANCE; //destroyed after a given distance
+    bossW.bulletKillDistance = 500;
+    bossW.bulletSpeed = 500; //pixels per second
+    bossW.fireRate = 250; //delay in milliseconds
+    bossW.trackSprite(boss, 40, 40, true);
   },
 
   update: function(direction) {
