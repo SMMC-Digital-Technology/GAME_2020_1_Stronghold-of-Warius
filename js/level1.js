@@ -393,6 +393,11 @@ var level1State = {
     }
   },
 
+  gainhealth: function() {
+    game.global.health = game.global.healthM
+    healthBar.width = game.global.health / game.global.healthM * 300;
+  },
+
   hitslime: function() { //if touching slime take damage
     if (player.body.touching.right && !player.invincible) {
       player.x -= 30;

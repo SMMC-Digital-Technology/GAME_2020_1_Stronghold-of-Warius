@@ -16,5 +16,6 @@ game.global = {
   mana: 20,
   manaM: 20,
   spellSelected: 1,
+  timeCheck: 0,
 }
 game.state.start('boot');
