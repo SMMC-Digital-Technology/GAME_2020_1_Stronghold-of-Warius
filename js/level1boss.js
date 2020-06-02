@@ -167,8 +167,9 @@ var level1bossState = {
     var distance = player.x - boss.x;
     if (distance < 0 && distance > -300 && boss.x > 0) {
       boss.body.velocity.x = -110;
+      if (boss.animations.name != "healL") {
       boss.animations.play("left");
-      bossdirection.facing = "left";
+      bossdirection.facing = "left";}
     } else if (distance > 0 && distance < 300 && boss.x < game.world.width) {
       boss.body.velocity.x = 110;
       boss.animations.play("right");
@@ -277,15 +278,20 @@ var level1bossState = {
     randNum = game.rnd.integerInRange(1, 2);
     if (randNum == 1 && bossdirection.facing == "left") {
       boss.health += 20;
+      boss.animations.stop();
       boss.frame = 24;
-      game.time.events.add(200, () => {//couldn't find a fix anywhere animation wouldn't play because walking was playing
+      game.time.events.add(400, () => {//couldn't find a fix anywhere animation wouldn't play because walking was playing
         boss.frame = 25});
-      game.time.events.add(200, () => {
+      game.time.events.add(400, () => {//so this is the only fix that I could find
         boss.frame = 26});
     } else if (randNum == 1 && bossdirection.facing == "right") {
       boss.health += 20;
       boss.animations.stop();
-      boss.animations.play("healR");
+      boss.frame = 27;
+      game.time.events.add(400, () => {
+        boss.frame = 28});
+      game.time.events.add(400, () => {
+        boss.frame = 29});
     } else {
       boss.health -= 1;
     }
