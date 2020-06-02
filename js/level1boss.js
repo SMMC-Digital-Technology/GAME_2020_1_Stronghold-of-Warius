@@ -30,6 +30,8 @@ var level1bossState = {
     boss.body.setSize(60, 80);
     boss.animations.add("left", [1, 2, 3, 4, 5, 0], 12, false);
     boss.animations.add("right", [13, 14, 15, 16, 17, 12], 12, false);
+    boss.animations.add("healL", [24, 25, 26], 8, false);
+    boss.animations.add("healR", [27, 28, 29], 8, false);
 
     //group to collect platforms
     platforms = game.add.group();
@@ -61,6 +63,10 @@ var level1bossState = {
     //declare direction variable
     var direction = {
       facing: "right"
+    };
+
+    var bossdirection = {
+      facing: "left"
     };
     // focuses the player in the camera view and forces the camera to follow
     // the player, except if the view would go outside the game world
@@ -98,23 +104,32 @@ var level1bossState = {
     bossW = game.add.weapon(10, "darkbolt");
     bossW.bulletKillType = Phaser.Weapon.KILL_WORLD_BOUNDS; //destroyed when off-screen
     bossW.bulletKillType = Phaser.Weapon.KILL_DISTANCE; //destroyed after a given distance
+    bossW.autofire = false;
+    bossW.addBulletAnimation("left", [0, 1, 1, 3], 12, true);
     bossW.bulletKillDistance = 500;
-    bossW.bulletSpeed = 500; //pixels per second
+    bossW.bulletSpeed = -300; //pixels per second
     bossW.fireRate = 250; //delay in milliseconds
     bossW.trackSprite(boss, 40, 40, true);
   },
 
-  update: function(direction) {
+  update: function(direction, bossdirection) {
     //physics checks
     game.physics.arcade.overlap(player, spikes, this.touchspike);
     game.physics.arcade.overlap(player, mbottle, this.gainmana)
     game.physics.arcade.overlap(player, boss, this.hitboss);
     game.physics.arcade.overlap(player, boss, this.bosswhack);
     game.physics.arcade.overlap(weapon.bullets, boss, this.bossshot);
+    game.physics.arcade.overlap(bossW.bullets, player, this.hitboss);
     //no floating through platforms
     hitPlatform = game.physics.arcade.collide(player, platforms);
 
+    game.time.events.add(Phaser.Timer.SECOND * 5, this.fire);
+
     this.movePlayer(direction);
+
+    if (boss.health == 5) {
+      this.healboss
+    }
 
     //make it possible to jump off platforms
     if (cursors.up.isDown && player.body.touching.down && hitPlatform) {
@@ -155,9 +170,11 @@ var level1bossState = {
     if (distance < 0 && distance > -300 && boss.x > 0) {
       boss.body.velocity.x = -110;
       boss.animations.play("left");
+      bossdirection.facing = "left";
     } else if (distance > 0 && distance < 300 && boss.x < game.world.width) {
       boss.body.velocity.x = 110;
       boss.animations.play("right");
+      bossdirection.facing = "right";
     } else {
       boss.body.velocity.x = 0;
     }
@@ -256,5 +273,22 @@ var level1bossState = {
     other.kill();
     game.global.mana = game.global.manaM
     manaBar.width = game.global.mana / game.global.manaM * 300;
+  },
+
+  healboss: function(bossdirection) {
+    randNum = game.rnd.integerInRange(1, 4);
+    if (randNum == 1 && bossdirection.facing == "left") {
+      boss.health += 20;
+      boss.animations.play("healL");
+    } else if (randNum == 1 && bossdirection.facing == "right") {
+      boss.health += 20;
+      boss.animations.play("healR");
+    } else {
+      boss.health -= 1;
+    }
+  },
+
+  fire: function() {
+    bossW.fire();
   }
 };
