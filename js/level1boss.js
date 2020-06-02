@@ -28,8 +28,8 @@ var level1bossState = {
     boss.body.collideWorldBounds = true;
     boss.health = 9;
     boss.body.setSize(60, 80);
-    boss.animations.add("left", [1, 2, 3, 4, 5, 0], 12, false);
-    boss.animations.add("right", [13, 14, 15, 16, 17, 12], 12, false);
+    boss.animations.add("left", [1, 2, 3, 4, 5, 0], 12, true);
+    boss.animations.add("right", [13, 14, 15, 16, 17, 12], 12, true);
     boss.animations.add("healL", [24, 25, 26], 8, false);
     boss.animations.add("healR", [27, 28, 29], 8, false);
 
@@ -61,11 +61,11 @@ var level1bossState = {
     xKey = game.input.keyboard.addKey(Phaser.Keyboard.X);
     cKey = game.input.keyboard.addKey(Phaser.Keyboard.C);
     //declare direction variable
-    var direction = {
+    direction = {
       facing: "right"
     };
-
-    var bossdirection = {
+    //boss direction
+    bossdirection = {
       facing: "left"
     };
     // focuses the player in the camera view and forces the camera to follow
@@ -112,7 +112,7 @@ var level1bossState = {
     bossW.trackSprite(boss, 40, 40, true);
   },
 
-  update: function(direction, bossdirection) {
+  update: function() {
     //physics checks
     game.physics.arcade.overlap(player, spikes, this.touchspike);
     game.physics.arcade.overlap(player, mbottle, this.gainmana)
@@ -123,12 +123,10 @@ var level1bossState = {
     //no floating through platforms
     hitPlatform = game.physics.arcade.collide(player, platforms);
 
-    game.time.events.add(Phaser.Timer.SECOND * 5, this.fire);
-
     this.movePlayer(direction);
 
     if (boss.health == 5) {
-      this.healboss
+      this.healboss(bossdirection)
     }
 
     //make it possible to jump off platforms
@@ -276,12 +274,17 @@ var level1bossState = {
   },
 
   healboss: function(bossdirection) {
-    randNum = game.rnd.integerInRange(1, 4);
+    randNum = game.rnd.integerInRange(1, 2);
     if (randNum == 1 && bossdirection.facing == "left") {
       boss.health += 20;
-      boss.animations.play("healL");
+      boss.frame = 24;
+      game.time.events.add(200, () => {//couldn't find a fix anywhere animation wouldn't play because walking was playing
+        boss.frame = 25});
+      game.time.events.add(200, () => {
+        boss.frame = 26});
     } else if (randNum == 1 && bossdirection.facing == "right") {
       boss.health += 20;
+      boss.animations.stop();
       boss.animations.play("healR");
     } else {
       boss.health -= 1;
