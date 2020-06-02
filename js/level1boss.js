@@ -165,12 +165,12 @@ var level1bossState = {
     }
 
     var distance = player.x - boss.x;
-    if (distance < 0 && distance > -300 && boss.x > 0) {
+    if (distance < 0 && distance > -800 && boss.x > 0) {
       boss.body.velocity.x = -110;
       if (!boss.animations.currentAnim.isPlaying) {
       boss.animations.play("left");
       bossdirection.facing = "left";}
-    } else if (distance > 0 && distance < 300 && boss.x < game.world.width) {
+    } else if (distance > 0 && distance < 800 && boss.x < game.world.width) {
       boss.body.velocity.x = 110;
       if (!boss.animations.currentAnim.isPlaying)
       boss.animations.play("right");
