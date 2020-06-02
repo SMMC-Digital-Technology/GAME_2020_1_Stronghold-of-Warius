@@ -28,8 +28,8 @@ var level1bossState = {
     boss.body.collideWorldBounds = true;
     boss.health = 9;
     boss.body.setSize(60, 80);
-    boss.animations.add("left", [1, 2, 3, 4, 5, 0], 12, true);
-    boss.animations.add("right", [13, 14, 15, 16, 17, 12], 12, true);
+    boss.animations.add("left", [1, 2, 3, 4, 5, 0], 12, false);
+    boss.animations.add("right", [13, 14, 15, 16, 17, 12], 12, false);
     boss.animations.add("healL", [24, 25, 26], 8, false);
     boss.animations.add("healR", [27, 28, 29], 8, false);
 
@@ -167,11 +167,12 @@ var level1bossState = {
     var distance = player.x - boss.x;
     if (distance < 0 && distance > -300 && boss.x > 0) {
       boss.body.velocity.x = -110;
-      if (boss.animations.name != "healL") {
+      if (!boss.animations.currentAnim.isPlaying) {
       boss.animations.play("left");
       bossdirection.facing = "left";}
     } else if (distance > 0 && distance < 300 && boss.x < game.world.width) {
       boss.body.velocity.x = 110;
+      if (!boss.animations.currentAnim.isPlaying)
       boss.animations.play("right");
       bossdirection.facing = "right";
     } else {
@@ -279,19 +280,11 @@ var level1bossState = {
     if (randNum == 1 && bossdirection.facing == "left") {
       boss.health += 20;
       boss.animations.stop();
-      boss.frame = 24;
-      game.time.events.add(400, () => {//couldn't find a fix anywhere animation wouldn't play because walking was playing
-        boss.frame = 25});
-      game.time.events.add(400, () => {//so this is the only fix that I could find
-        boss.frame = 26});
+      boss.animations.play("healL")
     } else if (randNum == 1 && bossdirection.facing == "right") {
       boss.health += 20;
       boss.animations.stop();
-      boss.frame = 27;
-      game.time.events.add(400, () => {
-        boss.frame = 28});
-      game.time.events.add(400, () => {
-        boss.frame = 29});
+      boss.animations.play("healR")
     } else {
       boss.health -= 1;
     }
