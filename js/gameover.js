@@ -15,7 +15,7 @@ var gameoverState = {
       button.onInputUp.add(() => {
          game.state.start("menu")
       });
-      text = game.add.text(button.x, button.y, 'Return to the Menu');
+      text = game.add.text(button.x, button.y, 'Return to the Menu', {fill: "#ffffff"});
       text.anchor.setTo(0.5, 0.5);
       button.width = text.width + 10;
    }
