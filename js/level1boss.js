@@ -26,12 +26,13 @@ var level1bossState = {
     game.physics.arcade.enable(boss);
     boss.body.gravity.y = 2000;
     boss.body.collideWorldBounds = true;
-    boss.health = 9;
+    boss.health = 49;
     boss.body.setSize(60, 80);
     boss.animations.add("left", [1, 2, 3, 4, 5, 0], 12, false);
     boss.animations.add("right", [13, 14, 15, 16, 17, 12], 12, false);
     boss.animations.add("healL", [24, 25, 26], 8, false);
     boss.animations.add("healR", [27, 28, 29], 8, false);
+    game.time.events.repeat(Phaser.Timer.SECOND * 2, 100, this.fire, this);
 
     //group to collect platforms
     platforms = game.add.group();
@@ -54,6 +55,8 @@ var level1bossState = {
     //mana bottles
     mbottle = game.add.group();
     mbottle.enableBody = true;
+    mbottle.create(90, 200, "mbottle");
+    mbottle.create(710, 200, "mbottle");
 
     // create keys
     cursors = game.input.keyboard.createCursorKeys();
@@ -101,11 +104,12 @@ var level1bossState = {
 
     fireButton = this.input.keyboard.addKey(Phaser.KeyCode.X);
 
-    bossW = game.add.weapon(10, "darkbolt");
+    bossW = game.add.weapon(5, "darkbolt");
     bossW.bulletKillType = Phaser.Weapon.KILL_WORLD_BOUNDS; //destroyed when off-screen
     bossW.bulletKillType = Phaser.Weapon.KILL_DISTANCE; //destroyed after a given distance
+    //would be animated but the fps dropped a lot when they were animated (not animated for performance)
+    bossW.addBulletAnimation("left", [0, 1, 2, 3], 8, true);
     bossW.autofire = false;
-    bossW.addBulletAnimation("left", [0, 1, 1, 3], 12, true);
     bossW.bulletKillDistance = 500;
     bossW.bulletSpeed = -300; //pixels per second
     bossW.fireRate = 250; //delay in milliseconds
@@ -119,13 +123,17 @@ var level1bossState = {
     game.physics.arcade.overlap(player, boss, this.hitboss);
     game.physics.arcade.overlap(player, boss, this.bosswhack);
     game.physics.arcade.overlap(weapon.bullets, boss, this.bossshot);
-    game.physics.arcade.overlap(bossW.bullets, player, this.hitboss);
+    game.physics.arcade.overlap(bossW.bullets, player, this.jenshot);
     //no floating through platforms
     hitPlatform = game.physics.arcade.collide(player, platforms);
 
     this.movePlayer(direction);
 
-    if (boss.health == 5) {
+    if (boss.health == 30) {
+      this.healboss(bossdirection)
+    }
+
+    if (boss.health == 10) {
       this.healboss(bossdirection)
     }
 
@@ -136,11 +144,11 @@ var level1bossState = {
 
     //x to shoot magebolt
     if (xKey.isDown && direction.facing == "left") {
-      weapon.addBulletAnimation("wiggleL", [3, 4, 5], 8, true);
+      weapon.addBulletAnimation("wiggleL", [3], 0);
       weapon.bulletSpeed = -500;
       player.animations.play("leftBolt");
     } else if (xKey.isDown && direction.facing == "right") {
-      weapon.addBulletAnimation("wiggleR", [0, 1, 2], 8, true);
+      weapon.addBulletAnimation("wiggleR", [0], 0); //one frame to reduce fps drop (so small hard to see anyway)
       player.animations.play("rightBolt");
       weapon.bulletSpeed = 500;
     }
@@ -164,17 +172,25 @@ var level1bossState = {
         player.invincible = false});
     }
 
+    if (bossdirection.facing == "left") {
+      bossW.addBulletAnimation("left", [0], 0, true); //doesn't look practical but it works, couldn't find another way to do it
+    } else if (bossdirection.facing == "right") {
+      bossW.addBulletAnimation("right", [4], 0, true);
+    }
+
     var distance = player.x - boss.x;
-    if (distance < 0 && distance > -300 && boss.x > 0) {
+    if (distance < 0 && distance > -800 && boss.x > 0) {
       boss.body.velocity.x = -110;
       if (!boss.animations.currentAnim.isPlaying) {
       boss.animations.play("left");
       bossdirection.facing = "left";}
-    } else if (distance > 0 && distance < 300 && boss.x < game.world.width) {
+      bossW.bulletSpeed = -300;
+    } else if (distance > 0 && distance < 800 && boss.x < game.world.width) {
       boss.body.velocity.x = 110;
       if (!boss.animations.currentAnim.isPlaying)
       boss.animations.play("right");
       bossdirection.facing = "right";
+      bossW.bulletSpeed = 300;
     } else {
       boss.body.velocity.x = 0;
     }
@@ -276,7 +292,7 @@ var level1bossState = {
   },
 
   healboss: function(bossdirection) {
-    randNum = game.rnd.integerInRange(1, 2);
+    randNum = game.rnd.integerInRange(1, 4);
     if (randNum == 1 && bossdirection.facing == "left") {
       boss.health += 20;
       boss.animations.stop();
@@ -292,5 +308,13 @@ var level1bossState = {
 
   fire: function() {
     bossW.fire();
-  }
+  },
+
+  jenshot: function(player, other) {
+    if (game.global.health == 0) {
+      player.kill();
+    }
+    other.kill();
+    level1bossState.removehealth(1)
+  },
 };
