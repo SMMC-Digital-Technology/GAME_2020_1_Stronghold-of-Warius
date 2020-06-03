@@ -17,5 +17,9 @@ game.global = {
   manaM: 20,
   spellSelected: 1,
   timeCheck: 0,
+  lvl1complete: "false",
+  lvl2complete: "false",
+  lvl3complete: "false",
+  lvl4complete: "false", 
 }
 game.state.start('boot');
