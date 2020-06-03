@@ -26,13 +26,13 @@ var level1bossState = {
     game.physics.arcade.enable(boss);
     boss.body.gravity.y = 2000;
     boss.body.collideWorldBounds = true;
-    boss.health = 49;
+    boss.health = 39;
     boss.body.setSize(60, 80);
     boss.animations.add("left", [1, 2, 3, 4, 5, 0], 12, false);
     boss.animations.add("right", [13, 14, 15, 16, 17, 12], 12, false);
     boss.animations.add("healL", [24, 25, 26], 8, false);
     boss.animations.add("healR", [27, 28, 29], 8, false);
-    game.time.events.repeat(Phaser.Timer.SECOND * 2, 100, this.fire, this);
+    game.time.events.repeat(Phaser.Timer.SECOND * 6, 100, this.fire, this);
 
     //group to collect platforms
     platforms = game.add.group();
@@ -246,6 +246,9 @@ var level1bossState = {
   bosswhack: function() {
     if (boss.health == 0) {
       boss.kill();
+      game.global.lvl1complete = "true";
+      game.time.events.add(1000, () => {
+        game.state.start("menu")});
     } else if (boss.body.touching.right && player.invincible == true) {
       boss.x -= 200;
       boss.body.velocity.y = -200
@@ -260,6 +263,9 @@ var level1bossState = {
   bossshot: function(boss, other) {
     if (boss.health == 0) {
       boss.kill();
+      game.global.lvl1complete = "true";
+      game.time.events.add(1000, () => {
+        game.state.start("menu")});
     }
     other.kill();
     boss.health -= 1;
@@ -294,11 +300,11 @@ var level1bossState = {
   healboss: function(bossdirection) {
     randNum = game.rnd.integerInRange(1, 4);
     if (randNum == 1 && bossdirection.facing == "left") {
-      boss.health += 20;
+      boss.health += 10;
       boss.animations.stop();
       boss.animations.play("healL")
     } else if (randNum == 1 && bossdirection.facing == "right") {
-      boss.health += 20;
+      boss.health += 10;
       boss.animations.stop();
       boss.animations.play("healR")
     } else {
