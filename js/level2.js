@@ -359,7 +359,7 @@ var level2State = {
     }
   },
 
-  hitaGobo: function() { //if touching gobo take damage
+  hitaGobo: function() { //if touching aGobo take damage
     if (player.body.touching.right && !player.invincible) {
       player.x -= 30;
       player.animations.stop();
@@ -375,24 +375,24 @@ var level2State = {
   },
   //gobo gets flung back and takes damage
   aGobowhack: function() {
-    if (gobo1.health == 0) {
-      gobo1.kill();
-    } else if (gobo1.body.touching.right && player.invincible == true) {
-      gobo1.x -= 70;
-      gobo1.body.velocity.y = -200
-      gobo1.health -= 1;
-    } else if (gobo1.body.touching.left && player.invincible == true) {
-      gobo1.x += 70;
-      gobo1.body.velocity.y = -200
-      gobo1.health -= 1;
+    if (aGobo.health == 0) {
+      aGobo.kill();
+    } else if (aGobo.body.touching.right && player.invincible == true) {
+      aGobo.x -= 70;
+      aGobo.body.velocity.y = -200
+      aGobo.health -= 1;
+    } else if (aGobo.body.touching.left && player.invincible == true) {
+      aGobo.x += 70;
+      aGobo.body.velocity.y = -200
+      aGobo.health -= 1;
     }
   },
 
-  aGoboshot: function(gobo1, other) {
-    if (gobo1.health == 0) {
-      gobo1.kill();
+  aGoboshot: function(aGobo, other) {
+    if (aGobo.health == 0) {
+      aGobo.kill();
     }
     other.kill();
-    gobo1.health -= 1;
+    aGobo.health -= 1;
   },
 };
