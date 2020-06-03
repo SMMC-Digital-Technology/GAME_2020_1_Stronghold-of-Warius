@@ -247,6 +247,7 @@ var level1bossState = {
     if (boss.health == 0) {
       boss.kill();
       game.global.lvl1complete = "true";
+      game.global.cyclespeech += 1;
       game.time.events.add(1000, () => {
         game.state.start("menu")});
     } else if (boss.body.touching.right && player.invincible == true) {
@@ -264,6 +265,7 @@ var level1bossState = {
     if (boss.health == 0) {
       boss.kill();
       game.global.lvl1complete = "true";
+      game.global.cyclespeech += 1;
       game.time.events.add(1000, () => {
         game.state.start("menu")});
     }

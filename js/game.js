@@ -20,6 +20,7 @@ game.global = {
   lvl1complete: "false",
   lvl2complete: "false",
   lvl3complete: "false",
-  lvl4complete: "false", 
+  lvl4complete: "false",
+  cyclespeech: 0,
 }
 game.state.start('boot');
