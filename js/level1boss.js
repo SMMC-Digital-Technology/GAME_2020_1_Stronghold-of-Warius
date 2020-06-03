@@ -26,7 +26,7 @@ var level1bossState = {
     game.physics.arcade.enable(boss);
     boss.body.gravity.y = 2000;
     boss.body.collideWorldBounds = true;
-    boss.health = 49;
+    boss.health = 39;
     boss.body.setSize(60, 80);
     boss.animations.add("left", [1, 2, 3, 4, 5, 0], 12, false);
     boss.animations.add("right", [13, 14, 15, 16, 17, 12], 12, false);
@@ -38,8 +38,8 @@ var level1bossState = {
     platforms = game.add.group();
     //enable physics on group
     platforms.enableBody = true;
-    platforms.create(310, 425, "sewerP");
-    platforms.create(400, 425, "sewerP");
+    platforms.create(310, 430, "sewerP");
+    platforms.create(400, 430, "sewerP");
     //immovable platforms
     platforms.setAll("body.immovable", true)
 
