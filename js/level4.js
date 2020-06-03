@@ -106,10 +106,11 @@
         //would be animated but the fps dropped a lot when they were animated (not animated for performance)
         bossW.addBulletAnimation("left", [0, 1, 2, 3], 8, true);
         bossW.autofire = false;
+        bossW.fireAtSprite(player)
         bossW.bulletKillDistance = 500;
-        bossW.bulletSpeed = -300; //pixels per second
+        bossW.bulletSpeed = 300; //pixels per second
         bossW.fireRate = 1000; //delay in milliseconds
-        bossW.trackSprite(boss, 40, 40, true);
+        bossW.trackSprite(boss, 60, 60, true);
       },
 
       update: function() {
