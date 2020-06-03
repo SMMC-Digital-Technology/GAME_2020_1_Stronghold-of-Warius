@@ -28,9 +28,20 @@
         boss.body.collideWorldBounds = true;
         boss.health = 100;
         boss.animations.add("idle", [0, 1, 2, 3], 12, true);
-        boss.animations.add("staff", [7, 8, 9, 10, 11], 8, false);
+        boss.animations.add("staff", [7, 8, 9, 10, 11], 13, false);
         boss.animations.add("chair", [4, 5, 6], 9, false);
-        game.time.events.repeat(Phaser.Timer.SECOND * 2, 100, this.fire, this);
+        game.time.events.repeat(Phaser.Timer.SECOND * 5, 100, this.fire, this);
+        game.time.events.repeat(Phaser.Timer.SECOND * 15, 100, this.raisedead, this);
+
+        //spawn undead
+        zgoblin = game.add.sprite(400, 200, "zgoblin");
+        game.physics.arcade.enable(zgoblin);
+        zgoblin.body.gravity.y = 2000;
+        zgoblin.body.collideWorldBounds = true;
+        zgoblin.body.setSize(20, 32, 0.5, 0.5);
+        zgoblin.health = 10;
+        zgoblin.animations.add('left', [0, 1, 2, 3, 4, 5], 6, true);
+        zgoblin.animations.add('right', [6, 7, 8, 9, 10], 6, true);
 
         //group to collect platforms
         platforms = game.add.group();
@@ -90,8 +101,8 @@
         weapon = game.add.weapon(10, 'magebolt');
         weapon.bulletKillType = Phaser.Weapon.KILL_WORLD_BOUNDS; //destroyed when off-screen
         weapon.bulletKillType = Phaser.Weapon.KILL_DISTANCE; //destroyed after a given distance
-        weapon.bulletKillDistance = 500;
-        weapon.bulletSpeed = 500; //pixels per second
+        weapon.bulletKillDistance = 700;
+        weapon.bulletSpeed = 400; //pixels per second
         weapon.fireRate = 250; //delay in milliseconds
         weapon.trackSprite(player, 40, 40, true);
         weapon.onFire.add(function() {
@@ -110,29 +121,37 @@
         bossW.bulletKillDistance = 500;
         bossW.bulletSpeed = 300; //pixels per second
         bossW.fireRate = 1000; //delay in milliseconds
-        bossW.trackSprite(boss, 70, 70, true);
+        bossW.trackSprite(boss, 50, 70, true);
       },
 
       update: function() {
         //physics checks
+        game.physics.arcade.overlap(player, zgoblin, this.hitzgoblin);
+        game.physics.arcade.overlap(player, zgoblin, this.zgoblinwhack);
         game.physics.arcade.overlap(player, spikes, this.touchspike);
         game.physics.arcade.overlap(player, mbottle, this.gainmana)
         game.physics.arcade.overlap(player, boss, this.hitboss);
         game.physics.arcade.overlap(player, boss, this.bosswhack);
         game.physics.arcade.overlap(weapon.bullets, boss, this.bossshot);
         game.physics.arcade.overlap(bossW.bullets, player, this.jenshot);
+        game.physics.arcade.overlap(weapon.bullets, zgoblin, this.zgoblinshot);
         //no floating through platforms
         hitPlatform = game.physics.arcade.collide(player, platforms);
 
         this.movePlayer(direction);
 
-        if (boss.health == 30) {
-          this.healboss(bossdirection)
+        //zgoblin AI
+        var distance = player.x - zgoblin.x;
+        if (distance < 0 && distance > -300 && zgoblin.x > 0) {
+          zgoblin.body.velocity.x = -110;
+          zgoblin.animations.play("left");
+        } else if (distance > 0 && distance < 300 && zgoblin.x < game.world.width) {
+          zgoblin.body.velocity.x = 110;
+          zgoblin.animations.play("right");
+        } else {
+          zgoblin.body.velocity.x = 0;
         }
 
-        if (boss.health == 10) {
-          this.healboss(bossdirection)
-        }
 
         //make it possible to jump off platforms
         if (cursors.up.isDown && player.body.touching.down && hitPlatform) {
@@ -289,7 +308,13 @@
       },
 
       fire: function() {
+        boss.animations.play("staff")
         bossW.fire();
+      },
+
+      raisedead: function() {
+        boss.animations.play("staff")
+        zgoblin = game.add.sprite(700, 400, "zgoblin");
       },
 
       jenshot: function(player, other) {
@@ -297,6 +322,29 @@
           player.kill();
         }
         other.kill();
-        level1bossState.removehealth(1)
+        level1bossState.removehealth(2)
       },
+      //zgoblin gets flung back and takes damage
+      zgoblinwhack: function() {
+        if (zgoblin.health == 0) {
+          zgoblin.kill();
+        } else if (zgoblin.body.touching.right && player.invincible == true) {
+          zgoblin.x -= 70;
+          zgoblin.body.velocity.y = -200
+          zgoblin.health -= 1;
+        } else if (zgoblin.body.touching.left && player.invincible == true) {
+          zgoblin.x += 70;
+          zgoblin.body.velocity.y = -200
+          zgoblin.health -= 1;
+        }
+      },
+
+      slimeshot: function(zgoblin, other) {
+        if (zgoblin.health == 0) {
+          zgoblin.kill();
+        }
+        other.kill();
+        zgoblin.health -= 1;
+      },
+
 };

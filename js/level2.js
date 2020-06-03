@@ -186,10 +186,10 @@ var level2State = {
     }
     //gobo AI
     var distance = player.x - gobo1.x;
-    if (distance < 0 && distance > -300 && gobo1.x > 0) {
+    if (distance < 0 && distance > -350 && gobo1.x > 0) {
       gobo1.body.velocity.x = -240;
       gobo1.animations.play("left");
-    } else if (distance > 0 && distance < 300 && gobo1.x < game.world.width) {
+    } else if (distance > 0 && distance < 350 && gobo1.x < game.world.width) {
       gobo1.body.velocity.x = 240;
       gobo1.animations.play("right");
     } else {
@@ -197,7 +197,7 @@ var level2State = {
     }
     //skeleton AI
     var distance = player.x - skeleton1.x;
-    if (distance < 0 && distance > -300 && skeleton1.x > 0) {
+    if (distance < 0 && distance > -800 && skeleton1.x > 0) {
       skeleton1.body.velocity.x = -40;
       skeleton1.animations.play("left");
     } else {
@@ -206,10 +206,10 @@ var level2State = {
     }
     //aGobo AI
     var distance = player.x - aGobo.x;
-    if (distance < 0 && distance > -300 && aGobo.x > 0) {
+    if (distance < 0 && distance > -600 && aGobo.x > 0) {
       aGobo.body.velocity.x = -150;
       aGobo.animations.play("left");
-    } else if (distance > 0 && distance < 300 && aGobo.x < game.world.width) {
+    } else if (distance > 0 && distance < 600 && aGobo.x < game.world.width) {
       aGobo.body.velocity.x = 150;
       aGobo.animations.play("right");
     } else {
