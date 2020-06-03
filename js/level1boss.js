@@ -38,8 +38,8 @@ var level1bossState = {
     platforms = game.add.group();
     //enable physics on group
     platforms.enableBody = true;
-    platforms.create(310, 425, "sewerP");
-    platforms.create(400, 425, "sewerP");
+    platforms.create(310, 430, "sewerP");
+    platforms.create(400, 430, "sewerP");
     //immovable platforms
     platforms.setAll("body.immovable", true)
 
