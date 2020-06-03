@@ -28,6 +28,7 @@ var loadState = {
       game.load.image("castlebg", "assets/castleBackground.png");
       game.load.spritesheet("slimeb", "assets/slime_blue.png", 16, 16);
       game.load.spritesheet("slimeg", "assets/slime_green.png", 32, 32);
+      game.load.spritesheet("lazer", "assets/lazer.png", 32, 32);
       game.load.spritesheet("slimer", "assets/slime_red.png", 16, 16);
       game.load.spritesheet("Bslime", "assets/bigSlime.png", 64, 64);
       game.load.image("spikes", "assets/spikes.png");

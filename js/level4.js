@@ -100,7 +100,7 @@
 
         fireButton = this.input.keyboard.addKey(Phaser.KeyCode.X);
 
-        bossW = game.add.weapon(5, "darkbolt");
+        bossW = game.add.weapon(5, "lazer");
         bossW.bulletKillType = Phaser.Weapon.KILL_WORLD_BOUNDS; //destroyed when off-screen
         bossW.bulletKillType = Phaser.Weapon.KILL_DISTANCE; //destroyed after a given distance
         //would be animated but the fps dropped a lot when they were animated (not animated for performance)
@@ -110,7 +110,7 @@
         bossW.bulletKillDistance = 500;
         bossW.bulletSpeed = 300; //pixels per second
         bossW.fireRate = 1000; //delay in milliseconds
-        bossW.trackSprite(boss, 60, 60, true);
+        bossW.trackSprite(boss, 70, 70, true);
       },
 
       update: function() {
