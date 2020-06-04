@@ -58,6 +58,14 @@ var level2State = {
     skeleton1.health = 4;
     skeleton1.animations.add('left', [0, 1, 2, 3, 4, 3], 3, true);
     skeleton1.frame = 0
+    //spawn bat
+    bat1 = game.add.sprite(1220, 400, "bat");
+    game.physics.arcade.enable(bat1);
+    bat1.body.collideWorldBounds = true;
+    bat1.body.setSize(20, 32, 0.5, 0.5);
+    bat1.animations.add('flyR', [0, 1, 2, 3], 8, true);
+    bat1.animations.add('flyL', [4, 5, 6, 7], 8, true);
+    bat1.frame = 8
     //spawn Agobo
     aGobo = game.add.sprite(2000, 200, "Agobo");
     game.physics.arcade.enable(aGobo);
@@ -119,7 +127,6 @@ var level2State = {
 
     fireButton = this.input.keyboard.addKey(Phaser.KeyCode.X);
 
-
   },
 
   update: function(direction) {
@@ -131,6 +138,9 @@ var level2State = {
     game.physics.arcade.overlap(player, skeleton1, this.hitskeleton);
     game.physics.arcade.overlap(player, skeleton1, this.skeletonwhack);
     game.physics.arcade.overlap(weapon.bullets, skeleton1, this.skeletonshot);
+    game.physics.arcade.overlap(player, bat1, this.hitslime);
+    game.physics.arcade.overlap(player, bat1, this.batwhack);
+    game.physics.arcade.overlap(weapon.bullets, bat1, this.batshot);
     game.physics.arcade.overlap(player, aGobo, this.hitaGobo);
     game.physics.arcade.overlap(player, aGobo, this.aGobowhack);
     game.physics.arcade.overlap(weapon.bullets, aGobo, this.aGoboshot);
@@ -361,12 +371,12 @@ var level2State = {
 
   hitaGobo: function() { //if touching aGobo take damage
     if (player.body.touching.right && !player.invincible) {
-      player.x -= 30;
+      player.x -= 50;
       player.animations.stop();
       player.animations.play("hitL");
       aGobo.frame = 6;
     } else if (player.body.touching.left && !player.invincible) {
-      player.x += 30;
+      player.x += 50;
       player.animations.stop();
       player.animations.play("hitR");
       aGobo.frame = 9;
