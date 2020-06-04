@@ -115,7 +115,7 @@
         bossW.bulletKillType = Phaser.Weapon.KILL_DISTANCE; //destroyed after a given distance
         //would be animated but the fps dropped a lot when they were animated (not animated for performance)
         bossW.autofire = false;
-        bossW.bulletKillDistance = 500;
+        bossW.bulletKillDistance = 800;
         bossW.bulletSpeed = 300; //pixels per second
         bossW.fireRate = 1000; //delay in milliseconds
         bossW.trackSprite(boss, 50, 70, true);
@@ -305,6 +305,7 @@
         if (zgoblin.alive == false) {
           boss.animations.play("staff")
           zgoblin.reset(300, 300)}
+          zgoblin.health = 7;
       },
 
       jenshot: function(player, other) {
