@@ -20,6 +20,7 @@ var loadState = {
       game.load.spritesheet("Agobo", "assets/Agoblin.png", 64, 64);
       game.load.spritesheet("darkMage", "assets/darkMage.png", 80, 80);
       game.load.spritesheet("warius", "assets/warius.png", 128, 128);
+      game.load.spritesheet("dragon", "assets/dragon.png", 128, 128);
       game.load.spritesheet("magebolt", "assets/Mage bolt.png", 8, 8);
       game.load.spritesheet("skeleton", "assets/Skeleton.png", 48, 48);
       game.load.image("manabar", "assets/Mana bar.png");
