@@ -27,6 +27,15 @@ var level2State = {
     player.animations.add('rightHeal', [20, 21, 22, 0], 8, false);
     player.invincible = false;
 
+    //group to collect platforms
+    platforms = game.add.group();
+    //enable physics on group
+    platforms.enableBody = true;
+    platforms.create(1630, 480, "castleP");
+    platforms.create(1950, 350, "castleP");
+    //immovable platforms
+    platforms.setAll("body.immovable", true)
+
     //group to collect spikes
     spikes = game.add.group();
     //immovable spikes
@@ -38,8 +47,14 @@ var level2State = {
     spikes.create(700, 590, "spikes");
     spikes.create(1200, 590, "spikes");
     spikes.create(1220, 590, "spikes");
+    spikes.create(1620, 590, "spikes");
+    spikes.create(1660, 590, "spikes");
+    spikes.create(1700, 590, "spikes");
+    spikes.create(2280, 590, "spikes");
+    spikes.create(2320, 590, "spikes");
+    spikes.create(2360, 590, "spikes");
 
-    //spawn gobo 1
+    //spawn gobos
     gobo1 = game.add.sprite(400, 200, "gobo");
     game.physics.arcade.enable(gobo1);
     gobo1.body.gravity.y = 2000;
@@ -49,15 +64,33 @@ var level2State = {
     gobo1.animations.add('left', [0, 1, 2, 3], 3, true);
     gobo1.animations.add('right', [5, 6, 7, 8], 3, true);
     gobo1.frame = 4
-    //spawn skeleton 1
+
+    gobo2 = game.add.sprite(1550, 200, "gobo");
+    game.physics.arcade.enable(gobo2);
+    gobo2.body.gravity.y = 2000;
+    gobo2.body.collideWorldBounds = true;
+    gobo2.body.setSize(48, 48, 0.5, 0.5);
+    gobo2.health = 2;
+    gobo2.animations.add('left', [0, 1, 2, 3], 3, true);
+    gobo2.animations.add('right', [5, 6, 7, 8], 3, true);
+    gobo2.frame = 4
+    //spawn skeletons
     skeleton1 = game.add.sprite(1100, 200, "skeleton");
     game.physics.arcade.enable(skeleton1);
     skeleton1.body.gravity.y = 2000;
     skeleton1.body.collideWorldBounds = true;
     skeleton1.body.setSize(36, 48, 0.5, 0.5);
-    skeleton1.health = 4;
+    skeleton1.health = 3;
     skeleton1.animations.add('left', [0, 1, 2, 3, 4, 3], 3, true);
     skeleton1.frame = 0
+    //spawn bats
+    bat1 = game.add.sprite(1170, 350, "bat");
+    game.physics.arcade.enable(bat1);
+    bat1.body.collideWorldBounds = true;
+    bat1.body.setSize(20, 32, 0.5, 0.5);
+    bat1.animations.add('flyR', [0, 1, 2, 3], 8, true);
+    bat1.animations.add('flyL', [4, 5, 6, 7], 8, true);
+    bat1.frame = 8
     //spawn Agobo
     aGobo = game.add.sprite(2000, 200, "Agobo");
     game.physics.arcade.enable(aGobo);
@@ -65,9 +98,9 @@ var level2State = {
     aGobo.body.collideWorldBounds = true;
     aGobo.body.setSize(48, 64, 0.5, 0.5);
     aGobo.health = 4;
-    aGobo.animations.add('left', [4, 5,], 3, true);
-    aGobo.animations.add('right', [7, 8,], 3, true);
-    aGobo.animations.add('draw', [1, 2, 3], 3, true);
+    aGobo.animations.add('left', [4, 5], 3, true);
+    aGobo.animations.add('right', [7, 8], 3, true);
+    aGobo.animations.add('draw', [1, 2, 3], 3, false);
     aGobo.frame = 4
 
     // create keys
@@ -119,23 +152,35 @@ var level2State = {
 
     fireButton = this.input.keyboard.addKey(Phaser.KeyCode.X);
 
-
   },
 
   update: function(direction) {
     //physics checks
     game.physics.arcade.overlap(player, gobo1, this.hitgobo);
-    game.physics.arcade.overlap(player, gobo1, this.gobowhack);
-    game.physics.arcade.overlap(weapon.bullets, gobo1, this.goboshot);
+    game.physics.arcade.overlap(player, gobo1, this.gobo1whack);
+    game.physics.arcade.overlap(weapon.bullets, gobo1, this.gobo1shot);
+    game.physics.arcade.overlap(player, gobo2, this.hitgobo);
+    game.physics.arcade.overlap(player, gobo2, this.gobo2whack);
+    game.physics.arcade.overlap(weapon.bullets, gobo2, this.gobo2shot);
     game.physics.arcade.overlap(player, spikes, this.touchspike);
     game.physics.arcade.overlap(player, skeleton1, this.hitskeleton);
     game.physics.arcade.overlap(player, skeleton1, this.skeletonwhack);
     game.physics.arcade.overlap(weapon.bullets, skeleton1, this.skeletonshot);
+    game.physics.arcade.overlap(player, bat1, this.hitbat);
+    game.physics.arcade.overlap(player, bat1, this.batwhack);
+    game.physics.arcade.overlap(weapon.bullets, bat1, this.batshot);
     game.physics.arcade.overlap(player, aGobo, this.hitaGobo);
     game.physics.arcade.overlap(player, aGobo, this.aGobowhack);
     game.physics.arcade.overlap(weapon.bullets, aGobo, this.aGoboshot);
+    //no floating through platforms
+    hitPlatform = game.physics.arcade.collide(player, platforms);
 
     this.movePlayer(direction);
+
+    //make it possible to jump off platforms
+    if (cursors.up.isDown && player.body.touching.down && hitPlatform) {
+      player.body.velocity.y = -850;
+    }
 
     //c to change spell
     if (cKey.isDown && game.time.now - game.global.timeCheck > 250) {
@@ -184,7 +229,7 @@ var level2State = {
       game.time.events.add(800, () => {
         player.invincible = false});
     }
-    //gobo AI
+    //gobo AIs
     var distance = player.x - gobo1.x;
     if (distance < 0 && distance > -350 && gobo1.x > 0) {
       gobo1.body.velocity.x = -240;
@@ -195,6 +240,17 @@ var level2State = {
     } else {
       gobo1.body.velocity.x = 0;
     }
+
+    var distance = player.x - gobo2.x;
+    if (distance < 0 && distance > -350 && gobo2.x > 0) {
+      gobo2.body.velocity.x = -240;
+      gobo2.animations.play("left");
+    } else if (distance > 0 && distance < 350 && gobo2.x < game.world.width) {
+      gobo2.body.velocity.x = 240;
+      gobo2.animations.play("right");
+    } else {
+      gobo2.body.velocity.x = 0;
+    }
     //skeleton AI
     var distance = player.x - skeleton1.x;
     if (distance < 0 && distance > -800 && skeleton1.x > 0) {
@@ -204,16 +260,36 @@ var level2State = {
       skeleton1.body.velocity.x = 0;
       skeleton1.frame = 0
     }
+    //bat AI
+    var distance = player.x - bat1.x;
+    if (distance < 0 && distance > -600 && bat1.x > 0) {
+      bat1.body.velocity.x = -100;
+      bat1.animations.play("flyL");
+    } else if (distance > 0 && distance < 600 && bat1.x) {
+      bat1.body.velocity.x = 100;
+      bat1.animations.play("flyR");
+    } else {
+      bat1.body.velocity.x = 0;
+    }
+    var distance = player.y - bat1.y;
+    if (distance < 0 && distance > -600 && bat1.x > 0) {
+      bat1.body.velocity.y = -100;
+    } else if (distance > 0 && distance < 600 && bat1.y) {
+      bat1.body.velocity.y = 100;
+    } else {
+      bat1.body.velocity.y = 0;
+    }
     //aGobo AI
     var distance = player.x - aGobo.x;
-    if (distance < 0 && distance > -600 && aGobo.x > 0) {
+    if (distance < 0 && distance > -250 && aGobo.x > 0) {
       aGobo.body.velocity.x = -150;
       aGobo.animations.play("left");
-    } else if (distance > 0 && distance < 600 && aGobo.x < game.world.width) {
+    } else if (distance > 0 && distance < 250 && aGobo.x < game.world.width) {
       aGobo.body.velocity.x = 150;
       aGobo.animations.play("right");
     } else {
       aGobo.body.velocity.x = 0;
+      aGobo.frame = 0;
     }
   },
 
@@ -250,41 +326,6 @@ var level2State = {
     }
   },
 
-  hitgobo: function() { //if touching gobo take damage
-    if (player.body.touching.right && !player.invincible) {
-      player.x -= 30;
-      player.animations.stop();
-      player.animations.play("hitL");
-    } else if (player.body.touching.left && !player.invincible) {
-      player.x += 30;
-      player.animations.stop();
-      player.animations.play("hitR");
-    }
-    level1State.removehealth(2)
-  },
-  //gobo gets flung back and takes damage
-  gobowhack: function() {
-    if (gobo1.health == 0) {
-      gobo1.kill();
-    } else if (gobo1.body.touching.right && player.invincible == true) {
-      gobo1.x -= 70;
-      gobo1.body.velocity.y = -200
-      gobo1.health -= 1;
-    } else if (gobo1.body.touching.left && player.invincible == true) {
-      gobo1.x += 70;
-      gobo1.body.velocity.y = -200
-      gobo1.health -= 1;
-    }
-  },
-
-  goboshot: function(gobo1, other) {
-    if (gobo1.health == 0) {
-      gobo1.kill();
-    }
-    other.kill();
-    gobo1.health -= 1;
-  },
-
   removemana: function(mana) {
     if (game.global.mana > 0)
     game.global.mana -= mana;
@@ -308,6 +349,64 @@ var level2State = {
     }
   },
 
+  hitgobo: function() { //if touching gobo take damage
+    if (player.body.touching.right && !player.invincible) {
+      player.x -= 30;
+      player.animations.stop();
+      player.animations.play("hitL");
+    } else if (player.body.touching.left && !player.invincible) {
+      player.x += 30;
+      player.animations.stop();
+      player.animations.play("hitR");
+    }
+    level1State.removehealth(2)
+  },
+  //gobo1 gets flung back and takes damage
+  gobo1whack: function() {
+    if (gobo1.health == 0) {
+      gobo1.kill();
+    } else if (gobo1.body.touching.right && player.invincible == true) {
+      gobo1.x -= 70;
+      gobo1.body.velocity.y = -200
+      gobo1.health -= 1;
+    } else if (gobo1.body.touching.left && player.invincible == true) {
+      gobo1.x += 70;
+      gobo1.body.velocity.y = -200
+      gobo1.health -= 1;
+    }
+  },
+
+  gobo1shot: function(gobo1, other) {
+    if (gobo1.health == 0) {
+      gobo1.kill();
+    }
+    other.kill();
+    gobo1.health -= 1;
+  },
+
+  //gobo2 gets flung back and takes damage
+  gobo2whack: function() {
+    if (gobo2.health == 0) {
+      gobo2.kill();
+    } else if (gobo2.body.touching.right && player.invincible == true) {
+      gobo2.x -= 70;
+      gobo2.body.velocity.y = -200
+      gobo2.health -= 1;
+    } else if (gobo2.body.touching.left && player.invincible == true) {
+      gobo2.x += 70;
+      gobo2.body.velocity.y = -200
+      gobo2.health -= 1;
+    }
+  },
+
+  gobo2shot: function(gobo2, other) {
+    if (gobo2.health == 0) {
+      gobo2.kill();
+    }
+    other.kill();
+    gobo2.health -= 1;
+  },
+
   touchspike: function() { //if touching spikes take damage
     if (player.body.touching.right && !player.invincible) {
       player.x -= 30;
@@ -324,11 +423,11 @@ var level2State = {
 
   hitskeleton: function() { //if touching skeleton take damage
     if (player.body.touching.right && !player.invincible) {
-      player.x -= 30;
+      player.x -= 40;
       player.animations.stop();
       player.animations.play("hitL");
     } else if (player.body.touching.left && !player.invincible) {
-      player.x += 30;
+      player.x += 40;
       player.animations.stop();
       player.animations.play("hitR");
     }
@@ -359,14 +458,42 @@ var level2State = {
     }
   },
 
-  hitaGobo: function() { //if touching aGobo take damage
+  hitbat: function() { //if touching slime take damage
     if (player.body.touching.right && !player.invincible) {
       player.x -= 30;
       player.animations.stop();
       player.animations.play("hitL");
-      aGobo.frame = 6;
     } else if (player.body.touching.left && !player.invincible) {
       player.x += 30;
+      player.animations.stop();
+      player.animations.play("hitR");
+    } else if (player.body.touching.down && !player.invincible) {
+      player.body.velocity.y = -800;
+    }
+    level1State.removehealth(1)
+  },
+
+  //bat takes damage
+  batwhack: function() {
+    if (bat1.body.touching.right && player.invincible == true) {
+      bat1.kill();
+    } else if (bat1.body.touching.left && player.invincible == true) {
+      bat1.kill();
+    }
+  },
+
+  batshot: function(bat, other) {
+    bat1.kill();
+  },
+
+  hitaGobo: function() { //if touching aGobo take damage
+    if (player.body.touching.right && !player.invincible) {
+      player.x -= 50;
+      player.animations.stop();
+      player.animations.play("hitL");
+      aGobo.frame = 6;
+    } else if (player.body.touching.left && !player.invincible) {
+      player.x += 50;
       player.animations.stop();
       player.animations.play("hitR");
       aGobo.frame = 9;
