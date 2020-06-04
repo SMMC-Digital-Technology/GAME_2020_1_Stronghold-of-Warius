@@ -28,7 +28,7 @@ var loadState = {
       game.load.image("castlebg", "assets/castleBackground.png");
       game.load.spritesheet("slimeb", "assets/slime_blue.png", 16, 16);
       game.load.spritesheet("slimeg", "assets/slime_green.png", 32, 32);
-      game.load.spritesheet("lazer", "assets/lazer.png", 48, 48);
+      game.load.spritesheet("lazer", "assets/lazer.png", 48, 9);
       game.load.spritesheet("zgoblin", "assets/zgoblin.png", 60, 60);
       game.load.spritesheet("slimer", "assets/slime_red.png", 16, 16);
       game.load.spritesheet("Bslime", "assets/bigSlime.png", 64, 64);
