@@ -306,7 +306,7 @@ var level1State = {
     } else {
       slimeB1.body.velocity.x = 0;
     }
-
+    //bat AI
     var distance = player.x - bat1.x;
     if (distance < 0 && distance > -600 && bat1.x > 0) {
       bat1.body.velocity.x = -100;
@@ -317,7 +317,6 @@ var level1State = {
     } else {
       bat1.body.velocity.x = 0;
     }
-
     var distance = player.y - bat1.y;
     if (distance < 0 && distance > -600 && bat1.x > 0) {
       bat1.body.velocity.y = -100;
