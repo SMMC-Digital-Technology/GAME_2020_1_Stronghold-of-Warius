@@ -27,14 +27,15 @@ var loadState = {
       game.load.image("menubg", "assets/Menu background.png");
       game.load.image("sewerbg", "assets/sewerBackground.png");
       game.load.image("castlebg", "assets/castleBackground.png");
+      game.load.image("sewerP", "assets/sewerPlatform.png");
+      game.load.image("castleP", "assets/castlePlatform.png");
       game.load.spritesheet("slimeb", "assets/slime_blue.png", 16, 16);
       game.load.spritesheet("slimeg", "assets/slime_green.png", 32, 32);
-      game.load.spritesheet("lazer", "assets/lazer.png", 48, 48);
+      game.load.spritesheet("lazer", "assets/lazer.png", 48, 9);
       game.load.spritesheet("zgoblin", "assets/zgoblin.png", 60, 60);
       game.load.spritesheet("slimer", "assets/slime_red.png", 16, 16);
       game.load.spritesheet("Bslime", "assets/bigSlime.png", 64, 64);
       game.load.image("spikes", "assets/spikes.png");
-      game.load.image("sewerP", "assets/sewerPlatform.png");
       game.load.spritesheet("spellselect", "assets/Spell Select.png", 48, 48);
       game.load.image("mbottle", "assets/mana bottle.png");
       game.load.image("door", "assets/Door.png");

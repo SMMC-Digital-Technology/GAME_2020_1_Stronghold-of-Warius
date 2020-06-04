@@ -38,9 +38,8 @@
         game.physics.arcade.enable(zgoblin);
         zgoblin.body.gravity.y = 2000;
         zgoblin.body.collideWorldBounds = true;
-        zgoblin.body.setSize(20, 32, 0.5, 0.5);
-        zgoblin.health = 10;
-        zgoblin.animations.add('left', [0, 1, 2, 3, 4, 5], 6, true);
+        zgoblin.health = 7;
+        zgoblin.animations.add('left', [0, 1, 2, 3, 4], 6, true);
         zgoblin.animations.add('right', [6, 7, 8, 9, 10], 6, true);
 
         //group to collect platforms
@@ -115,9 +114,7 @@
         bossW.bulletKillType = Phaser.Weapon.KILL_WORLD_BOUNDS; //destroyed when off-screen
         bossW.bulletKillType = Phaser.Weapon.KILL_DISTANCE; //destroyed after a given distance
         //would be animated but the fps dropped a lot when they were animated (not animated for performance)
-        bossW.addBulletAnimation("left", [0, 1, 2, 3], 8, true);
         bossW.autofire = false;
-        bossW.fireAtSprite(player)
         bossW.bulletKillDistance = 500;
         bossW.bulletSpeed = 300; //pixels per second
         bossW.fireRate = 1000; //delay in milliseconds
@@ -126,7 +123,7 @@
 
       update: function() {
         //physics checks
-        game.physics.arcade.overlap(player, zgoblin, this.hitzgoblin);
+        game.physics.arcade.overlap(player, zgoblin, this.hitboss);
         game.physics.arcade.overlap(player, zgoblin, this.zgoblinwhack);
         game.physics.arcade.overlap(player, spikes, this.touchspike);
         game.physics.arcade.overlap(player, mbottle, this.gainmana)
@@ -143,10 +140,10 @@
         //zgoblin AI
         var distance = player.x - zgoblin.x;
         if (distance < 0 && distance > -300 && zgoblin.x > 0) {
-          zgoblin.body.velocity.x = -110;
+          zgoblin.body.velocity.x = -80;
           zgoblin.animations.play("left");
         } else if (distance > 0 && distance < 300 && zgoblin.x < game.world.width) {
-          zgoblin.body.velocity.x = 110;
+          zgoblin.body.velocity.x = 80;
           zgoblin.animations.play("right");
         } else {
           zgoblin.body.velocity.x = 0;
@@ -188,25 +185,17 @@
             player.invincible = false});
         }
 
-        if (bossdirection.facing == "left") {
-          bossW.addBulletAnimation("left", [0], 0, true); //doesn't look practical but it works, couldn't find another way to do it
-        } else if (bossdirection.facing == "right") {
-          bossW.addBulletAnimation("right", [4], 0, true);
-        }
-
         var distance = player.y - boss.y;
         if (distance < 0 && distance > -800 && boss.x > 0) {
           boss.body.velocity.y = -110;
           if (!boss.animations.currentAnim.isPlaying) {
           boss.animations.play("idle");
           bossdirection.facing = "idle";}
-          bossW.bulletSpeed = -300;
         } else if (distance > 0 && distance < 800 && boss.y < game.world.width) {
           boss.body.velocity.y = 110;
           if (!boss.animations.currentAnim.isPlaying)
           boss.animations.play("idle");
           bossdirection.facing = "idle";
-          bossW.bulletSpeed = -300;
         } else {
           boss.body.velocity.x = 0;
         }
@@ -309,12 +298,13 @@
 
       fire: function() {
         boss.animations.play("staff")
-        bossW.fire();
+        bossW.fireAtSprite(player);
       },
 
       raisedead: function() {
-        boss.animations.play("staff")
-        zgoblin = game.add.sprite(700, 400, "zgoblin");
+        if (zgoblin.alive == false) {
+          boss.animations.play("staff")
+          zgoblin.reset(300, 300)}
       },
 
       jenshot: function(player, other) {
@@ -327,6 +317,7 @@
       //zgoblin gets flung back and takes damage
       zgoblinwhack: function() {
         if (zgoblin.health == 0) {
+          mbottle.create(zgoblin.x, zgoblin.y, "mbottle");
           zgoblin.kill();
         } else if (zgoblin.body.touching.right && player.invincible == true) {
           zgoblin.x -= 70;
@@ -339,8 +330,10 @@
         }
       },
 
-      slimeshot: function(zgoblin, other) {
+
+      zgoblinshot: function(zgoblin, other) {
         if (zgoblin.health == 0) {
+          mbottle.create(zgoblin.x, zgoblin.y, "mbottle");
           zgoblin.kill();
         }
         other.kill();
