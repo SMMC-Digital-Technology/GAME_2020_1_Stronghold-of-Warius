@@ -300,7 +300,7 @@ var level1bossState = {
   },
 
   healboss: function(bossdirection) {
-    randNum = game.rnd.integerInRange(1, 4);
+    randNum = game.rnd.integerInRange(1, 2);
     if (randNum == 1 && bossdirection.facing == "left") {
       boss.health += 10;
       boss.animations.stop();
