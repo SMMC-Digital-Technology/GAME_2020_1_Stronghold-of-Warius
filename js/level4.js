@@ -139,6 +139,7 @@
 
         this.movePlayer(direction);
 
+        //heal the player
         if (game.global.spellSelected == 2 && xKey.isDown && direction.facing == "left" && game.global.mana >= 10 && game.time.now - game.global.timeCheck2 > 250) {
           level1State.removemana(10)
           level1State.gainhealth()
@@ -327,6 +328,7 @@
           if (boss.alive == true) {
             boss.animations.play("staff")
             zgoblin.reset(300, 300)}
+            zgoblin.health = 7;
           }
       },
 
