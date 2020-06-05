@@ -172,7 +172,10 @@ var level2bossState = {
       boss.y = 460;
       game.time.events.add(2000, () => {
         boss.frame = 12});
-      game.time.events.add(2000, () => {
+      game.time.events.add(2500, () => {
+        fire = game.add.sprite(0, 552, "fire");
+        fire.animations.add("blaze", [0, 1, 2], 8, true);
+        fire.animations.play("blaze");
         boss.y = 150;
         boss.health -= 1});
     } else {
