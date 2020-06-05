@@ -31,10 +31,24 @@ var level2State = {
     platforms = game.add.group();
     //enable physics on group
     platforms.enableBody = true;
-    platforms.create(1630, 480, "castleP");
-    platforms.create(1950, 350, "castleP");
+    platforms.create(1640, 440, "castleP");
+    platforms.create(1810, 140, "castleP");
+    platforms.create(1930, 310, "castleP");
+    platforms.create(2800, 440, "castleP");
     //immovable platforms
     platforms.setAll("body.immovable", true)
+
+    //add help text
+    game.add.text(450, 90, "C = change between spells (different", {font: '20px Arial', fill: '#ffffff'});
+    game.add.text(450, 130, "spells cost different amounts of mana)", {font: '20px Arial', fill: '#ffffff'});
+    game.add.text(3600, 170, "'Text will be put here", {font: '20px Arial', fill: '#ffffff'});
+    game.add.text(3600, 210, "about fighting a dragon", {font: '20px Arial', fill: '#ffffff'});
+    game.add.text(3600, 250, "and getting fireball'", {font: '20px Arial', fill: '#ffffff'});
+
+    //add door to get to the level2bossState
+    door = game.add.group();
+    door.enableBody = true;
+    door.create(3900, 538, "door");
 
     //group to collect spikes
     spikes = game.add.group();
@@ -50,6 +64,7 @@ var level2State = {
     spikes.create(1620, 590, "spikes");
     spikes.create(1660, 590, "spikes");
     spikes.create(1700, 590, "spikes");
+    spikes.create(1810, 130, "spikes");
     spikes.create(2280, 590, "spikes");
     spikes.create(2320, 590, "spikes");
     spikes.create(2360, 590, "spikes");
@@ -74,6 +89,17 @@ var level2State = {
     gobo2.animations.add('left', [0, 1, 2, 3], 3, true);
     gobo2.animations.add('right', [5, 6, 7, 8], 3, true);
     gobo2.frame = 4
+
+    gobo3 = game.add.sprite(1950, 200, "gobo");
+    game.physics.arcade.enable(gobo3);
+    gobo3.body.gravity.y = 2000;
+    gobo3.body.collideWorldBounds = true;
+    gobo3.body.setSize(48, 48, 0.5, 0.5);
+    gobo3.health = 2;
+    gobo3.animations.add('left', [0, 1, 2, 3], 3, true);
+    gobo3.animations.add('right', [5, 6, 7, 8], 3, true);
+    gobo3.frame = 4
+
     //spawn skeletons
     skeleton1 = game.add.sprite(1100, 200, "skeleton");
     game.physics.arcade.enable(skeleton1);
@@ -102,6 +128,11 @@ var level2State = {
     aGobo.animations.add('right', [7, 8], 3, true);
     aGobo.animations.add('draw', [1, 2, 3], 3, false);
     aGobo.frame = 4
+
+    //mana bottles
+    mbottle = game.add.group();
+    mbottle.enableBody = true;
+    mbottle.create(1870, 100, "mbottle");
 
     // create keys
     cursors = game.input.keyboard.createCursorKeys();
@@ -162,6 +193,10 @@ var level2State = {
     game.physics.arcade.overlap(player, gobo2, this.hitgobo);
     game.physics.arcade.overlap(player, gobo2, this.gobo2whack);
     game.physics.arcade.overlap(weapon.bullets, gobo2, this.gobo2shot);
+    game.physics.arcade.overlap(player, gobo3, this.hitgobo);
+    game.physics.arcade.overlap(player, gobo3, this.gobo3whack);
+    game.physics.arcade.overlap(weapon.bullets, gobo3, this.gobo3shot);
+    game.physics.arcade.collide(gobo3, platforms);
     game.physics.arcade.overlap(player, spikes, this.touchspike);
     game.physics.arcade.overlap(player, skeleton1, this.hitskeleton);
     game.physics.arcade.overlap(player, skeleton1, this.skeletonwhack);
@@ -172,6 +207,8 @@ var level2State = {
     game.physics.arcade.overlap(player, aGobo, this.hitaGobo);
     game.physics.arcade.overlap(player, aGobo, this.aGobowhack);
     game.physics.arcade.overlap(weapon.bullets, aGobo, this.aGoboshot);
+    game.physics.arcade.overlap(player, mbottle, this.gainmana)
+    game.physics.arcade.overlap(player, door, this.boss);
     //no floating through platforms
     hitPlatform = game.physics.arcade.collide(player, platforms);
 
@@ -251,6 +288,18 @@ var level2State = {
     } else {
       gobo2.body.velocity.x = 0;
     }
+
+    var distance = player.x - gobo3.x;
+    if (distance < 0 && distance > -350 && gobo3.x > 0) {
+      gobo3.body.velocity.x = -240;
+      gobo3.animations.play("left");
+    } else if (distance > 0 && distance < 350 && gobo3.x < game.world.width) {
+      gobo3.body.velocity.x = 240;
+      gobo3.animations.play("right");
+    } else {
+      gobo3.body.velocity.x = 0;
+    }
+
     //skeleton AI
     var distance = player.x - skeleton1.x;
     if (distance < 0 && distance > -800 && skeleton1.x > 0) {
@@ -332,6 +381,12 @@ var level2State = {
     manaBar.width = game.global.mana / game.global.manaM * 300;
   },
 
+  gainmana: function(player, other) {
+    other.kill();
+    game.global.mana = game.global.manaM
+    manaBar.width = game.global.mana / game.global.manaM * 300;
+  },
+
   changeSpell: function() {
     if (game.global.spellSelected == 1) {
       game.global.spellSelected = 2
@@ -405,6 +460,29 @@ var level2State = {
     }
     other.kill();
     gobo2.health -= 1;
+  },
+
+  //gobo3 gets flung back and takes damage
+  gobo3whack: function() {
+    if (gobo3.health == 0) {
+      gobo3.kill();
+    } else if (gobo3.body.touching.right && player.invincible == true) {
+      gobo3.x -= 70;
+      gobo3.body.velocity.y = -200
+      gobo3.health -= 1;
+    } else if (gobo3.body.touching.left && player.invincible == true) {
+      gobo3.x += 70;
+      gobo3.body.velocity.y = -200
+      gobo3.health -= 1;
+    }
+  },
+
+  gobo3shot: function(gobo3, other) {
+    if (gobo3.health == 0) {
+      gobo3.kill();
+    }
+    other.kill();
+    gobo3.health -= 1;
   },
 
   touchspike: function() { //if touching spikes take damage
@@ -522,4 +600,8 @@ var level2State = {
     other.kill();
     aGobo.health -= 1;
   },
+
+  boss: function() {
+    game.state.start("level2boss");
+  }
 };
