@@ -82,6 +82,14 @@
         // the player, except if the view would go outside the game world
         game.camera.follow(player);
 
+        //Set selected spell to 1
+        game.global.spellSelected = 1
+
+        //set delay variables to 0
+        game.global.timeCheck = 0;
+        game.global.timeCheck2 = 0;
+
+
         //create health bar
         healthBar = game.add.image(325, 25, "healthbar");
         healthBar.anchor.setTo(1, 0);
@@ -202,6 +210,7 @@
         if (cKey.isDown && game.time.now - game.global.timeCheck > 250) {
           this.changeSpell();
           game.global.timeCheck = game.time.now;
+          game.add.text(450, 90, game.global.spellSelected, {font: '20px Arial', fill: '#ffffff'});
         }
 
         var distance = player.y - boss.y;
