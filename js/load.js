@@ -21,6 +21,7 @@ var loadState = {
       game.load.spritesheet("darkMage", "assets/darkMage.png", 80, 80);
       game.load.spritesheet("warius", "assets/warius.png", 128, 128);
       game.load.spritesheet("dragon", "assets/dragon.png", 128, 128);
+      game.load.spritesheet("fire", "assets/fire.png", 200, 48);
       game.load.spritesheet("magebolt", "assets/Mage bolt.png", 8, 8);
       game.load.spritesheet("skeleton", "assets/Skeleton.png", 48, 48);
       game.load.image("manabar", "assets/Mana bar.png");
@@ -36,6 +37,7 @@ var loadState = {
       game.load.spritesheet("slimer", "assets/slime_red.png", 16, 16);
       game.load.spritesheet("Bslime", "assets/bigSlime.png", 64, 64);
       game.load.image("spikes", "assets/spikes.png");
+      game.load.image("Rspikes", "assets/RotatedSpikes.png");
       game.load.spritesheet("spellselect", "assets/Spell Select.png", 48, 48);
       game.load.image("mbottle", "assets/mana bottle.png");
       game.load.image("door", "assets/Door.png");

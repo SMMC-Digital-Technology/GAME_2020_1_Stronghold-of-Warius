@@ -20,6 +20,8 @@
         player.animations.add('hitR', [33, 4], 8, false);
         player.animations.add('leftBolt', [18, 19, 4], 8, false);
         player.animations.add('rightBolt', [16, 17, 0], 8, false);
+        player.animations.add('leftHeal', [34, 35, 36, 4], 8, false);
+        player.animations.add('rightHeal', [20, 21, 22, 0], 8, false);
         player.invincible = false;
 
         boss = game.add.sprite(708, 550, "warius");
@@ -31,7 +33,8 @@
         boss.animations.add("staff", [7, 8, 9, 10, 11], 13, false);
         boss.animations.add("chair", [4, 5, 6], 9, false);
         game.time.events.repeat(Phaser.Timer.SECOND * 5, 100, this.fire, this);
-        game.time.events.repeat(Phaser.Timer.SECOND * 15, 100, this.raisedead, this);
+        game.time.events.repeat(Phaser.Timer.SECOND * 14, 100, this.raisedead, this);
+        game.time.events.repeat(Phaser.Timer.SECOND * 21, 100, this.spikeplace, this);
 
         //spawn undead
         zgoblin = game.add.sprite(400, 200, "zgoblin");
@@ -61,8 +64,6 @@
         //mana bottles
         mbottle = game.add.group();
         mbottle.enableBody = true;
-        mbottle.create(90, 200, "mbottle");
-        mbottle.create(710, 200, "mbottle");
 
         // create keys
         cursors = game.input.keyboard.createCursorKeys();
@@ -137,6 +138,19 @@
 
         this.movePlayer(direction);
 
+        //heal the player
+        if (game.global.spellSelected == 2 && xKey.isDown && direction.facing == "left" && game.global.mana >= 10 && game.time.now - game.global.timeCheck2 > 250) {
+          level1State.removemana(10)
+          level1State.gainhealth()
+          player.animations.play("leftHeal");
+          game.global.timeCheck2 = game.time.now
+        } else if (game.global.spellSelected == 2 && xKey.isDown && direction.facing == "right" && game.global.mana >= 10 && game.time.now - game.global.timeCheck2 > 250) {
+          level1State.removemana(10)
+          level1State.gainhealth()
+          player.animations.play("rightHeal");
+          game.global.timeCheck2 = game.time.now
+        }
+
         //zgoblin AI
         var distance = player.x - zgoblin.x;
         if (distance < 0 && distance > -300 && zgoblin.x > 0) {
@@ -156,17 +170,16 @@
         }
 
         //x to shoot magebolt
-        if (xKey.isDown && direction.facing == "left") {
-          weapon.addBulletAnimation("wiggleL", [3], 0);
+        if (game.global.spellSelected == 1 && xKey.isDown && direction.facing == "left") {
+          weapon.addBulletAnimation("wiggleL", [3, 4, 5], 8, true);
           weapon.bulletSpeed = -500;
           player.animations.play("leftBolt");
-        } else if (xKey.isDown && direction.facing == "right") {
-          weapon.addBulletAnimation("wiggleR", [0], 0); //one frame to reduce fps drop (so small hard to see anyway)
+        } else if (game.global.spellSelected == 1 && xKey.isDown && direction.facing == "right") {
+          weapon.addBulletAnimation("wiggleR", [0, 1, 2], 8, true);
           player.animations.play("rightBolt");
           weapon.bulletSpeed = 500;
         }
-
-        if (fireButton.isDown && game.global.mana > 0)
+        if (game.global.spellSelected == 1 && fireButton.isDown && game.global.mana > 0)
         {
             weapon.fire();
         }
@@ -183,6 +196,12 @@
           player.invincible = true;
           game.time.events.add(600, () => {
             player.invincible = false});
+        }
+
+        //c to change spell
+        if (cKey.isDown && game.time.now - game.global.timeCheck > 250) {
+          this.changeSpell();
+          game.global.timeCheck = game.time.now;
         }
 
         var distance = player.y - boss.y;
@@ -297,15 +316,19 @@
       },
 
       fire: function() {
-        boss.animations.play("staff")
-        bossW.fireAtSprite(player);
+        if (boss.alive == true) {
+          boss.animations.play("staff")
+          bossW.fireAtSprite(player);
+        }
       },
 
       raisedead: function() {
         if (zgoblin.alive == false) {
-          boss.animations.play("staff")
-          zgoblin.reset(300, 300)}
-          zgoblin.health = 7;
+          if (boss.alive == true) {
+            boss.animations.play("staff")
+            zgoblin.reset(500, 300)}
+            zgoblin.health = 7;
+          }
       },
 
       jenshot: function(player, other) {
@@ -331,6 +354,22 @@
         }
       },
 
+      changeSpell: function() {
+        if (game.global.spellSelected == 1) {
+          game.global.spellSelected = 2
+        } else if (game.global.spellSelected == 2) {
+          game.global.spellSelected = 1
+        }
+        if (game.global.spellSelected == 1) {
+          spellselect.frame = 3
+        } else if (game.global.spellSelected == 2) {
+          spellselect.frame = 0
+        } else if (game.global.spellSelected == 3) {
+          spellselect.frame = 1
+        } else if (game.global.spellSelected == 4) {
+          spellselect.frame = 2
+        }
+      },
 
       zgoblinshot: function(zgoblin, other) {
         if (zgoblin.health == 0) {
@@ -339,6 +378,13 @@
         }
         other.kill();
         zgoblin.health -= 1;
+      },
+
+      spikeplace: function() {
+        spikes.kill();
+        for (let i = 0; i < 10; i++) {
+          spike = spikes.create(Math.random() * 600, 300, "spike");
+        }
       },
 
 };
