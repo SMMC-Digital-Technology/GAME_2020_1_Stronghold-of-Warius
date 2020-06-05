@@ -34,7 +34,7 @@
         boss.animations.add("chair", [4, 5, 6], 9, false);
         game.time.events.repeat(Phaser.Timer.SECOND * 5, 100, this.fire, this);
         game.time.events.repeat(Phaser.Timer.SECOND * 14, 100, this.raisedead, this);
-        game.time.events.repeat(Phaser.Timer.SECOND * 1, 100, this.spikeplace, this);
+        game.time.events.repeat(Phaser.Timer.SECOND * 21, 100, this.spikeplace, this);
 
         //spawn undead
         zgoblin = game.add.sprite(400, 200, "zgoblin");
