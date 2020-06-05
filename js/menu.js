@@ -47,7 +47,7 @@ var menuState = {
     game.state.start("level2");
   },
   start3: function() {
-    game.state.start("level1boss");
+    game.state.start("level2boss");
   },
   start4: function() {
     game.state.start("level4")
