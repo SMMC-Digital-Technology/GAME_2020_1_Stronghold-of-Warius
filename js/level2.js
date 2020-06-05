@@ -128,7 +128,7 @@ var level2State = {
     skeleton1.body.collideWorldBounds = true;
     skeleton1.body.setSize(36, 48, 0.5, 0.5);
     skeleton1.health = 3;
-    skeleton1.animations.add('left', [0, 1, 2, 3, 4, 3], 3, true);
+    skeleton1.animations.add('left', [0, 1, 2, 3, 4, 3], 10, true);
     skeleton1.frame = 0
 
     skeleton2 = game.add.sprite(2760, 200, "skeleton");
