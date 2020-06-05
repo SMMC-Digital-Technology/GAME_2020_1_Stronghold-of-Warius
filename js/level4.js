@@ -33,7 +33,8 @@
         boss.animations.add("staff", [7, 8, 9, 10, 11], 13, false);
         boss.animations.add("chair", [4, 5, 6], 9, false);
         game.time.events.repeat(Phaser.Timer.SECOND * 5, 100, this.fire, this);
-        game.time.events.repeat(Phaser.Timer.SECOND * 15, 100, this.raisedead, this);
+        game.time.events.repeat(Phaser.Timer.SECOND * 14, 100, this.raisedead, this);
+        game.time.events.repeat(Phaser.Timer.SECOND * 1, 100, this.spikeplace, this);
 
         //spawn undead
         zgoblin = game.add.sprite(400, 200, "zgoblin");
@@ -63,8 +64,6 @@
         //mana bottles
         mbottle = game.add.group();
         mbottle.enableBody = true;
-        mbottle.create(90, 200, "mbottle");
-        mbottle.create(710, 200, "mbottle");
 
         // create keys
         cursors = game.input.keyboard.createCursorKeys();
@@ -327,7 +326,7 @@
         if (zgoblin.alive == false) {
           if (boss.alive == true) {
             boss.animations.play("staff")
-            zgoblin.reset(300, 300)}
+            zgoblin.reset(500, 300)}
             zgoblin.health = 7;
           }
       },
@@ -379,6 +378,13 @@
         }
         other.kill();
         zgoblin.health -= 1;
+      },
+
+      spikeplace: function() {
+        spikes.kill();
+        for (let i = 0; i < 10; i++) {
+          spike = spikes.create(Math.random() * 600, 300, "spike");
+        }
       },
 
 };
