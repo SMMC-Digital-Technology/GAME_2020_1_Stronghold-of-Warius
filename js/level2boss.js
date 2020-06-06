@@ -31,13 +31,15 @@ var level2bossState = {
     player.animations.add('hitR', [33, 4], 8, false);
     player.animations.add('leftBolt', [18, 19, 4], 8, false);
     player.animations.add('rightBolt', [16, 17, 0], 8, false);
+    player.animations.add('leftHeal', [34, 35, 36, 4], 8, false);
+    player.animations.add('rightHeal', [20, 21, 22, 0], 8, false);
     player.invincible = false;
 
     boss = game.add.sprite(700, 150, "dragon");
     game.physics.arcade.enable(boss);
     boss.body.gravity.y = 0;
     boss.body.collideWorldBounds = true;
-    boss.health = 39;
+    boss.health = 29;
     boss.animations.add("left", [1, 2, 3, 4, 5, 0], 12, false);
     boss.animations.add("right", [6, 7, 8, 9, 10, 11], 12, false);
     boss.animations.add("fireL", [12, 12, 2], 8, false);
@@ -58,6 +60,10 @@ var level2bossState = {
     platforms.create(650, 450, "castleP");
     //immovable platforms
     platforms.setAll("body.immovable", true)
+
+    splatform = game.add.sprite(650, 450, "castleP") //special platform taht can't be destroyed by boss
+    game.physics.arcade.enable(splatform);
+    splatform.body.immovable = true;
 
 
     //group to collect spikes
@@ -88,6 +94,9 @@ var level2bossState = {
     // focuses the player in the camera view and forces the camera to follow
     // the player, except if the view would go outside the game world
     game.camera.follow(player);
+
+    //Set selected spell to 1
+    game.global.spellSelected = 1;
 
     //create health bar
     healthBar = game.add.image(325, 25, "healthbar");
@@ -140,6 +149,7 @@ var level2bossState = {
     game.physics.arcade.overlap(boss, platforms, this.destroyplatform)
     //no floating through platforms
     hitPlatform = game.physics.arcade.collide(player, platforms);
+    hitsPlatform = game.physics.arcade.collide(player, splatform);
 
     this.movePlayer(direction);
 
@@ -147,23 +157,44 @@ var level2bossState = {
     if (cursors.up.isDown && player.body.touching.down && hitPlatform) {
       player.body.velocity.y = -850;
     }
+    //jump on special platform
+    if (cursors.up.isDown && player.body.touching.down && hitsPlatform) {
+      player.body.velocity.y = -850;
+    }
+
+    //c to change spell
+    if (cKey.isDown && game.time.now - game.global.timeCheck > 250) {
+      this.changeSpell();
+      game.global.timeCheck = game.time.now;
+    }
 
     //x to shoot magebolt
-    if (xKey.isDown && direction.facing == "left") {
+    if (game.global.spellSelected == 1 && xKey.isDown && direction.facing == "left") {
       weapon.addBulletAnimation("wiggleL", [3], 0);
       weapon.bulletSpeed = -500;
       player.animations.play("leftBolt");
-    } else if (xKey.isDown && direction.facing == "right") {
+    } else if (game.global.spellSelected == 1 && xKey.isDown && direction.facing == "right") {
       weapon.addBulletAnimation("wiggleR", [0], 0); //one frame to reduce fps drop (so small hard to see anyway)
       player.animations.play("rightBolt");
       weapon.bulletSpeed = 500;
     }
 
-    if (fireButton.isDown && game.global.mana > 0)
+    if (game.global.spellSelected == 1 && fireButton.isDown && game.global.mana > 0)
     {
         weapon.fire();
     }
 
+    if (game.global.spellSelected == 2 && xKey.isDown && direction.facing == "left" && game.global.mana >= 10 && game.time.now - game.global.timeCheck2 > 250) {
+      level1State.removemana(10)
+      level1State.gainhealth()
+      player.animations.play("leftHeal");
+      game.global.timeCheck2 = game.time.now
+    } else if (game.global.spellSelected == 2 && xKey.isDown && direction.facing == "right" && game.global.mana >= 10 && game.time.now - game.global.timeCheck2 > 250) {
+      level1State.removemana(10)
+      level1State.gainhealth()
+      player.animations.play("rightHeal");
+      game.global.timeCheck2 = game.time.now
+    }
 
     //z to swing stick(attack)
     if (zKey.isDown && direction.facing == "left") {
@@ -178,7 +209,7 @@ var level2bossState = {
         player.invincible = false});
     }
 
-    if (boss.health == 29) {
+    if (boss.health == 19) {
       boss.x = 650;
       boss.y = 460;
       game.time.events.add(2000, () => {
@@ -186,8 +217,12 @@ var level2bossState = {
       game.time.events.add(2500, () => {
         fire.reset(0, 552);
         boss.y = 150;
-        boss.health -= 1});
+        if (boss.health == 19) {
+          boss.health -= 1;
+        }
+        });
     } else if (boss.health < 8) {
+      fire.kill();
       if (fireanim == 1) {
         boss.frame = 14;
       } else if (fireanim == 0) {
@@ -282,6 +317,24 @@ var level2bossState = {
   destroyplatform: function(boss, other) {
     other.kill()
   },
+
+  changeSpell: function() {
+    if (game.global.spellSelected == 1) {
+      game.global.spellSelected = 2
+    } else if (game.global.spellSelected == 2) {
+      game.global.spellSelected = 1
+    }
+    if (game.global.spellSelected == 1) {
+      spellselect.frame = 3
+    } else if (game.global.spellSelected == 2) {
+      spellselect.frame = 0
+    } else if (game.global.spellSelected == 3) {
+      spellselect.frame = 1
+    } else if (game.global.spellSelected == 4) {
+      spellselect.frame = 2
+    }
+  },
+
 
   bossshot: function(boss, other) {
     if (boss.health == 0) {
