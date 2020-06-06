@@ -34,7 +34,7 @@
         boss.animations.add("chair", [4, 5, 6], 9, false);
         game.time.events.repeat(Phaser.Timer.SECOND * 5, 100, this.fire, this);
         game.time.events.repeat(Phaser.Timer.SECOND * 14, 100, this.raisedead, this);
-        game.time.events.repeat(Phaser.Timer.SECOND * 21, 100, this.spikeplace, this);
+        game.time.events.repeat(Phaser.Timer.SECOND * 12, 100, this.batspawn, this);
 
         //spawn undead
         zgoblin = game.add.sprite(400, 200, "zgoblin");
@@ -45,6 +45,14 @@
         zgoblin.animations.add('left', [0, 1, 2, 3, 4], 6, true);
         zgoblin.animations.add('right', [6, 7, 8, 9, 10], 6, true);
 
+        //bat
+        bat1 = game.add.sprite(400, 100, "bat");
+        game.physics.arcade.enable(bat1);
+        bat1.body.collideWorldBounds = true;
+        bat1.body.setSize(20, 32, 0.5, 0.5);
+        bat1.animations.add('flyR', [0, 1, 2, 3], 8, true);
+        bat1.animations.add('flyL', [4, 5, 6, 7], 8, true);
+
         //group to collect platforms
         platforms = game.add.group();
         //enable physics on group
@@ -52,14 +60,9 @@
         //immovable platforms
         platforms.setAll("body.immovable", true)
 
-
-        //group to collect spikes
-        spikes = game.add.group();
-        //immovable spikes
-        spikes.setAll("body.immovable", true)
-        //enable physics on group
-        spikes.enableBody = true;
-        //make the spikes
+        spike = game.add.sprite(400, 590, "spikes");
+        spike.enableBody = true;
+        game.physics.arcade.enable(spike);
 
         //mana bottles
         mbottle = game.add.group();
@@ -134,7 +137,10 @@
         //physics checks
         game.physics.arcade.overlap(player, zgoblin, this.hitboss);
         game.physics.arcade.overlap(player, zgoblin, this.zgoblinwhack);
-        game.physics.arcade.overlap(player, spikes, this.touchspike);
+        game.physics.arcade.overlap(player, bat1, this.hitslime);
+        game.physics.arcade.overlap(player, bat1, this.batwhack);
+        game.physics.arcade.overlap(weapon.bullets, bat1, this.batshot);
+        game.physics.arcade.overlap(player, spike, this.touchspike);
         game.physics.arcade.overlap(player, mbottle, this.gainmana)
         game.physics.arcade.overlap(player, boss, this.hitboss);
         game.physics.arcade.overlap(player, boss, this.bosswhack);
@@ -145,6 +151,11 @@
         hitPlatform = game.physics.arcade.collide(player, platforms);
 
         this.movePlayer(direction);
+
+        spike.body.velocity.x = -50
+        if (spike.x < 10) {
+          spike.x = 800
+        }
 
         //heal the player
         if (game.global.spellSelected == 2 && xKey.isDown && direction.facing == "left" && game.global.mana >= 10 && game.time.now - game.global.timeCheck2 > 250) {
@@ -157,6 +168,26 @@
           level1State.gainhealth()
           player.animations.play("rightHeal");
           game.global.timeCheck2 = game.time.now
+        }
+
+        //bat AI
+        var distance = player.x - bat1.x;
+        if (distance < 0 && distance > -600 && bat1.x > 0) {
+          bat1.body.velocity.x = -100;
+          bat1.animations.play("flyL");
+        } else if (distance > 0 && distance < 600 && bat1.x) {
+          bat1.body.velocity.x = 100;
+          bat1.animations.play("flyR");
+        } else {
+          bat1.body.velocity.x = 0;
+        }
+        var distance = player.y - bat1.y;
+        if (distance < 0 && distance > -600 && bat1.x > 0) {
+          bat1.body.velocity.y = -100;
+        } else if (distance > 0 && distance < 600 && bat1.y) {
+          bat1.body.velocity.y = 100;
+        } else {
+          bat1.body.velocity.y = 0;
         }
 
         //zgoblin AI
@@ -340,6 +371,15 @@
           }
       },
 
+      batspawn: function() {
+        if (zgoblin.alive == false) {
+          if (boss.alive == true) {
+            boss.animations.play("staff")
+            bat1.reset(400, 100)
+          }
+        }
+      },
+
       jenshot: function(player, other) {
         if (game.global.health == 0) {
           player.kill();
@@ -347,6 +387,7 @@
         other.kill();
         level1bossState.removehealth(2)
       },
+
       //zgoblin gets flung back and takes damage
       zgoblinwhack: function() {
         if (zgoblin.health == 0) {
@@ -389,11 +430,32 @@
         zgoblin.health -= 1;
       },
 
-      spikeplace: function() {
-        spikes.kill();
-        for (let i = 0; i < 10; i++) {
-          spike = spikes.create(Math.random() * 600, 300, "spike");
+      //bat takes damage
+      batwhack: function() {
+        if (bat1.body.touching.right && player.invincible == true) {
+          bat1.kill();
+        } else if (bat1.body.touching.left && player.invincible == true) {
+          bat1.kill();
         }
+      },
+
+      batshot: function(bat1, other) {
+        bat1.kill();
+      },
+
+      hitslime: function() { //if touching bat take damage
+        if (player.body.touching.right && !player.invincible) {
+          player.x -= 30;
+          player.animations.stop();
+          player.animations.play("hitL");
+        } else if (player.body.touching.left && !player.invincible) {
+          player.x += 30;
+          player.animations.stop();
+          player.animations.play("hitR");
+        } else if (player.body.touching.down && !player.invincible) {
+          player.body.velocity.y = -800;
+        }
+        level1State.removehealth(1)
       },
 
 };
