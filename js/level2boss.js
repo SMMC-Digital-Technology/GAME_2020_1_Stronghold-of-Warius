@@ -37,11 +37,15 @@ var level2bossState = {
     game.physics.arcade.enable(boss);
     boss.body.gravity.y = 0;
     boss.body.collideWorldBounds = true;
-    boss.health = 38;
+    boss.health = 39;
     boss.animations.add("left", [1, 2, 3, 4, 5, 0], 12, false);
     boss.animations.add("right", [6, 7, 8, 9, 10, 11], 12, false);
     boss.animations.add("fireL", [12, 12, 2], 8, false);
     boss.animations.add("fireR", [13, 13, 7], 8, false);
+    boss.animations.add("crawlL", [16, 17], 8, false);
+    boss.animations.add("crawlR", [18, 19], 8, false);
+    boss.animations.add("cfireL", [20, 16], 8, false);
+    boss.animations.add("cfireR", [21, 18], 8, false);
     boss.frame = 0;
 
     //group to collect platforms
@@ -68,6 +72,12 @@ var level2bossState = {
     mbottle = game.add.group();
     mbottle.enableBody = true;
     game.time.events.repeat(Phaser.Timer.SECOND * 20, 100, this.manaspawn, this);
+
+    fire = game.add.sprite(0, 552, "fire");
+    game.physics.arcade.enable(fire);
+    fire.animations.add("blaze", [0, 1, 2], 8, true);
+    fire.animations.play("blaze");
+    fire.kill();
 
     // create keys
     cursors = game.input.keyboard.createCursorKeys();
@@ -122,11 +132,12 @@ var level2bossState = {
 
   update: function() {
     //physics checks
-    game.physics.arcade.overlap(player, spikes, this.touchspike);
     game.physics.arcade.overlap(player, mbottle, this.gainmana)
     game.physics.arcade.overlap(player, boss, this.hitboss);
     game.physics.arcade.overlap(weapon.bullets, boss, this.bossshot);
     game.physics.arcade.overlap(bossW.bullets, player, this.jenshot);
+    game.physics.arcade.overlap(player, fire, this.hitboss);
+    game.physics.arcade.overlap(boss, platforms, this.destroyplatform)
     //no floating through platforms
     hitPlatform = game.physics.arcade.collide(player, platforms);
 
@@ -167,17 +178,40 @@ var level2bossState = {
         player.invincible = false});
     }
 
-    if (boss.health == 35) {
+    if (boss.health == 29) {
       boss.x = 650;
       boss.y = 460;
       game.time.events.add(2000, () => {
         boss.frame = 12});
       game.time.events.add(2500, () => {
-        fire = game.add.sprite(0, 552, "fire");
-        fire.animations.add("blaze", [0, 1, 2], 8, true);
-        fire.animations.play("blaze");
+        fire.reset(0, 552);
         boss.y = 150;
         boss.health -= 1});
+    } else if (boss.health < 8) {
+      if (fireanim == 1) {
+        boss.frame = 14;
+      } else if (fireanim == 0) {
+        boss.frame = 15;
+      }
+      boss.body.velocity.y = 150;
+      if (boss.body.collideWorldBounds) {
+        var distance = player.x - boss.x;
+        if (distance < 0 && distance > -800 && boss.x > 0) {
+          boss.body.velocity.x = -80;
+          fireanim = 3;
+          if (!boss.animations.currentAnim.isPlaying) {
+            boss.animations.play("crawlL");
+            bossdirection.facing = "left";}
+          } else if (distance > 0 && distance < 800 && boss.x < game.world.width) {
+            boss.body.velocity.x = 80;
+            fireanim = 4;
+            if (!boss.animations.currentAnim.isPlaying)
+            boss.animations.play("crawlR");
+            bossdirection.facing = "right";
+          } else {
+            boss.body.velocity.x = 0;
+          }
+        }
     } else {
       var distance = player.x - boss.x;
       if (distance < 0 && distance > -800 && boss.x > 0) {
@@ -196,7 +230,6 @@ var level2bossState = {
         boss.body.velocity.x = 0;
       }
     }
-
   },
 
   // moves the player with the cursors
@@ -246,6 +279,9 @@ var level2bossState = {
     level2bossState.removehealth(1)
   },
 
+  destroyplatform: function(boss, other) {
+    other.kill()
+  },
 
   bossshot: function(boss, other) {
     if (boss.health == 0) {
@@ -259,16 +295,7 @@ var level2bossState = {
     boss.health -= 1;
   },
 
-  touchspike: function() { //if touching spikes take damage
-    if (player.body.touching.right && !player.invincible) {
-      player.x -= 30;
-      player.animations.stop();
-      player.animations.play("hitL");
-    } else if (player.body.touching.left && !player.invincible) {
-      player.x += 30;
-      player.animations.stop();
-      player.animations.play("hitR");
-    }
+  touchfire: function() { //if touching fire take damage
     player.body.velocity.y = -600;
     level2bossState.removehealth(1)
   },
@@ -292,8 +319,11 @@ var level2bossState = {
       boss.animations.play("fireL")
     } else if (fireanim == 0) {
       boss.animations.play("fireR")
+    } else if (fireanim == 3) {
+      boss.animations.play("cfireL")
+    } else if (fireanim == 4) {
+      boss.animations.play("cfireR")
     }
-
   },
 
   manaspawn: function() {
