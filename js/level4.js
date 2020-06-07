@@ -241,7 +241,6 @@
         if (cKey.isDown && game.time.now - game.global.timeCheck > 250) {
           this.changeSpell();
           game.global.timeCheck = game.time.now;
-          game.add.text(450, 90, game.global.spellSelected, {font: '20px Arial', fill: '#ffffff'});
         }
 
         var distance = player.y - boss.y;
