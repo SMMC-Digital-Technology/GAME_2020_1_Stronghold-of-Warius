@@ -24,12 +24,6 @@ var menuState = {
     var text3 = game.add.text(button3.x, button3.y, "Level 3", {fill: "#ffffff"});
     text3.anchor.setTo(0.5, 0.5);
 
-    button4 = game.add.button(400, 400, "button");
-    button4.anchor.setTo(0.5, 0.5);
-    button4.onInputUp.add(this.start4);
-    var text4 = game.add.text(button4.x, button4.y, "Level 4", {fill: "#ffffff"});
-    text4.anchor.setTo(0.5, 0.5);
-
     if (game.global.cyclespeech == 0)  {
       game.add.text(180, 120, "'Oh Dagnabbit, the goblin king Warius has stolen my powers", {font: '20px Arial'});
       game.add.text(180, 150, "to get to his castle I need to head to the sewers, I hope", {font: '20px Arial'});
@@ -37,6 +31,10 @@ var menuState = {
     } else if (game.global.cyclespeech == 1) {
       game.add.text(180, 120, "'Phew that was tough, well I'm at the castle now. I heard", {font: '20px Arial'});
       game.add.text(180, 150, "roaring coming from the inside, sounded like a dragon.'", {font: '20px Arial'});
+    } else if (game.global.cyclespeech == 2) {
+      game.add.text(180, 120, "'This is it, the throne room. The goblin king Warius has", {font: '20px Arial'});
+      game.add.text(180, 150, "my deadliest power, necromancy. I must get it back before", {font: '20px Arial'});
+      game.add.text(180, 180, "he becomes to powerful.'", {font: '20px Arial'});
     }
   },
 
