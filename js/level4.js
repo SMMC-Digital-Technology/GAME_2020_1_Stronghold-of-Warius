@@ -22,6 +22,8 @@
         player.animations.add('rightBolt', [16, 17, 0], 8, false);
         player.animations.add('leftHeal', [34, 35, 36, 4], 8, false);
         player.animations.add('rightHeal', [20, 21, 22, 0], 8, false);
+        player.animations.add("rightfire", [23, 24, 0], 8, false);
+        player.animations.add("leftfire", [25, 26, 4], 8, false);
         player.invincible = false;
 
         boss = game.add.sprite(708, 550, "warius");
@@ -122,6 +124,18 @@
 
         fireButton = this.input.keyboard.addKey(Phaser.KeyCode.X);
 
+
+        fireball = game.add.weapon(10, "fireball");
+        fireball.bulletKillType = Phaser.Weapon.KILL_WORLD_BOUNDS; //destroyed when off-screen
+        fireball.bulletKillType = Phaser.Weapon.KILL_DISTANCE; //destroyed after a given distance
+        fireball.bulletKillDistance = 700;
+        fireball.bulletSpeed = 400; //pixels per second
+        fireball.fireRate = 250; //delay in milliseconds
+        fireball.trackSprite(player, 40, 40, true);
+        fireball.onFire.add(function() {
+          level1State.removemana(5)
+        });
+
         bossW = game.add.weapon(5, "lazer");
         bossW.bulletKillType = Phaser.Weapon.KILL_WORLD_BOUNDS; //destroyed when off-screen
         bossW.bulletKillType = Phaser.Weapon.KILL_DISTANCE; //destroyed after a given distance
@@ -140,13 +154,16 @@
         game.physics.arcade.overlap(player, bat1, this.hitslime);
         game.physics.arcade.overlap(player, bat1, this.batwhack);
         game.physics.arcade.overlap(weapon.bullets, bat1, this.batshot);
+        game.physics.arcade.overlap(fireball.bullets, bat1, this.batshot);
         game.physics.arcade.overlap(player, spike, this.touchspike);
         game.physics.arcade.overlap(player, mbottle, this.gainmana)
         game.physics.arcade.overlap(player, boss, this.hitboss);
         game.physics.arcade.overlap(player, boss, this.bosswhack);
         game.physics.arcade.overlap(weapon.bullets, boss, this.bossshot);
+        game.physics.arcade.overlap(fireball.bullets, boss, this.bossburn)
         game.physics.arcade.overlap(bossW.bullets, player, this.jenshot);
         game.physics.arcade.overlap(weapon.bullets, zgoblin, this.zgoblinshot);
+        game.physics.arcade.overlap(fireball.bullets, zgoblin, this.zgoblinburn);
         //no floating through platforms
         hitPlatform = game.physics.arcade.collide(player, platforms);
 
@@ -221,6 +238,21 @@
         if (game.global.spellSelected == 1 && fireButton.isDown && game.global.mana > 0)
         {
             weapon.fire();
+        }
+
+        //x to shoot magebolt
+        if (game.global.spellSelected == 3 && xKey.isDown && direction.facing == "left") {
+          fireball.addBulletAnimation("wiggleL", [3, 4, 5], 8, true);
+          fireball.bulletSpeed = -500;
+          player.animations.play("leftfire");
+        } else if (game.global.spellSelected == 3 && xKey.isDown && direction.facing == "right") {
+          fireball.addBulletAnimation("wiggleR", [0, 1, 2], 8, true);
+          player.animations.play("rightfire");
+          fireball.bulletSpeed = 500;
+        }
+        if (game.global.spellSelected == 3 && fireButton.isDown && game.global.mana >= 6)
+        {
+            fireball.fire();
         }
 
 
@@ -322,11 +354,19 @@
       },
 
       bossshot: function(boss, other) {
-        if (boss.health == 0) {
+        if (boss.health <= 0) {
           boss.kill();
         }
         other.kill();
         boss.health -= 1;
+      },
+
+      bossburn: function(boss, other) {
+        if (boss.health <= 0) {
+          boss.kill();
+        }
+        other.kill();
+        boss.health -= 5;
       },
 
       touchspike: function() { //if touching spikes take damage
@@ -408,6 +448,8 @@
         if (game.global.spellSelected == 1) {
           game.global.spellSelected = 2
         } else if (game.global.spellSelected == 2) {
+          game.global.spellSelected = 3
+        } else if (game.global.spellSelected == 3 ) {
           game.global.spellSelected = 1
         }
         if (game.global.spellSelected == 1) {
@@ -415,19 +457,28 @@
         } else if (game.global.spellSelected == 2) {
           spellselect.frame = 0
         } else if (game.global.spellSelected == 3) {
-          spellselect.frame = 1
+          spellselect.frame = 2
         } else if (game.global.spellSelected == 4) {
           spellselect.frame = 2
         }
       },
 
       zgoblinshot: function(zgoblin, other) {
-        if (zgoblin.health == 0) {
+        if (zgoblin.health <= 0) {
           mbottle.create(zgoblin.x, zgoblin.y, "mbottle");
           zgoblin.kill();
         }
         other.kill();
         zgoblin.health -= 1;
+      },
+
+      zgoblinburn: function(zgoblin, other) {
+        if (zgoblin.health <= 0) {
+          mbottle.create(zgoblin.x, zgoblin.y, "mbottle");
+          zgoblin.kill();
+        }
+        other.kill();
+        zgoblin.health -= 5;
       },
 
       //bat takes damage
