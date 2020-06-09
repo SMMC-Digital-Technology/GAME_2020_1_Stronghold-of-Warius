@@ -9,7 +9,7 @@ var menuState = {
     button = game.add.button(400, 250, 'button');
     button.anchor.setTo(0.5, 0.5);
     button.onInputUp.add(this.start1);
-    var text = game.add.text(button.x, button.y, 'Level 1', {fill: '#ffffff'});
+    var text = game.add.text(button.x, button.y, 'win screen', {fill: '#ffffff'});
     text.anchor.setTo(0.5, 0.5);
 
     button2 = game.add.button(400, game.world.centerY, "button");
@@ -39,7 +39,7 @@ var menuState = {
   },
 
   start1: function() {
-    game.state.start("level1");
+    game.state.start("winscreen");
   },
   start2: function() {
     game.state.start("level2");
