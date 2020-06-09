@@ -265,7 +265,7 @@ var level2State = {
       game.global.timeCheck = game.time.now;
     }
 
-    //x to shoot magebolt
+    //x to shoot magebolt id spell selected is 1
     if (game.global.spellSelected == 1 && xKey.isDown && direction.facing == "left") {
       weapon.addBulletAnimation("wiggleL", [3, 4, 5], 8, true);
       weapon.bulletSpeed = -500;
@@ -279,7 +279,7 @@ var level2State = {
     {
         weapon.fire();
     }
-
+    //heal the player if spell selected is 2
     if (game.global.spellSelected == 2 && xKey.isDown && direction.facing == "left" && game.global.mana >= 10 && game.time.now - game.global.timeCheck2 > 250) {
       level1State.removemana(10)
       level1State.gainhealth()
@@ -435,7 +435,7 @@ var level2State = {
     }
 
   },
-  removehealth: function(lives) { //remove health
+  removehealth: function(lives) { //remove health and resize healthBar
     if (!player.invincible) {
       game.global.health -= lives;
     }
@@ -445,19 +445,19 @@ var level2State = {
       healthBar.width = game.global.health / game.global.healthM * 300;
     }
   },
-
+  //remove mana and resize manaBar
   removemana: function(mana) {
     if (game.global.mana > 0)
     game.global.mana -= mana;
     manaBar.width = game.global.mana / game.global.manaM * 300;
   },
-
+  //add mana and resize manaBar
   gainmana: function(player, other) {
     other.kill();
     game.global.mana = game.global.manaM
     manaBar.width = game.global.mana / game.global.manaM * 300;
   },
-
+  //change the spell that will be used
   changeSpell: function() {
     if (game.global.spellSelected == 1) {
       game.global.spellSelected = 2
@@ -501,7 +501,7 @@ var level2State = {
       gobo1.health -= 1;
     }
   },
-
+  //shoot gobo
   gobo1shot: function(gobo1, other) {
     if (gobo1.health == 0) {
       gobo1.kill();
@@ -524,7 +524,7 @@ var level2State = {
       gobo2.health -= 1;
     }
   },
-
+  //shoot gobo
   gobo2shot: function(gobo2, other) {
     if (gobo2.health == 0) {
       gobo2.kill();
@@ -547,7 +547,7 @@ var level2State = {
       gobo3.health -= 1;
     }
   },
-
+  //shoot gobo
   gobo3shot: function(gobo3, other) {
     if (gobo3.health == 0) {
       gobo3.kill();
@@ -570,7 +570,7 @@ var level2State = {
       gobo4.health -= 1;
     }
   },
-
+  //shoot gobo
   gobo4shot: function(gobo4, other) {
     if (gobo4.health == 0) {
       gobo4.kill();
@@ -593,7 +593,7 @@ var level2State = {
       gobo5.health -= 1;
     }
   },
-
+  //shoot gobo
   gobo5shot: function(gobo5, other) {
     if (gobo5.health == 0) {
       gobo5.kill();
@@ -642,7 +642,7 @@ var level2State = {
       skeleton1.health -= 0;
     }
   },
-
+  //shoot skeleton
   skeleton1shot: function(skeleton1, other) {
     if (skeleton1.health == 0) {
       skeleton1.kill();
@@ -667,7 +667,7 @@ var level2State = {
       skeleton2.health -= 0;
     }
   },
-
+  //shoot skeleton
   skeleton2shot: function(skeleton2, other) {
     if (skeleton2.health == 0) {
       skeleton2.kill();
@@ -678,7 +678,7 @@ var level2State = {
     }
   },
 
-  hitbat: function() { //if touching slime take damage
+  hitbat: function() { //if touching bat take damage
     if (player.body.touching.right && !player.invincible) {
       player.x -= 30;
       player.animations.stop();
@@ -701,7 +701,7 @@ var level2State = {
       bat1.kill();
     }
   },
-
+  //shoot bat
   batshot: function(bat, other) {
     bat1.kill();
   },
@@ -734,7 +734,7 @@ var level2State = {
       aGobo.health -= 1;
     }
   },
-
+  //shoot aGobo
   aGoboshot: function(aGobo, other) {
     if (aGobo.health == 0) {
       aGobo.kill();
@@ -742,7 +742,7 @@ var level2State = {
     other.kill();
     aGobo.health -= 1;
   },
-
+  //go to boss
   boss: function() {
     game.state.start("level2boss");
   }
