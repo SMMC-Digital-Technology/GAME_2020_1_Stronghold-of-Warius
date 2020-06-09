@@ -124,7 +124,7 @@
 
         fireButton = this.input.keyboard.addKey(Phaser.KeyCode.X);
 
-
+        //create fireball
         fireball = game.add.weapon(10, "fireball");
         fireball.bulletKillType = Phaser.Weapon.KILL_WORLD_BOUNDS; //destroyed when off-screen
         fireball.bulletKillType = Phaser.Weapon.KILL_DISTANCE; //destroyed after a given distance
@@ -135,7 +135,7 @@
         fireball.onFire.add(function() {
           level1State.removemana(5)
         });
-
+        //boss wepaon
         bossW = game.add.weapon(5, "lazer");
         bossW.bulletKillType = Phaser.Weapon.KILL_WORLD_BOUNDS; //destroyed when off-screen
         bossW.bulletKillType = Phaser.Weapon.KILL_DISTANCE; //destroyed after a given distance

@@ -209,7 +209,7 @@ var level2bossState = {
       game.time.events.add(600, () => {
         player.invincible = false});
     }
-
+    //start boss second phase
     if (boss.health == 19) {
       boss.x = 650;
       boss.y = 460;
@@ -222,7 +222,7 @@ var level2bossState = {
           boss.health -= 1;
         }
         });
-    } else if (boss.health < 8) {
+    } else if (boss.health < 8) { //start boss 3rd phase
       fire.kill();
       if (fireanim == 1) {
         boss.frame = 14;
@@ -248,7 +248,7 @@ var level2bossState = {
             boss.body.velocity.x = 0;
           }
         }
-    } else {
+    } else { //boss AI
       var distance = player.x - boss.x;
       if (distance < 0 && distance > -800 && boss.x > 0) {
         boss.body.velocity.x = -110;
@@ -291,7 +291,7 @@ var level2bossState = {
 
   },
 
-  removehealth: function(lives) { //remove health
+  removehealth: function(lives) { //remove health and resize healthBar
     if (!player.invincible) {
       game.global.health -= lives;
     }
@@ -315,11 +315,11 @@ var level2bossState = {
     level2bossState.removehealth(1)
   },
 
-  destroyplatform: function(boss, other) {
+  destroyplatform: function(boss, other) {//boss kils platform if overlap
     other.kill()
   },
 
-  changeSpell: function() {
+  changeSpell: function() { //change spell
     if (game.global.spellSelected == 1) {
       game.global.spellSelected = 2
     } else if (game.global.spellSelected == 2) {
@@ -337,7 +337,7 @@ var level2bossState = {
   },
 
 
-  bossshot: function(boss, other) {
+  bossshot: function(boss, other) {//shoot boss
     if (boss.health == 0) {
       boss.kill();
       game.global.lvl1complete = "true";
@@ -354,20 +354,20 @@ var level2bossState = {
     level2bossState.removehealth(1)
   },
 
-  removemana: function(mana) {
+  removemana: function(mana) {//remove mana and resize manaBar
     if (game.global.mana > 0)
     game.global.mana -= mana;
     manaBar.width = game.global.mana / game.global.manaM * 300;
   },
 
-  gainmana: function(player, other) {
+  gainmana: function(player, other) {//gain mana and resize manaBar
     other.kill();
     game.global.mana = game.global.manaM
     manaBar.width = game.global.mana / game.global.manaM * 300;
   },
 
 
-  fire: function(bossdirection) {
+  fire: function(bossdirection) {//fire animations for boss
     bossW.fireAtSprite(player);
     if (fireanim == 1) {
       boss.animations.play("fireL")
@@ -380,11 +380,11 @@ var level2bossState = {
     }
   },
 
-  manaspawn: function() {
+  manaspawn: function() {//spawn mana bottle
     mbottle.create(260, 480, "mbottle");
   },
 
-  jenshot: function(player, other) {
+  jenshot: function(player, other) {//shoot jendolfson
     if (game.global.health == 0) {
       player.kill();
     }

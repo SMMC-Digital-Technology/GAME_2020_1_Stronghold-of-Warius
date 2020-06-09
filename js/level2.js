@@ -41,9 +41,10 @@ var level2State = {
     //add help text
     game.add.text(450, 90, "C = change between spells (different", {font: '20px Arial', fill: '#ffffff'});
     game.add.text(450, 130, "spells cost different amounts of mana)", {font: '20px Arial', fill: '#ffffff'});
-    game.add.text(3837, 190, "'This guy has my", {font: '20px Arial', fill: '#ffffff'});
-    game.add.text(3837, 230, "fireballs. Time", {font: '20px Arial', fill: '#ffffff'});
-    game.add.text(3837, 270, "to get 'em back'", {font: '20px Arial', fill: '#ffffff'});
+    game.add.text(3600, 190, "'This guy has my fireballs. Time", {font: '20px Arial', fill: '#ffffff'});
+    game.add.text(3600, 230, "to get them back. He is too hot", {font: '20px Arial', fill: '#ffffff'});
+    game.add.text(3600, 270, "my melee attacks won't work.", {font: '20px Arial', fill: '#ffffff'});
+
 
     //add door to get to the level2bossState
     door = game.add.group();
