@@ -402,10 +402,10 @@ var level2State = {
     }
     //aGobo AI
     var distance = player.x - aGobo.x;
-    if (distance < 0 && distance > -250 && aGobo.x > 0) {
+    if (distance < 0 && distance > -300 && aGobo.x > 0) {
       aGobo.body.velocity.x = -150;
       aGobo.animations.play("left");
-    } else if (distance > 0 && distance < 250 && aGobo.x < game.world.width) {
+    } else if (distance > 0 && distance < 300 && aGobo.x < game.world.width) {
       aGobo.body.velocity.x = 150;
       aGobo.animations.play("right");
     } else {

@@ -9,6 +9,7 @@ game.state.add('level2', level2State);
 game.state.add("level2boss", level2bossState);
 game.state.add('level3', level3State);
 game.state.add('gameover', gameoverState);
+game.state.add('winscreen', winscreenState);
 // save some values for the whole game
 game.global = {
   health: 10,
