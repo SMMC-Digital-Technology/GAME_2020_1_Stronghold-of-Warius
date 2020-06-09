@@ -36,6 +36,7 @@ var loadState = {
       game.load.spritesheet("zgoblin", "assets/zgoblin.png", 60, 60);
       game.load.spritesheet("slimer", "assets/slime_red.png", 16, 16);
       game.load.spritesheet("Bslime", "assets/bigSlime.png", 64, 64);
+      game.load.spritesheet("jcoffin", "assets/jcoffin.png", 128, 128);
       game.load.image("spikes", "assets/spikes.png");
       game.load.image("Rspikes", "assets/RotatedSpikes.png");
       game.load.spritesheet("spellselect", "assets/Spell Select.png", 48, 48);

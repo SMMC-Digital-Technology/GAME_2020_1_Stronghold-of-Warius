@@ -228,7 +228,7 @@ var level2bossState = {
       } else if (fireanim == 0) {
         boss.frame = 15;
       }
-      boss.body.velocity.y = 150;
+      boss.body.velocity.y = 160;
       if (boss.body.collideWorldBounds) {
         var distance = player.x - boss.x;
         if (distance < 0 && distance > -800 && boss.x > 0) {
