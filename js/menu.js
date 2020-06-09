@@ -47,7 +47,4 @@ var menuState = {
   start3: function() {
     game.state.start("level3");
   },
-  start4: function() {
-    game.state.start("level4")
-  }
 };
