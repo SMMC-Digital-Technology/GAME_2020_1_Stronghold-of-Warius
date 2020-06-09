@@ -8,8 +8,8 @@ var winscreenState = {
          boundsAlignH: "center",
          boundsAlignV: "middle"
       });
-      coffin = game.add.sprite(330, 100, "jcoffin");
-      coffin.animations.add('dance', [0, 1, 2], 4, true);
+      coffin = game.add.sprite(330, 100, "chase");
+      coffin.animations.add('dance', [0, 1], 8, true);
    },
 
    update: function() {
