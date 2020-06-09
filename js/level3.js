@@ -342,12 +342,8 @@
         if (boss.health == 0) {
           boss.kill();
         } else if (boss.body.touching.right && player.invincible == true) {
-          boss.x -= 200;
-          boss.body.velocity.y = -200
           boss.health -= 1;
         } else if (boss.body.touching.left && player.invincible == true) {
-          boss.x += 200;
-          boss.body.velocity.y = -200
           boss.health -= 1;
         }
       },

@@ -13,7 +13,7 @@ var level2bossState = {
     bossdirection = {
       facing: "left"
     };
-
+    //fire animation wether dragon plays right or left fire animation
     fireanim = 1;
 
     //create player
@@ -34,12 +34,13 @@ var level2bossState = {
     player.animations.add('leftHeal', [34, 35, 36, 4], 8, false);
     player.animations.add('rightHeal', [20, 21, 22, 0], 8, false);
     player.invincible = false;
-
+    //create boss
     boss = game.add.sprite(700, 150, "dragon");
     game.physics.arcade.enable(boss);
     boss.body.gravity.y = 0;
     boss.body.collideWorldBounds = true;
     boss.health = 29;
+    //animate boss
     boss.animations.add("left", [1, 2, 3, 4, 5, 0], 12, false);
     boss.animations.add("right", [6, 7, 8, 9, 10, 11], 12, false);
     boss.animations.add("fireL", [12, 12, 2], 8, false);
@@ -61,7 +62,7 @@ var level2bossState = {
     //immovable platforms
     platforms.setAll("body.immovable", true)
 
-    splatform = game.add.sprite(650, 450, "castleP") //special platform taht can't be destroyed by boss
+    splatform = game.add.sprite(650, 450, "castleP") //special platform that can't be destroyed by boss
     game.physics.arcade.enable(splatform);
     splatform.body.immovable = true;
 
@@ -78,7 +79,7 @@ var level2bossState = {
     mbottle = game.add.group();
     mbottle.enableBody = true;
     game.time.events.repeat(Phaser.Timer.SECOND * 20, 100, this.manaspawn, this);
-
+    //add fire but kill it right after
     fire = game.add.sprite(0, 552, "fire");
     game.physics.arcade.enable(fire);
     fire.animations.add("blaze", [0, 1, 2], 8, true);
@@ -124,9 +125,9 @@ var level2bossState = {
     weapon.onFire.add(function() {
       level1State.removemana(1)
     });
-
+    //add fire button
     fireButton = this.input.keyboard.addKey(Phaser.KeyCode.X);
-
+    //boss weapon
     bossW = game.add.weapon(5, "fireball");
     bossW.bulletKillType = Phaser.Weapon.KILL_WORLD_BOUNDS; //destroyed when off-screen
     bossW.bulletKillType = Phaser.Weapon.KILL_DISTANCE; //destroyed after a given distance
@@ -150,7 +151,7 @@ var level2bossState = {
     //no floating through platforms
     hitPlatform = game.physics.arcade.collide(player, platforms);
     hitsPlatform = game.physics.arcade.collide(player, splatform);
-
+    //move player
     this.movePlayer(direction);
 
     //make it possible to jump off platforms
@@ -168,7 +169,7 @@ var level2bossState = {
       game.global.timeCheck = game.time.now;
     }
 
-    //x to shoot magebolt
+    //x to change bullet direction and animation
     if (game.global.spellSelected == 1 && xKey.isDown && direction.facing == "left") {
       weapon.addBulletAnimation("wiggleL", [3], 0);
       weapon.bulletSpeed = -500;
@@ -178,12 +179,12 @@ var level2bossState = {
       player.animations.play("rightBolt");
       weapon.bulletSpeed = 500;
     }
-
+    //x to shoot magebolt
     if (game.global.spellSelected == 1 && fireButton.isDown && game.global.mana > 0)
     {
         weapon.fire();
     }
-
+    //x to heal if spell selected is 2
     if (game.global.spellSelected == 2 && xKey.isDown && direction.facing == "left" && game.global.mana >= 10 && game.time.now - game.global.timeCheck2 > 250) {
       level1State.removemana(10)
       level1State.gainhealth()
