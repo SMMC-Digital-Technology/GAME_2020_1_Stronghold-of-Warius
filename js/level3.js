@@ -261,6 +261,8 @@
           manaBar.kill()
           healthBar.kill()
           spellselect.kill()
+          bat1.kill()
+          zgoblin.kill()
           text = game.add.text(100, 100, "You have defeated Warius.", {
              fontSize: '48px',
              fill: '#fff',
