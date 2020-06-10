@@ -255,6 +255,17 @@
             fireball.fire();
         }
 
+        //check if warius is dead
+        if (boss.alive == false) {
+          spike.kill()
+          text = game.add.text(0, 0, "You have defeated Warius.", {
+             fontSize: '48px',
+             fill: '#fff',
+             boundsAlignH: "center",
+             boundsAlignV: "middle"
+          });
+        }
+
 
         //z to swing stick(attack)
         if (zKey.isDown && direction.facing == "left") {
