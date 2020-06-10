@@ -30,7 +30,7 @@
         game.physics.arcade.enable(boss);
         boss.body.gravity.y = 2000;
         boss.body.collideWorldBounds = true;
-        boss.health = 100;
+        boss.health = 1;
         boss.animations.add("idle", [0, 1, 2, 3], 12, true);
         boss.animations.add("staff", [7, 8, 9, 10, 11], 13, false);
         boss.animations.add("chair", [4, 5, 6], 9, false);
@@ -258,7 +258,10 @@
         //check if warius is dead
         if (boss.alive == false) {
           spike.kill()
-          text = game.add.text(0, 0, "You have defeated Warius.", {
+          manaBar.kill()
+          healthBar.kill()
+          spellselect.kill()
+          text = game.add.text(100, 100, "You have defeated Warius.", {
              fontSize: '48px',
              fill: '#fff',
              boundsAlignH: "center",
