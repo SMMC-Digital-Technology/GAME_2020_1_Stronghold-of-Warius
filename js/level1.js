@@ -43,8 +43,8 @@ var level1State = {
     game.add.text(450, 90, "X = use current spell (spells use mana)", {font: '20px Arial', fill: '#ffffff'});
     game.add.text(340, 23, "< Health", {font: '18px Arial', fill: '#ffffff'});
     game.add.text(340, 50, "< Mana", {font: '20px Arial', fill: '#ffffff'});
-    game.add.text(4400, 170, "'The Dark Mage is behind this door", {font: '20px Arial', fill: '#ffffff'});
-    game.add.text(4400, 210, "he has my heal spell, I need to defeat him", {font: '20px Arial', fill: '#ffffff'});
+    game.add.text(4400, 170, "'The Dark Mage is behind this door.", {font: '20px Arial', fill: '#ffffff'});
+    game.add.text(4400, 210, "He has my heal spell, I need to defeat him", {font: '20px Arial', fill: '#ffffff'});
     game.add.text(4400, 250, "to get it back'", {font: '20px Arial', fill: '#ffffff'});
 
     //add door to get to the level1bossState

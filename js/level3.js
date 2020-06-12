@@ -32,7 +32,7 @@
         game.physics.arcade.enable(boss);
         boss.body.gravity.y = 2000;
         boss.body.collideWorldBounds = true;
-        boss.health = 1;
+        boss.health = 100;
         boss.animations.add("idle", [0, 1, 2, 3], 12, true);
         boss.animations.add("staff", [7, 8, 9, 10, 11], 13, false);
         boss.animations.add("chair", [4, 5, 6], 9, false);

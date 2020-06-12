@@ -25,8 +25,8 @@ var menuState = {
     text3.anchor.setTo(0.5, 0.5);
 
     if (game.global.cyclespeech == 0)  {
-      game.add.text(180, 120, "'Oh Dagnabbit, the goblin king Warius has stolen my powers", {font: '20px Arial'});
-      game.add.text(180, 150, "to get to his castle I need to head to the sewers, I hope", {font: '20px Arial'});
+      game.add.text(180, 120, "'Oh Dagnabbit, the goblin king Warius has stolen my powers!", {font: '20px Arial'});
+      game.add.text(180, 150, "To get to his castle I need to head to the sewers, I hope", {font: '20px Arial'});
       game.add.text(180, 180, "it's safe in there.'", {font: '20px Arial'});
     } else if (game.global.cyclespeech == 1) {
       game.add.text(180, 120, "'Phew that was tough, well I'm at the castle now. I heard", {font: '20px Arial'});
