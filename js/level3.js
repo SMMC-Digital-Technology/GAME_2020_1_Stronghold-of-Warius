@@ -26,6 +26,8 @@
         player.animations.add("leftfire", [25, 26, 4], 8, false);
         player.invincible = false;
 
+        stop = 0; //to stop thigns from happenign more than once
+
         boss = game.add.sprite(708, 550, "warius");
         game.physics.arcade.enable(boss);
         boss.body.gravity.y = 2000;
@@ -263,12 +265,32 @@
           spellselect.kill()
           bat1.kill()
           zgoblin.kill()
-          text = game.add.text(100, 100, "You have defeated Warius.", {
-             fontSize: '48px',
-             fill: '#fff',
-             boundsAlignH: "center",
-             boundsAlignV: "middle"
-          });
+          if (stop == 0) {
+            //create fireworks
+            fireworkG = game.add.sprite(100, 420, "fireworkG");
+            fireworkG.animations.add("explosion", [0, 1, 2, 3, 4, 5], 8, true);
+            fireworkG.animations.play("explosion");
+
+            fireworkY = game.add.sprite(500, 420, "fireworkY");
+            fireworkY.animations.add("explosion", [0, 1, 2, 3, 4, 5], 8, true);
+            fireworkY.animations.play("explosion");
+
+            fireworkO = game.add.sprite(625, 420, "fireworkO");
+            fireworkO.animations.add("explosion", [0, 1, 2, 3, 4, 5], 8, true);
+            fireworkO.animations.play("explosion");
+
+            fireworkB = game.add.sprite(-25, 420, "fireworkB");
+            fireworkB.animations.add("explosion", [0, 1, 2, 3, 4, 5], 8, true);
+            fireworkB.animations.play("explosion");
+            //create text
+            text = game.add.text(100, 100, "You have defeated Warius.", {
+               fontSize: '48px',
+               fill: '#fff',
+               boundsAlignH: "center",
+               boundsAlignV: "middle"
+            });
+            stop = 1; //only create once
+          }
         }
 
 
