@@ -32,7 +32,7 @@
         game.physics.arcade.enable(boss);
         boss.body.gravity.y = 2000;
         boss.body.collideWorldBounds = true;
-        boss.health = 100;
+        boss.health = 1;
         boss.animations.add("idle", [0, 1, 2, 3], 12, true);
         boss.animations.add("staff", [7, 8, 9, 10, 11], 13, false);
         boss.animations.add("chair", [4, 5, 6], 9, false);
@@ -71,6 +71,11 @@
         //mana bottles
         mbottle = game.add.group();
         mbottle.enableBody = true;
+
+        //add door to get to the menu
+        door = game.add.sprite(700, 538, "door")
+        game.physics.arcade.enable(door)
+        door.kill();
 
         // create keys
         cursors = game.input.keyboard.createCursorKeys();
@@ -166,6 +171,7 @@
         game.physics.arcade.overlap(bossW.bullets, player, this.jenshot);
         game.physics.arcade.overlap(weapon.bullets, zgoblin, this.zgoblinshot);
         game.physics.arcade.overlap(fireball.bullets, zgoblin, this.zgoblinburn);
+        game.physics.arcade.overlap(player, door, this.menu);
         //no floating through platforms
         hitPlatform = game.physics.arcade.collide(player, platforms);
 
@@ -289,6 +295,8 @@
                boundsAlignH: "center",
                boundsAlignV: "middle"
             });
+            game.time.events.add(2000, () => {
+              door.reset(700, 538)});
             stop = 1; //only create once
           }
         }
@@ -541,5 +549,9 @@
         }
         level1State.removehealth(1)
       },
+
+      menu: function() {
+        game.state.start("menu");
+      }
 
 };

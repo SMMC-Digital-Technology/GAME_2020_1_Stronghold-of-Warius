@@ -341,7 +341,9 @@ var level2bossState = {
     if (boss.health == 0) {
       boss.kill();
       game.global.lvl1complete = "true";
-      game.global.cyclespeech += 1;
+      if (game.global.cyclespeech == 1) {
+        game.global.cyclespeech += 1;
+      }
       game.time.events.add(1000, () => {
         game.state.start("menu")});
     }
