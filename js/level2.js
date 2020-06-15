@@ -40,6 +40,8 @@ var level2State = {
 
     //add help text
     game.add.text(450, 90, "C = change between spells (different", {font: '20px Arial', fill: '#ffffff'});
+    game.add.text(800, 240, "'That skeleton has a shield, I won't", {font: '20px Arial', fill: '#ffffff'})
+    game.add.text(800, 280, "be able to hit him from the front.'", {font: '20px Arial', fill: '#ffffff'})
     game.add.text(450, 130, "spells cost different amounts of mana)", {font: '20px Arial', fill: '#ffffff'});
     game.add.text(3600, 190, "'This guy has my fireballs. Time", {font: '20px Arial', fill: '#ffffff'});
     game.add.text(3600, 230, "to get them back. He is too hot", {font: '20px Arial', fill: '#ffffff'});
