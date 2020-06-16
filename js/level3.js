@@ -32,7 +32,7 @@
         game.physics.arcade.enable(boss);
         boss.body.gravity.y = 2000;
         boss.body.collideWorldBounds = true;
-        boss.health = 1;
+        boss.health = 80;
         boss.animations.add("idle", [0, 1, 2, 3], 12, true);
         boss.animations.add("staff", [7, 8, 9, 10, 11], 13, false);
         boss.animations.add("chair", [4, 5, 6], 9, false);
@@ -217,10 +217,10 @@
 
         //zgoblin AI
         var distance = player.x - zgoblin.x;
-        if (distance < 0 && distance > -300 && zgoblin.x > 0) {
+        if (distance < 0 && distance > -500 && zgoblin.x > 0) {
           zgoblin.body.velocity.x = -80;
           zgoblin.animations.play("left");
-        } else if (distance > 0 && distance < 300 && zgoblin.x < game.world.width) {
+        } else if (distance > 0 && distance < 500 && zgoblin.x < game.world.width) {
           zgoblin.body.velocity.x = 80;
           zgoblin.animations.play("right");
         } else {
