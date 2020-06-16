@@ -38,18 +38,54 @@ var level1State = {
     //immovable platforms
     platforms.setAll("body.immovable", true)
     //add help text
-    game.add.text(50, 100, "Use the arrows to move", {font: '20px Arial', fill: '#ffffff'});
-    game.add.text(50, 140, "Z = melee attack", {font: '20px Arial', fill: '#ffffff'});
-    game.add.text(450, 90, "X = use current spell (spells use mana)", {font: '20px Arial', fill: '#ffffff'});
-    game.add.text(340, 23, "< Health", {font: '18px Arial', fill: '#ffffff'});
-    game.add.text(340, 50, "< Mana", {font: '20px Arial', fill: '#ffffff'});
-    game.add.text(1200, 200, "'Oh no a bat, I should probably use melee attacks", {font: '20px Arial', fill: '#ffffff'})
-    game.add.text(1200, 240, "hitting it with projectiles might be hard.'", {font: '20px Arial', fill: '#ffffff'})
-    game.add.text(2300, 240, "'Argh, that big slime is guarding that mana bottle", {font: '20px Arial', fill: '#ffffff'})
-    game.add.text(2300, 280, "that bottle will refill my mana.'", {font: '20px Arial', fill: '#ffffff'})
-    game.add.text(4400, 170, "'The Dark Mage is behind this door.", {font: '20px Arial', fill: '#ffffff'});
-    game.add.text(4400, 210, "He has my heal spell, I need to defeat him", {font: '20px Arial', fill: '#ffffff'});
-    game.add.text(4400, 250, "to get it back'", {font: '20px Arial', fill: '#ffffff'});
+    game.add.text(50, 100, "Use the arrows to move", {
+      font: '20px Arial',
+      fill: '#ffffff'
+    });
+    game.add.text(50, 140, "Z = melee attack", {
+      font: '20px Arial',
+      fill: '#ffffff'
+    });
+    game.add.text(450, 90, "X = use current spell (spells use mana)", {
+      font: '20px Arial',
+      fill: '#ffffff'
+    });
+    game.add.text(340, 23, "< Health", {
+      font: '18px Arial',
+      fill: '#ffffff'
+    });
+    game.add.text(340, 50, "< Mana", {
+      font: '20px Arial',
+      fill: '#ffffff'
+    });
+    game.add.text(1200, 200, "'Oh no a bat, I should probably use melee attacks", {
+      font: '20px Arial',
+      fill: '#ffffff'
+    })
+    game.add.text(1200, 240, "hitting it with projectiles might be hard.'", {
+      font: '20px Arial',
+      fill: '#ffffff'
+    })
+    game.add.text(2300, 240, "'Argh, that big slime is guarding that mana bottle", {
+      font: '20px Arial',
+      fill: '#ffffff'
+    })
+    game.add.text(2300, 280, "that bottle will refill my mana.'", {
+      font: '20px Arial',
+      fill: '#ffffff'
+    })
+    game.add.text(4400, 170, "'The Dark Mage is behind this door.", {
+      font: '20px Arial',
+      fill: '#ffffff'
+    });
+    game.add.text(4400, 210, "He has my heal spell, I need to defeat him", {
+      font: '20px Arial',
+      fill: '#ffffff'
+    });
+    game.add.text(4400, 250, "to get it back'", {
+      font: '20px Arial',
+      fill: '#ffffff'
+    });
 
     //add door to get to the level1bossState
     door = game.add.group();
@@ -397,7 +433,7 @@ var level1State = {
     }
     if (game.global.health <= 0) {
       game.state.start("gameover");
-    } else if (!player.invincible){
+    } else if (!player.invincible) {
       healthBar.width = game.global.health / game.global.healthM * 300;
     }
   },

@@ -243,9 +243,8 @@
           player.animations.play("rightBolt");
           weapon.bulletSpeed = 500;
         }
-        if (game.global.spellSelected == 1 && fireButton.isDown && game.global.mana > 0)
-        {
-            weapon.fire();
+        if (game.global.spellSelected == 1 && fireButton.isDown && game.global.mana > 0) {
+          weapon.fire();
         }
 
         //x to shoot magebolt
@@ -258,9 +257,8 @@
           player.animations.play("rightfire");
           fireball.bulletSpeed = 500;
         }
-        if (game.global.spellSelected == 3 && fireButton.isDown && game.global.mana >= 6)
-        {
-            fireball.fire();
+        if (game.global.spellSelected == 3 && fireButton.isDown && game.global.mana >= 6) {
+          fireball.fire();
         }
 
         //check if warius is dead
@@ -290,13 +288,14 @@
             fireworkB.animations.play("explosion");
             //create text
             text = game.add.text(100, 100, "You have defeated Warius.", {
-               fontSize: '48px',
-               fill: '#fff',
-               boundsAlignH: "center",
-               boundsAlignV: "middle"
+              fontSize: '48px',
+              fill: '#fff',
+              boundsAlignH: "center",
+              boundsAlignV: "middle"
             });
             game.time.events.add(2000, () => {
-              door.reset(700, 538)});
+              door.reset(700, 538)
+            });
             stop = 1; //only create once
           }
         }
@@ -307,12 +306,14 @@
           player.animations.play("leftSwing");
           player.invincible = true;
           game.time.events.add(600, () => {
-            player.invincible = false});
+            player.invincible = false
+          });
         } else if (zKey.isDown && direction.facing == "right") {
           player.animations.play("rightSwing");
           player.invincible = true;
           game.time.events.add(600, () => {
-            player.invincible = false});
+            player.invincible = false
+          });
         }
 
         //c to change spell
@@ -325,12 +326,13 @@
         if (distance < 0 && distance > -800 && boss.x > 0) {
           boss.body.velocity.y = -110;
           if (!boss.animations.currentAnim.isPlaying) {
-          boss.animations.play("idle");
-          bossdirection.facing = "idle";}
+            boss.animations.play("idle");
+            bossdirection.facing = "idle";
+          }
         } else if (distance > 0 && distance < 800 && boss.y < game.world.width) {
           boss.body.velocity.y = 110;
           if (!boss.animations.currentAnim.isPlaying)
-          boss.animations.play("idle");
+            boss.animations.play("idle");
           bossdirection.facing = "idle";
         } else {
           boss.body.velocity.x = 0;
@@ -366,7 +368,7 @@
         }
         if (game.global.health <= 0) {
           game.state.start("gameover");
-        } else if (!player.incincible){
+        } else if (!player.incincible) {
           healthBar.width = game.global.health / game.global.healthM * 300;
         }
       },
@@ -426,7 +428,7 @@
 
       removemana: function(mana) {
         if (game.global.mana > 0)
-        game.global.mana -= mana;
+          game.global.mana -= mana;
         manaBar.width = game.global.mana / game.global.manaM * 300;
       },
 
@@ -447,9 +449,10 @@
         if (zgoblin.alive == false) {
           if (boss.alive == true) {
             boss.animations.play("staff")
-            zgoblin.reset(500, 300)}
-            zgoblin.health = 7;
+            zgoblin.reset(500, 300)
           }
+          zgoblin.health = 7;
+        }
       },
 
       batspawn: function() {
@@ -490,7 +493,7 @@
           game.global.spellSelected = 2
         } else if (game.global.spellSelected == 2) {
           game.global.spellSelected = 3
-        } else if (game.global.spellSelected == 3 ) {
+        } else if (game.global.spellSelected == 3) {
           game.global.spellSelected = 1
         }
         if (game.global.spellSelected == 1) {
@@ -554,4 +557,4 @@
         game.state.start("menu");
       }
 
-};
+    };

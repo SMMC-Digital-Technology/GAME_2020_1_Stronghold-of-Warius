@@ -180,9 +180,8 @@ var level2bossState = {
       weapon.bulletSpeed = 500;
     }
     //x to shoot magebolt
-    if (game.global.spellSelected == 1 && fireButton.isDown && game.global.mana > 0)
-    {
-        weapon.fire();
+    if (game.global.spellSelected == 1 && fireButton.isDown && game.global.mana > 0) {
+      weapon.fire();
     }
     //x to heal if spell selected is 2
     if (game.global.spellSelected == 2 && xKey.isDown && direction.facing == "left" && game.global.mana >= 10 && game.time.now - game.global.timeCheck2 > 250) {
@@ -202,26 +201,29 @@ var level2bossState = {
       player.animations.play("leftSwing");
       player.invincible = true;
       game.time.events.add(600, () => {
-        player.invincible = false});
+        player.invincible = false
+      });
     } else if (zKey.isDown && direction.facing == "right") {
       player.animations.play("rightSwing");
       player.invincible = true;
       game.time.events.add(600, () => {
-        player.invincible = false});
+        player.invincible = false
+      });
     }
     //start boss second phase
     if (boss.health == 19) {
       boss.x = 650;
       boss.y = 460;
       game.time.events.add(2000, () => {
-        boss.frame = 12});
+        boss.frame = 12
+      });
       game.time.events.add(2500, () => {
         fire.reset(0, 552);
         boss.y = 150;
         if (boss.health == 19) {
           boss.health -= 1;
         }
-        });
+      });
     } else if (boss.health < 8) { //start boss 3rd phase
       fire.kill();
       if (fireanim == 1) {
@@ -237,30 +239,32 @@ var level2bossState = {
           fireanim = 3;
           if (!boss.animations.currentAnim.isPlaying) {
             boss.animations.play("crawlL");
-            bossdirection.facing = "left";}
-          } else if (distance > 0 && distance < 800 && boss.x < game.world.width) {
-            boss.body.velocity.x = 80;
-            fireanim = 4;
-            if (!boss.animations.currentAnim.isPlaying)
-            boss.animations.play("crawlR");
-            bossdirection.facing = "right";
-          } else {
-            boss.body.velocity.x = 0;
+            bossdirection.facing = "left";
           }
+        } else if (distance > 0 && distance < 800 && boss.x < game.world.width) {
+          boss.body.velocity.x = 80;
+          fireanim = 4;
+          if (!boss.animations.currentAnim.isPlaying)
+            boss.animations.play("crawlR");
+          bossdirection.facing = "right";
+        } else {
+          boss.body.velocity.x = 0;
         }
+      }
     } else { //boss AI
       var distance = player.x - boss.x;
       if (distance < 0 && distance > -800 && boss.x > 0) {
         boss.body.velocity.x = -110;
         fireanim = 1;
         if (!boss.animations.currentAnim.isPlaying) {
-        boss.animations.play("left");
-        bossdirection.facing = "left";}
+          boss.animations.play("left");
+          bossdirection.facing = "left";
+        }
       } else if (distance > 0 && distance < 800 && boss.x < game.world.width) {
         boss.body.velocity.x = 110;
         fireanim = 0;
         if (!boss.animations.currentAnim.isPlaying)
-        boss.animations.play("right");
+          boss.animations.play("right");
         bossdirection.facing = "right";
       } else {
         boss.body.velocity.x = 0;
@@ -297,7 +301,7 @@ var level2bossState = {
     }
     if (game.global.health <= 0) {
       game.state.start("gameover");
-    } else if (!player.incincible){
+    } else if (!player.incincible) {
       healthBar.width = game.global.health / game.global.healthM * 300;
     }
   },
@@ -315,7 +319,7 @@ var level2bossState = {
     level2bossState.removehealth(1)
   },
 
-  destroyplatform: function(boss, other) {//boss kils platform if overlap
+  destroyplatform: function(boss, other) { //boss kils platform if overlap
     other.kill()
   },
 
@@ -337,7 +341,7 @@ var level2bossState = {
   },
 
 
-  bossshot: function(boss, other) {//shoot boss
+  bossshot: function(boss, other) { //shoot boss
     if (boss.health == 0) {
       boss.kill();
       game.global.lvl2complete = "true"
@@ -345,7 +349,8 @@ var level2bossState = {
         game.global.cyclespeech += 1;
       }
       game.time.events.add(1000, () => {
-        game.state.start("menu")});
+        game.state.start("menu")
+      });
     }
     other.kill();
     boss.health -= 1;
@@ -356,20 +361,20 @@ var level2bossState = {
     level2bossState.removehealth(1)
   },
 
-  removemana: function(mana) {//remove mana and resize manaBar
+  removemana: function(mana) { //remove mana and resize manaBar
     if (game.global.mana > 0)
-    game.global.mana -= mana;
+      game.global.mana -= mana;
     manaBar.width = game.global.mana / game.global.manaM * 300;
   },
 
-  gainmana: function(player, other) {//gain mana and resize manaBar
+  gainmana: function(player, other) { //gain mana and resize manaBar
     other.kill();
     game.global.mana = game.global.manaM
     manaBar.width = game.global.mana / game.global.manaM * 300;
   },
 
 
-  fire: function(bossdirection) {//fire animations for boss
+  fire: function(bossdirection) { //fire animations for boss
     bossW.fireAtSprite(player);
     if (fireanim == 1) {
       boss.animations.play("fireL")
@@ -382,11 +387,11 @@ var level2bossState = {
     }
   },
 
-  manaspawn: function() {//spawn mana bottle
+  manaspawn: function() { //spawn mana bottle
     mbottle.create(260, 480, "mbottle");
   },
 
-  jenshot: function(player, other) {//shoot jendolfson
+  jenshot: function(player, other) { //shoot jendolfson
     if (game.global.health == 0) {
       player.kill();
     }

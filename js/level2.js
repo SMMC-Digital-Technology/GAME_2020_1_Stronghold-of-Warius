@@ -39,13 +39,34 @@ var level2State = {
     platforms.setAll("body.immovable", true)
 
     //add help text
-    game.add.text(450, 90, "C = change between spells (different", {font: '20px Arial', fill: '#ffffff'});
-    game.add.text(800, 240, "'That skeleton has a shield, I won't", {font: '20px Arial', fill: '#ffffff'})
-    game.add.text(800, 280, "be able to hit him from the front.'", {font: '20px Arial', fill: '#ffffff'})
-    game.add.text(450, 130, "spells cost different amounts of mana)", {font: '20px Arial', fill: '#ffffff'});
-    game.add.text(3600, 190, "'This guy has my fireballs. Time", {font: '20px Arial', fill: '#ffffff'});
-    game.add.text(3600, 230, "to get them back. He is too hot", {font: '20px Arial', fill: '#ffffff'});
-    game.add.text(3600, 270, "my melee attacks won't work.", {font: '20px Arial', fill: '#ffffff'});
+    game.add.text(450, 90, "C = change between spells (different", {
+      font: '20px Arial',
+      fill: '#ffffff'
+    });
+    game.add.text(800, 240, "'That skeleton has a shield, I won't", {
+      font: '20px Arial',
+      fill: '#ffffff'
+    })
+    game.add.text(800, 280, "be able to hit him from the front.'", {
+      font: '20px Arial',
+      fill: '#ffffff'
+    })
+    game.add.text(450, 130, "spells cost different amounts of mana)", {
+      font: '20px Arial',
+      fill: '#ffffff'
+    });
+    game.add.text(3600, 190, "'This guy has my fireballs. Time", {
+      font: '20px Arial',
+      fill: '#ffffff'
+    });
+    game.add.text(3600, 230, "to get them back. He is too hot", {
+      font: '20px Arial',
+      fill: '#ffffff'
+    });
+    game.add.text(3600, 270, "my melee attacks won't work.", {
+      font: '20px Arial',
+      fill: '#ffffff'
+    });
 
 
     //add door to get to the level2bossState
@@ -278,9 +299,8 @@ var level2State = {
       player.animations.play("rightBolt");
       weapon.bulletSpeed = 500;
     }
-    if (game.global.spellSelected == 1 && fireButton.isDown && game.global.mana > 0)
-    {
-        weapon.fire();
+    if (game.global.spellSelected == 1 && fireButton.isDown && game.global.mana > 0) {
+      weapon.fire();
     }
     //heal the player if spell selected is 2
     if (game.global.spellSelected == 2 && xKey.isDown && direction.facing == "left" && game.global.mana >= 10 && game.time.now - game.global.timeCheck2 > 250) {
@@ -302,12 +322,14 @@ var level2State = {
       player.animations.play("leftSwing");
       player.invincible = true;
       game.time.events.add(800, () => {
-        player.invincible = false});
+        player.invincible = false
+      });
     } else if (zKey.isDown && direction.facing == "right") {
       player.animations.play("rightSwing");
       player.invincible = true;
       game.time.events.add(800, () => {
-        player.invincible = false});
+        player.invincible = false
+      });
     }
     //gobo AIs
     var distance = player.x - gobo1.x;
@@ -444,14 +466,14 @@ var level2State = {
     }
     if (game.global.health <= 0) {
       game.state.start("gameover");
-    } else if (!player.invincible){
+    } else if (!player.invincible) {
       healthBar.width = game.global.health / game.global.healthM * 300;
     }
   },
   //remove mana and resize manaBar
   removemana: function(mana) {
     if (game.global.mana > 0)
-    game.global.mana -= mana;
+      game.global.mana -= mana;
     manaBar.width = game.global.mana / game.global.manaM * 300;
   },
   //add mana and resize manaBar
