@@ -340,7 +340,7 @@ var level2bossState = {
   bossshot: function(boss, other) {//shoot boss
     if (boss.health == 0) {
       boss.kill();
-      game.global.lvl1complete = "true";
+      game.global.lvl2complete = "true"
       if (game.global.cyclespeech == 1) {
         game.global.cyclespeech += 1;
       }

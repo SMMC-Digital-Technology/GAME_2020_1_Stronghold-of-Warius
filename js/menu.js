@@ -14,13 +14,18 @@ var menuState = {
 
     button2 = game.add.button(400, game.world.centerY, "button");
     button2.anchor.setTo(0.5, 0.5);
-    button2.onInputUp.add(this.start2);
+    if (game.global.lvl1complete == "true") {
+        button2.onInputUp.add(this.start2);
+    }
     var text2 = game.add.text(button2.x, button2.y, "Level 2", {fill: "#ffffff"});
     text2.anchor.setTo(0.5, 0.5);
 
     button3 = game.add.button(400, 350, "button");
     button3.anchor.setTo(0.5, 0.5);
-    button3.onInputUp.add(this.start3);
+    if (game.global.lvl2complete == "true") {
+        button3.onInputUp.add(this.start3);
+    }
+
     var text3 = game.add.text(button3.x, button3.y, "Level 3", {fill: "#ffffff"});
     text3.anchor.setTo(0.5, 0.5);
 
